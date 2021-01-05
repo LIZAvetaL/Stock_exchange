@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "statuses")
 public class Status {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     @Column(name = "status_name")
@@ -27,23 +28,4 @@ public class Status {
         this.statusName = statusName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Status statuses = (Status) o;
-
-        if (id != statuses.id) return false;
-        if (statusName != null ? !statusName.equals(statuses.statusName) : statuses.statusName != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (statusName != null ? statusName.hashCode() : 0);
-        return result;
-    }
 }

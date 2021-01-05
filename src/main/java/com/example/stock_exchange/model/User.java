@@ -7,6 +7,7 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
     @Column(name = "email")
@@ -18,10 +19,7 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "role", referencedColumnName = "id")
     private Role role;
-    @OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "owner")
-    private List<StockExchange> stockExchanges;
+
 
     public User() {
     }
@@ -73,11 +71,4 @@ public class User {
         this.role = role;
     }
 
-    public List<StockExchange> getStockExchanges() {
-        return stockExchanges;
-    }
-
-    public void setStockExchanges(List<StockExchange> stockExchanges) {
-        this.stockExchanges = stockExchanges;
-    }
 }

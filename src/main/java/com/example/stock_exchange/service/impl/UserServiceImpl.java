@@ -4,6 +4,7 @@ import com.example.stock_exchange.model.User;
 import com.example.stock_exchange.repository.RoleRepository;
 import com.example.stock_exchange.repository.UserRepository;
 import com.example.stock_exchange.dto.UserDTO;
+import com.example.stock_exchange.service.RoleService;
 import com.example.stock_exchange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,16 +15,18 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final UserRepository userRepository;
+    private final RoleService roleService;
+
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+    }
 
     @Override
-    public UserDTO findById(int id) {
-        User user = userRepository.getOne(id);
-        return new UserDTO(user.getId(), user.getEmail(), user.getPassword(),
-                user.getName(), user.getRole().getRoleName());
+    public User findById(int id) {
+        return userRepository.getOne(id);
     }
     @Override
     public List<UserDTO> findAll() {
@@ -40,7 +43,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(UserDTO userDTO) {
         User user = new User( userDTO.getEmail(), userDTO.getPassword(),
-                userDTO.getName(), roleRepository.findRoleByRoleName(userDTO.getRole()));
+                userDTO.getName(), roleService.findRole(userDTO.getRole()));
         userRepository.save(user);
     }
+
 }

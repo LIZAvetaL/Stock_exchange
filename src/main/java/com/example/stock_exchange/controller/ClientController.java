@@ -3,6 +3,7 @@ package com.example.stock_exchange.controller;
 import com.example.stock_exchange.dto.BrokerDTO;
 import com.example.stock_exchange.dto.UserDTO;
 import com.example.stock_exchange.service.BrokerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ import java.util.List;
 public class ClientController {
 
     private final BrokerService brokerService;
-
+    @Autowired
     public ClientController(BrokerService brokerService) {
         this.brokerService = brokerService;
     }

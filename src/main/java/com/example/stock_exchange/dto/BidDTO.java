@@ -1,48 +1,53 @@
-package com.example.stock_exchange.model;
+package com.example.stock_exchange.dto;
 
-import javax.persistence.*;
+import com.example.stock_exchange.model.Broker;
+import com.example.stock_exchange.model.Status;
+import com.example.stock_exchange.model.User;
+
 import java.sql.Date;
 
-@Entity
-@Table(name = "bids")
-public class Bid {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class BidDTO {
     private int id;
-    @Column(name = "issuer")
     private String issuer;
 
-    @Column(name = "bid_number")
     private int bidNumber;
-    @Column(name = "amount")
     private int amount;
-    @Column(name = "max_price")
 
     private double maxPrice;
-    @Column(name = "min_price")
     private double minPrice;
-
-    @Column(name = "priority")
     private int priority;
 
-    @Column(name = "creation_date")
     private Date creationDate;
-    @Column(name = "due_date")
     private Date dueDate;
 
+    private String status;
+    private String broker;
+    private String client;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bid_status", referencedColumnName = "id")
-    private Status status;
+    public BidDTO() {}
+    public BidDTO(String issuer, int bidNumber, int amount, double maxPrice,
+                  double minPrice, int priority, Date creationDate, Date dueDate,
+                  String status, String broker, String client) {
+        this.issuer = issuer;
+        this.bidNumber = bidNumber;
+        this.amount = amount;
+        this.maxPrice = maxPrice;
+        this.minPrice = minPrice;
+        this.priority = priority;
+        this.creationDate = creationDate;
+        this.dueDate = dueDate;
+        this.status = status;
+        this.broker = broker;
+        this.client = client;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "broker_id", referencedColumnName = "id_broker")
-    private Broker broker;
+    public int getId() {
+        return id;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private User client;
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getIssuer() {
         return issuer;
@@ -68,14 +73,6 @@ public class Bid {
         this.amount = amount;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public double getMaxPrice() {
         return maxPrice;
     }
@@ -84,20 +81,20 @@ public class Bid {
         this.maxPrice = maxPrice;
     }
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
     public double getMinPrice() {
         return minPrice;
     }
 
     public void setMinPrice(double minPrice) {
         this.minPrice = minPrice;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public Date getCreationDate() {
@@ -116,27 +113,27 @@ public class Bid {
         this.dueDate = dueDate;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Broker getBroker() {
+    public String getBroker() {
         return broker;
     }
 
-    public void setBroker(Broker broker) {
+    public void setBroker(String broker) {
         this.broker = broker;
     }
 
-    public User getClient() {
+    public String getClient() {
         return client;
     }
 
-    public void setClient(User client) {
+    public void setClient(String client) {
         this.client = client;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.stock_exchange.controller;
 
 import com.example.stock_exchange.dto.UserDTO;
+import com.example.stock_exchange.model.User;
 import com.example.stock_exchange.service.UserService;
 import com.example.stock_exchange.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDTO findUser(@PathVariable(name = "id") int id) {
+    public User findUser(@PathVariable(name = "id") int id) {
         return userService.findById(id);
     }
 

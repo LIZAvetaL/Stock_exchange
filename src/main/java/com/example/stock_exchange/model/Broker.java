@@ -4,6 +4,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,6 +16,7 @@ import javax.persistence.Table;
 @Table(name = "brokers")
 public class Broker {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_broker")
     private int id;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -56,22 +59,5 @@ public class Broker {
 
     public void setExchange(StockExchange exchange) {
         this.exchange = exchange;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Broker brokers = (Broker) o;
-
-        if (id != brokers.id) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return id;
     }
 }

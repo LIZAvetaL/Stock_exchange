@@ -1,35 +1,25 @@
-package com.example.stock_exchange.model;
+package com.example.stock_exchange.dto;
 
-import javax.persistence.*;
+import com.example.stock_exchange.model.Broker;
+
 import java.sql.Date;
 
-@Entity
-@Table(name = "deals")
-public class Deal {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class DealDTO {
     private int id;
-    @Column(name = "amount")
     private int amount;
-    @Column(name = "price")
     private Double price;
-    @Column(name = "total_price")
     private Double totalPrice;
-    @Column(name = "bargain_date")
     private Date bargainDate;
+    private String seller;
+    private String buyer;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller", referencedColumnName = "id_broker")
-    private Broker seller;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "buyer", referencedColumnName = "id_broker")
-    private Broker buyer;
-
-    public Deal( int amount, Double totalPrice, Broker seller, Broker buyer) {
+    public DealDTO(int id, int amount, Double price,
+                   Double totalPrice, Date bargainDate, String seller, String buyer) {
+        this.id = id;
         this.amount = amount;
+        this.price = price;
         this.totalPrice = totalPrice;
+        this.bargainDate = bargainDate;
         this.seller = seller;
         this.buyer = buyer;
     }
@@ -74,19 +64,19 @@ public class Deal {
         this.bargainDate = bargainDate;
     }
 
-    public Broker getSeller() {
+    public String getSeller() {
         return seller;
     }
 
-    public void setSeller(Broker seller) {
+    public void setSeller(String seller) {
         this.seller = seller;
     }
 
-    public Broker getBuyer() {
+    public String getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(Broker buyer) {
+    public void setBuyer(String buyer) {
         this.buyer = buyer;
     }
 }

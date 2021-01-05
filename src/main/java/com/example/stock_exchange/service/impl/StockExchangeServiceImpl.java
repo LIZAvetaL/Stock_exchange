@@ -13,8 +13,12 @@ import java.util.List;
 @Service
 public class StockExchangeServiceImpl implements StockExchangeService {
 
+    private final StockExchangeRepository stockExchangeRepository;
+
     @Autowired
-    private StockExchangeRepository stockExchangeRepository;
+    public StockExchangeServiceImpl(StockExchangeRepository stockExchangeRepository) {
+        this.stockExchangeRepository = stockExchangeRepository;
+    }
 
     @Override
     public List<StockExchangeDTO> findByOwner(int owner) {
