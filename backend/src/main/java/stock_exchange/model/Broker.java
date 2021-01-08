@@ -1,6 +1,5 @@
-package com.example.stock_exchange.model;
+package stock_exchange.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,10 +21,10 @@ public class Broker {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employer", referencedColumnName = "id")
     private User employer;
-    @OneToOne( fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "broker_status", referencedColumnName = "id")
     private Status status;
-    @OneToOne( fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "exchange", referencedColumnName = "id")
     private StockExchange exchange;
 

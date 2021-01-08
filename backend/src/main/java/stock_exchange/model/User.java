@@ -1,7 +1,15 @@
-package com.example.stock_exchange.model;
+package stock_exchange.model;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -16,7 +24,7 @@ public class User {
     private String password;
     @Column(name = "name")
     private String name;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne( fetch = FetchType.LAZY)
     @JoinColumn(name = "role", referencedColumnName = "id")
     private Role role;
 

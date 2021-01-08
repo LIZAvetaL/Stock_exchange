@@ -1,4 +1,4 @@
-package com.example.stock_exchange.model;
+package stock_exchange.model;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -19,11 +19,11 @@ public class Deal {
     @Column(name = "bargain_date")
     private Date bargainDate;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "seller", referencedColumnName = "id_broker")
     private Broker seller;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer", referencedColumnName = "id_broker")
     private Broker buyer;
 
@@ -32,6 +32,10 @@ public class Deal {
         this.totalPrice = totalPrice;
         this.seller = seller;
         this.buyer = buyer;
+    }
+
+    public Deal() {
+
     }
 
     public int getId() {

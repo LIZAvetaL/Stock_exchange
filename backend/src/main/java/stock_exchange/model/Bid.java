@@ -1,4 +1,4 @@
-package com.example.stock_exchange.model;
+package stock_exchange.model;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -32,7 +32,7 @@ public class Bid {
     private Date dueDate;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bid_status", referencedColumnName = "id")
     private Status status;
 

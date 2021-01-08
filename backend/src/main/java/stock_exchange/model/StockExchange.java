@@ -1,4 +1,4 @@
-package com.example.stock_exchange.model;
+package stock_exchange.model;
 
 import javax.persistence.*;
 import java.sql.Date;
