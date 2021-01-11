@@ -1,10 +1,28 @@
 package stock_exchange.model;
 
-import javax.persistence.*;
-import java.sql.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "deals")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Deal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,71 +44,4 @@ public class Deal {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer", referencedColumnName = "id_broker")
     private Broker buyer;
-
-    public Deal( int amount, Double totalPrice, Broker seller, Broker buyer) {
-        this.amount = amount;
-        this.totalPrice = totalPrice;
-        this.seller = seller;
-        this.buyer = buyer;
-    }
-
-    public Deal() {
-
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(Double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    public Date getBargainDate() {
-        return bargainDate;
-    }
-
-    public void setBargainDate(Date bargainDate) {
-        this.bargainDate = bargainDate;
-    }
-
-    public Broker getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Broker seller) {
-        this.seller = seller;
-    }
-
-    public Broker getBuyer() {
-        return buyer;
-    }
-
-    public void setBuyer(Broker buyer) {
-        this.buyer = buyer;
-    }
 }
