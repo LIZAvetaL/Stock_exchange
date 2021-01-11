@@ -1,5 +1,6 @@
 package stock_exchange.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import stock_exchange.dto.UserDTO;
 import stock_exchange.model.User;
 import stock_exchange.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/user")
 public class UserController {
