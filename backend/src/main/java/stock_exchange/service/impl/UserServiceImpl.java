@@ -43,8 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(UserDTO userDTO) {
-        User user = new User( userDTO.getEmail(), userDTO.getPassword(),
-                userDTO.getName(), roleService.findRole(userDTO.getRole()));
+        User user = new User();
         userRepository.save(user);
     }
 

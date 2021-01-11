@@ -82,7 +82,7 @@ public class BrokerServiceImpl implements BrokerService {
     public Deal createDeal(int sellerBidId, int buyerBidId) {
         Bid sellerBid= bidService.getBid(sellerBidId);
         Bid buyerBid=bidService.getBid(buyerBidId);
-       Deal deal=new Deal(buyerBid.getAmount(), buyerBid.getMaxPrice(),sellerBid.getBroker(),buyerBid.getBroker());
+       Deal deal=new Deal();
        dealService.save(deal);
         return deal;
     }

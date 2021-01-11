@@ -25,8 +25,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("")
     public List<UserDTO> findAll() {
+
         return userService.findAll();
     }
 

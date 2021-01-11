@@ -8,10 +8,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Date;
 
-@Entity
-@Table(name = "bids")
 @Getter
 @Setter
+@Entity
+@Table(name = "bids")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Bid {
