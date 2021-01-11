@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { User } from 'src/app/model/user';
+import { Observable } from 'rxjs/internal/Observable';
 
 const baseUrl = 'http://localhost:8080/user';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TutorialService {
+export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getAll() {
+  getAll(): Observable<User[]> {
 
-    return this.http.get(baseUrl);
+    return this.http.get<User[]>(`${baseUrl}`);
   }
 
   get(id) {
     return this.http.get(`${baseUrl}/${id}`);
   }
 
-  create(data) {
-    return this.http.post(baseUrl, data);
+  save(user:User) {
+    return this.http.post<User>(baseUrl, user);
   }
   update(id, data) {
     return this.http.put(`${baseUrl}/${id}`, data);
@@ -34,7 +36,4 @@ export class TutorialService {
     return this.http.delete(baseUrl);
   }
 
-  findByTitle(title) {
-    return this.http.get(`${baseUrl}?title=${title}`);
-  }
 }
