@@ -1,4 +1,4 @@
-package model;
+package stock_exchange.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

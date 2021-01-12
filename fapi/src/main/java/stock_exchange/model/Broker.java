@@ -1,4 +1,4 @@
-package model;
+package stock_exchange.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Status {
+public class Broker {
 
     private int id;
-    private String statusName;
+    private User employer;
+    private String status;
+    private String exchange;
 }

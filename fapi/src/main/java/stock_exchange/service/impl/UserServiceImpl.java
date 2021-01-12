@@ -1,13 +1,12 @@
-package service.impl;
+package stock_exchange.service.impl;
 
-import config.UrlConstants;
-import model.User;
+import stock_exchange.config.UrlConstants;
+import stock_exchange.model.User;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import service.UserService;
+import stock_exchange.service.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,8 +20,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByUserName(String name) {
-        return restTemplate.getForObject(UrlConstants.UserUrl + "find/name/" + name, User.class);
+    public User findByName(String name) {
+        return restTemplate.getForObject(UrlConstants.UserUrl + "find/" + name, User.class);
     }
 
     @Override
@@ -30,9 +29,5 @@ public class UserServiceImpl implements UserService {
         return restTemplate.getForObject(UrlConstants.UserUrl, List.class);
     }
 
-    @Override
-    public void save(User user) {
-        return restTemplate.postForEntity(UrlConstants.UserUrl + "create/", user, String.class);
-    }
 
 }
