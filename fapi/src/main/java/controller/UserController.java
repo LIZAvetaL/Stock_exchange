@@ -1,4 +1,4 @@
-package stock_exchange.controller;
+package controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import stock_exchange.dto.UserDTO;
@@ -34,10 +34,6 @@ public class UserController {
     @GetMapping("/{id}")
     public UserDTO findUser(@PathVariable(name = "id") int id) {
         return userService.findById(id);
-    }
-    @GetMapping("/{name}")
-    public UserDTO findUser(@PathVariable(name = "name") String name) {
-        return userService.findByName(name);
     }
 
     @PostMapping("/create")

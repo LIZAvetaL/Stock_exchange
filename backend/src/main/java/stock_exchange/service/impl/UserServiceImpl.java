@@ -25,10 +25,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findById(int id) {
-        User user= userRepository.findById(id).get();
+        User user = userRepository.findById(id).get();
         return new UserDTO(user.getId(), user.getEmail(), user.getPassword(),
                 user.getName(), user.getRole().getRoleName());
     }
+
     @Override
     public List<UserDTO> findAll() {
         List<User> users = userRepository.findAll();
@@ -45,6 +46,13 @@ public class UserServiceImpl implements UserService {
     public void save(UserDTO userDTO) {
         User user = new User();
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDTO findByName(String name) {
+        User user = userRepository.findUserByName(name);
+        return new UserDTO(user.getId(), user.getEmail(), user.getPassword(),
+                user.getName(), user.getRole().getRoleName());
     }
 
 }

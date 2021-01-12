@@ -10,4 +10,6 @@ public interface UserService {
     UserDTO findById(int id);
     List<UserDTO> findAll();
     void save(UserDTO user);
+
+    UserDTO findByName(String name);
 }
