@@ -21,10 +21,11 @@ import stock_exchange.service.UserService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-    AuthenticationManager authenticationManager;
-    UserService userService;
-    PasswordEncoder encoder;
-    JwtUtils jwtUtils;
+
+    private AuthenticationManager authenticationManager;
+    private UserService userService;
+    private PasswordEncoder encoder;
+    private JwtUtils jwtUtils;
 
     @Autowired
     public AuthServiceImpl(AuthenticationManager authenticationManager, UserService userService,
@@ -64,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
         User user = new User(signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getEmail(),
-                signUpRequest.getRole());
+                "client");
 
         userService.register(user);
 
