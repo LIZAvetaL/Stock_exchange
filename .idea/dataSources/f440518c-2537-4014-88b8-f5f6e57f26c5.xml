@@ -1239,7 +1239,7 @@ SELECT|sys.sys_config:null
     </column>
     <column id="358" parent="290" name="password">
       <Position>3</Position>
-      <DataType>varchar(45)|0s</DataType>
+      <DataType>varchar(900)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="359" parent="290" name="name">

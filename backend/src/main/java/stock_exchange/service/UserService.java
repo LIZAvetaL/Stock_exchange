@@ -12,4 +12,8 @@ public interface UserService {
     void save(UserDTO user);
 
     UserDTO findByName(String name);
+
+    boolean existsByEmail(String email);
+
+    void register(UserDTO user);
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { User } from 'src/app/model/user';
 import { Observable } from 'rxjs/internal/Observable';
+import {User} from '../../model/user';
 
-const baseUrl = 'http://localhost:8090/user';
+const baseUrl = 'http://localhost:8080/user';
 
 @Injectable({
   providedIn: 'root'

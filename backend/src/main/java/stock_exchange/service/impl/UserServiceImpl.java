@@ -55,4 +55,16 @@ public class UserServiceImpl implements UserService {
                 user.getName(), user.getRole().getRoleName());
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsUserByEmail(email);
+    }
+
+    @Override
+    public void register(UserDTO userDTO) {
+        User user=new User(userDTO.getEmail(),userDTO.getPassword(),userDTO.getName(),
+                roleService.findRole(userDTO.getRole()));
+        userRepository.save(user);
+    }
+
 }
