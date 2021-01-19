@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByEmail(String email) {
-        return restTemplate.getForObject(UrlConstants.UserUrl + "find/" + email, User.class);
+        return restTemplate.getForObject(UrlConstants.UserUrl + "find/name/" + email, User.class);
     }
 
     @Override
@@ -45,6 +45,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void register(User user) {
         restTemplate.postForEntity(UrlConstants.UserUrl+"/registration", user, String.class);
+    }
+
+    @Override
+    public List<User> findClient() {
+        return restTemplate.getForObject(UrlConstants.UserUrl + "clients/", List.class);
+    }
+
+    @Override
+    public User find(int userId) {
+        return restTemplate.getForObject(UrlConstants.UserUrl + "find/id/" + userId, User.class);
     }
 
 

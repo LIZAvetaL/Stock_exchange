@@ -1,17 +1,16 @@
 package stock_exchange.dto;
 
-import java.sql.Date;
 
 public class StockExchangeDTO {
     private int id;
     private String exchangeName;
     private String country;
     private String city;
-    private Date creationDate;
+    private String creationDate;
     private String description;
 
     public StockExchangeDTO(int id, String exchangeName, String country, String city,
-                            Date creationDate, String description) {
+                            String creationDate, String description) {
         this.id = id;
         this.exchangeName = exchangeName;
         this.country = country;
@@ -52,11 +51,11 @@ public class StockExchangeDTO {
         this.city = city;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 

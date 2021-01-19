@@ -1207,7 +1207,7 @@ SELECT|sys.sys_config:null
       <ColNames>exchange_status</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="352" parent="289" name="idOwner">
+    <index id="352" parent="289" name="owner">
       <ColNames>owner</ColNames>
       <Type>btree</Type>
     </index>
@@ -1221,7 +1221,7 @@ SELECT|sys.sys_config:null
       <RefTableName>statuses</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="355" parent="289" name="idOwner">
+    <foreign-key id="355" parent="289" name="owner">
       <ColNames>owner</ColNames>
       <RefTableName>users</RefTableName>
       <RefColNames>id</RefColNames>

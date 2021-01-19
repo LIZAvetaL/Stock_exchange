@@ -10,10 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import stock_exchange.model.User;
-import stock_exchange.model.payload.request.LoginRequest;
-import stock_exchange.model.payload.request.SignupRequest;
-import stock_exchange.model.payload.response.JwtResponse;
-import stock_exchange.model.payload.response.MessageResponse;
+import stock_exchange.model.request.LoginRequest;
+import stock_exchange.model.request.SignupRequest;
+import stock_exchange.model.response.JwtResponse;
+import stock_exchange.model.response.MessageResponse;
 import stock_exchange.security.jwt.JwtUtils;
 import stock_exchange.security.services.UserDetailsImpl;
 import stock_exchange.service.AuthService;
@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity authenticateUser(LoginRequest loginRequest) {
+    public JwtResponse authenticateUser(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -45,13 +45,11 @@ public class AuthServiceImpl implements AuthService {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        String role = userDetails.getAuthorities().toString();
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
+        return new JwtResponse(jwt,
                 userDetails.getId(),
+                userDetails.getName(),
                 userDetails.getUsername(),
-                userDetails.getEmail(),
-                role));
+                userDetails.getRole());
     }
 
     @Override
@@ -59,12 +57,12 @@ public class AuthServiceImpl implements AuthService {
         if (userService.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: Email is already taken!"));
         }
 
         User user = new User(signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getEmail(),
+                signUpRequest.getName(),
                 "client");
 
         userService.register(user);

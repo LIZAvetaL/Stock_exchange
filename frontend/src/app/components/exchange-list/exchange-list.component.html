@@ -1,0 +1,23 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Exchange</th>
+      <th scope="col">Country</th>
+      <th scope="col">City</th>
+      <th scope="col">Description</th>
+      <th scope="col">Creation date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let exchange of exchanges; let i = index">
+      <td>{{i}}</td>
+      <td>{{exchange.exchangeName}}</td>
+      <td>{{exchange.country}}</td>
+      <td>{{exchange.city}}</td>
+      <td>{{exchange.description}}</td>
+      <td>{{exchange.creationDate}}</td>
+      <td><button class="btn btn-dark" routerLink="/exchange-details/{{ exchange.id }}">Edit</button></td>
+    </tr>
+  </tbody>
+</table>

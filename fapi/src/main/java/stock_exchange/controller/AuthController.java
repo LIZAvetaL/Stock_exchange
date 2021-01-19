@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import stock_exchange.model.payload.request.LoginRequest;
-import stock_exchange.model.payload.request.SignupRequest;
+import stock_exchange.model.request.LoginRequest;
+import stock_exchange.model.request.SignupRequest;
 import stock_exchange.service.AuthService;
 
 @RestController

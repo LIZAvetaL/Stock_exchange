@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface StockExchangeService {
     List<StockExchangeDTO> findByOwner(int owner);
+
+    StockExchangeDTO find(int exchangeId);
 }

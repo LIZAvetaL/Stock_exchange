@@ -25,14 +25,14 @@ public class JwtUtils {
 		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
 		return Jwts.builder()
-				.setSubject((userPrincipal.getEmail()))
+				.setSubject((userPrincipal.getUsername()))
 				.setIssuedAt(new Date())
 				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret)
 				.compact();
 	}
 
-	public String getUserNameFromJwtToken(String token) {
+	public String getEmailFromToken(String token) {
 		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
 	}
 

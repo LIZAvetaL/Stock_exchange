@@ -27,14 +27,14 @@ public class UserController {
         return new ResponseEntity(userService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("find/id/{id}")
     public UserDTO findUser(@PathVariable(name = "id") int id) {
         return userService.findById(id);
     }
 
-    @GetMapping("find/{name}")
-    public UserDTO find(@PathVariable(name = "name") String name) {
-        return userService.findByName(name);
+    @GetMapping("find/{email}")
+    public UserDTO find(@PathVariable(name = "email") String email) {
+        return userService.findByEmail(email);
     }
 
     @PostMapping("/create")
@@ -52,4 +52,8 @@ public class UserController {
         userService.register(user);
     }
 
+    @GetMapping("/clients")
+    public ResponseEntity findClients() {
+        return new ResponseEntity(userService.findClients(), HttpStatus.OK);
+    }
 }

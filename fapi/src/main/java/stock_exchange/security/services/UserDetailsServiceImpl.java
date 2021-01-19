@@ -11,7 +11,7 @@ import stock_exchange.service.UserService;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     public UserDetailsServiceImpl(UserService userService) {
@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("User Not Found with username: " + email);
         }
 
-        return UserDetailsImpl.build(user);
+        return new UserDetailsImpl(user);
     }
 
 }

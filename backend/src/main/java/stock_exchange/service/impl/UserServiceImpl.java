@@ -26,8 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findById(int id) {
         User user = userRepository.findById(id).get();
-        return new UserDTO(user.getId(), user.getEmail(), user.getPassword(),
-                user.getName(), user.getRole().getRoleName());
+        return transfer(user);
     }
 
     @Override
@@ -35,8 +34,7 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findAll();
         List<UserDTO> userDTOs = new ArrayList<>();
         for (User user : users) {
-            UserDTO userDTO = new UserDTO(user.getId(), user.getEmail(), user.getPassword(),
-                    user.getName(), user.getRole().getRoleName());
+            UserDTO userDTO = transfer(user);
             userDTOs.add(userDTO);
         }
         return userDTOs;
@@ -49,10 +47,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO findByName(String name) {
-        User user = userRepository.findUserByName(name);
-        return new UserDTO(user.getId(), user.getEmail(), user.getPassword(),
-                user.getName(), user.getRole().getRoleName());
+    public UserDTO findByEmail(String email) {
+        User user = userRepository.findUserByEmail(email);
+        return transfer(user);
     }
 
     @Override
@@ -62,9 +59,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(UserDTO userDTO) {
-        User user=new User(userDTO.getEmail(),userDTO.getPassword(),userDTO.getName(),
-                roleService.findRole(userDTO.getRole()));
+        User user = transfer(userDTO);
         userRepository.save(user);
+    }
+
+    @Override
+    public List<UserDTO> findClients() {
+        return null;
+    }
+
+    public User findUser(int id) {
+        User user = userRepository.findById(id).get();
+        return user;
+    }
+
+    private User transfer(UserDTO userDTO) {
+        return new User(userDTO.getEmail(), userDTO.getPassword(), userDTO.getName(),
+                roleService.findRole(userDTO.getRole()));
+    }
+
+    private UserDTO transfer(User user) {
+        return new UserDTO(user.getId(), user.getEmail(), user.getPassword(),
+                user.getName(), user.getRole().getRoleName());
     }
 
 }
