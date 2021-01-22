@@ -12,7 +12,7 @@ export class UserDetailsComponent implements OnInit {
 
   private currentUser:User = {
     id:0,
-    name: 'hjjhk',
+    name: '',
     email: '',
     role:''
   };

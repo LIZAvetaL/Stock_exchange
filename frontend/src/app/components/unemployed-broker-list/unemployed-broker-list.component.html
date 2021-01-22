@@ -1,0 +1,59 @@
+<div class="list row">
+  <div class="col-md-8">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search by title" [(ngModel)]="title" />
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" (click)="retrieveBrokers()">
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <pagination-controls
+     previousLabel="Prev"
+     nextLabel="Next"
+     responsive="true"
+    (pageChange)="handlePageChange($event)">
+    </pagination-controls>
+  </div>
+
+  <div class="col-md-6">
+    <h4>Brokers List</h4>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th (click)="sortTable('id')" scope="col">#</th>
+          <th (click)="sortTable('name')" scope="col">Name</th>
+          <th (click)="sortTable('exchange')" scope="col">Exchange</th>
+          <th (click)="sortTable('status')" scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="
+    let broker of brokers | paginate : {
+            itemsPerPage: pageSize,
+            currentPage: page,
+            totalItems: count
+          };
+    let i = index
+  ">
+          <td>{{i}}</td>
+          <td>{{broker.name}}</td>
+          <td>{{broker.exchange}}</td>
+          <td>{{broker.status}}</td>
+          <td><button class="btn btn-dark" routerLink="/user-details/{{ broker.id }}">Edit</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    Items per Page:
+    <select (change)="handlePageSizeChange($event)">
+      <option *ngFor="let size of pageSizes" [ngValue]="size">
+        {{ size }}
+      </option>
+    </select>
+  </div>
+</div>

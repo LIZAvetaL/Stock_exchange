@@ -38,10 +38,10 @@ public class Deal {
     private Date bargainDate;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller", referencedColumnName = "id_broker")
+    @JoinColumn(name = "seller", referencedColumnName = "id")
     private Broker seller;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "buyer", referencedColumnName = "id_broker")
+    @JoinColumn(name = "buyer", referencedColumnName = "id")
     private Broker buyer;
 }

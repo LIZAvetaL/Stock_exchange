@@ -14,7 +14,11 @@
       </li>
 
       <li class="nav-item" *ngIf="showOwnerBoard">
-        <a href="/owner/exchanges" class="nav-link" routerLink="owner">Exchanges</a>
+        <a href="/owner/exchanges" class="nav-link" routerLink="owner/exchanges">Exchanges</a>
+      </li>
+
+      <li class="nav-item" *ngIf="showClientBoard">
+        <a href="/client/unemployed-brokers" class="nav-link" routerLink="client/unemployed-brokers">Brokers</a>
       </li>
     </ul>
 

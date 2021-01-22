@@ -13,7 +13,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "brokers")
@@ -22,10 +24,15 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Broker {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_broker")
+    @Column(name = "id")
     private int id;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "broker_name", referencedColumnName = "id")
+    private User broker;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employer", referencedColumnName = "id")

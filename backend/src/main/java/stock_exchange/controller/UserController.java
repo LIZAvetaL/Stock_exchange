@@ -32,7 +32,7 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @GetMapping("find/{email}")
+    @GetMapping("find/name/{email}")
     public UserDTO find(@PathVariable(name = "email") String email) {
         return userService.findByEmail(email);
     }

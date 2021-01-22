@@ -46,7 +46,7 @@ public class Bid {
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "broker_id", referencedColumnName = "id_broker")
+    @JoinColumn(name = "broker_id", referencedColumnName = "id")
     private Broker broker;
 
     @ManyToOne(fetch = FetchType.LAZY)

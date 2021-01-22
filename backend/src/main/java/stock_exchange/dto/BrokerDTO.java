@@ -2,16 +2,19 @@ package stock_exchange.dto;
 
 public class BrokerDTO {
     private int id;
+    private String name;
     private String employer;
     private String status;
     private String exchange;
 
-    public BrokerDTO(int id, String exchange, String employer, String status) {
+    public BrokerDTO(int id, String name, String employer, String status, String exchange) {
         this.id = id;
+        this.name = name;
         this.employer = employer;
         this.status = status;
         this.exchange = exchange;
     }
+
 
     public int getId() {
         return id;
@@ -19,6 +22,14 @@ public class BrokerDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmployer() {
