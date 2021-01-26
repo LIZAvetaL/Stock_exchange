@@ -19,7 +19,7 @@ public class Bid {
     private int amount;
     private double maxPrice;
     private double minPrice;
-    private int priority;
+    private String priority;
     private Date creationDate;
     private Date dueDate;
 

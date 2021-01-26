@@ -33,7 +33,7 @@ public class Bid {
     private double minPrice;
 
     @Column(name = "priority")
-    private int priority;
+    private String priority;
 
     @Column(name = "creation_date")
     private Date creationDate;

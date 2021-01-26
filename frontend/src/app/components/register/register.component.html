@@ -65,6 +65,35 @@
             Password must be at least 6 characters
           </div>
         </div>
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" 
+            type="radio" 
+            name="role" 
+            id="clientRole" 
+            value="client"
+            [(ngModel)]="form.role">
+          <label class="form-check-label" for="clientRole">client</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" 
+            type="radio" 
+            name="role"
+            id="ownerRole" 
+            value="owner"
+            [(ngModel)]="form.role">
+          <label class="form-check-label" for="ownerRole">owner</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" 
+            type="radio" 
+            name="role" 
+            id="brokerRole" 
+            value="broker"
+            [(ngModel)]="form.role">
+          <label class="form-check-label" for="brokerRole">broker</label>
+        </div>
+
       </div>
       <div class="form-group">
         <button class="btn btn-primary btn-block">Sign Up</button>

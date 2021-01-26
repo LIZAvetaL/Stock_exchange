@@ -1,6 +1,11 @@
 package stock_exchange.service;
-import java.util.Map;
+import stock_exchange.model.Broker;
+import stock_exchange.model.response.PageResponse;
+
+import java.util.List;
 
 public interface BrokerService {
-    Map<String, Object> findAllUnemployed(String title, int page, int size, String sort);
+   PageResponse<Broker> findAllUnemployed(String title, int page, int size, String sort);
+
+    List<Broker> findBrokers(int clientId);
 }

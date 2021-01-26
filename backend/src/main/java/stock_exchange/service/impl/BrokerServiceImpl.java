@@ -21,9 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BrokerServiceImpl implements BrokerService {
@@ -64,28 +62,6 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
-    public List<BidDTO> findBrokersBids(int id) {
-        List<Bid> bids = bidService.findBrokersBids(id);
-        List<BidDTO> bidDTOs = new ArrayList<>();
-        for (Bid bid : bids) {
-            BidDTO bidDTO = new BidDTO();
-            bidDTO.setId(bid.getId());
-            bidDTO.setAmount(bid.getAmount());
-            bidDTO.setIssuer(bid.getIssuer());
-            bidDTO.setBidNumber(bid.getBidNumber());
-            bidDTO.setMaxPrice(bid.getMaxPrice());
-            bidDTO.setMinPrice(bid.getMinPrice());
-            bidDTO.setPriority(bidDTO.getPriority());
-            bidDTO.setCreationDate(bid.getCreationDate());
-            bidDTO.setDueDate(bid.getDueDate());
-            bidDTO.setStatus(bid.getStatus().getStatusName());
-            bidDTO.setBroker(bid.getClient().getName());
-            bidDTOs.add(bidDTO);
-        }
-        return bidDTOs;
-    }
-
-    @Override
     public Deal createDeal(int sellerBidId, int buyerBidId) {
         Bid sellerBid = bidService.getBid(sellerBidId);
         Bid buyerBid = bidService.getBid(buyerBidId);
@@ -95,26 +71,28 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
-    public Map<String, Object> findAllUnemployed(String title, int page, int size, String sort) {
+    public Page<BrokerDTO> findAllUnemployed(String title, int page, int size, String sort) {
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(sort));
-        Page<Broker> tempPage;
-        Page<BrokerDTO> pageBrokers ;
+
         Status status = statusService.find("unemployed");
-        tempPage = brokerRepository.findAllByStatus(status, pagingSort);
-        pageBrokers= tempPage.map(BrokerServiceImpl::transfer);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("brokers", pageBrokers.getContent());
-        response.put("currentPage", pageBrokers.getNumber());
-        response.put("totalItems", pageBrokers.getTotalElements());
-        response.put("totalPages", pageBrokers.getTotalPages());
-
-        return  response;
+        Page<Broker> tempPage = brokerRepository.findAllByStatus(status, pagingSort);
+        return tempPage.map(BrokerServiceImpl::transfer);
     }
 
     @Override
     public BrokerDTO findBroker(int id) {
+
         return transfer(brokerRepository.findById(id).get());
+    }
+
+    @Override
+    public List<BrokerDTO> findBrokers(int clientId) {
+        List<Broker> brokers=brokerRepository.findBrokersByEmployerId(clientId);
+        List<BrokerDTO> brokerDTOs= new ArrayList<>();
+        for (Broker broker:brokers){
+            brokerDTOs.add(transfer(broker));
+        }
+        return brokerDTOs;
     }
 
     private static BrokerDTO transfer(Broker broker) {

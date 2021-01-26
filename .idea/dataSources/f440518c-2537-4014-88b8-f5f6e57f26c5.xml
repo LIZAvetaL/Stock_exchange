@@ -943,7 +943,7 @@ SELECT|sys.sys_config:null
     </column>
     <column id="296" parent="284" name="priority">
       <Position>6</Position>
-      <DataType>int|0s</DataType>
+      <DataType>varchar(33)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="297" parent="284" name="min_price">

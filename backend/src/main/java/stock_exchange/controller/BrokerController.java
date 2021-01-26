@@ -4,6 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import stock_exchange.dto.BidDTO;
+import stock_exchange.dto.BrokerDTO;
+import stock_exchange.model.Broker;
 import stock_exchange.model.Deal;
 import stock_exchange.service.BrokerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +29,22 @@ public class BrokerController {
     }
 
     @GetMapping("find/unemployed")
-    public ResponseEntity<Map<String, Object>> findAll(@RequestParam(required = false) String title,
+    public ResponseEntity findAll(@RequestParam(required = false) String title,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
                                   @RequestParam(defaultValue = "name") String sort) {
 
-        return new ResponseEntity<>(brokerService.findAllUnemployed(title, page, size, sort), HttpStatus.OK);
-    }
-
-
-    @GetMapping("/bids/{id}")
-    public List<BidDTO> findAll(@PathVariable(name = "id") int id) {
-        return brokerService.findBrokersBids(id);
+        return new ResponseEntity(brokerService.findAllUnemployed(title, page, size, sort), HttpStatus.OK);
     }
 
     @GetMapping("/find")
+    public ResponseEntity findAll(@RequestParam(name = "client-id") int clientId) {
+        List<BrokerDTO> brokers=brokerService.findBrokers(clientId);
+
+        return new ResponseEntity(brokers, HttpStatus.OK);
+    }
+
+    @GetMapping("/find/id")
     public ResponseEntity find(@RequestParam int id) {
 
         return new ResponseEntity(brokerService.findBroker(id), HttpStatus.OK);

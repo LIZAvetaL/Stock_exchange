@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
 import stock_exchange.model.Broker;
+import stock_exchange.model.response.PageResponse;
 import stock_exchange.service.BrokerService;
 
 import java.util.List;
@@ -22,11 +23,17 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
-    public Map<String, Object> findAllUnemployed(String title, int page, int size, String sort) {
+    public PageResponse<Broker> findAllUnemployed(String title, int page, int size, String sort) {
         return restTemplate.getForObject(
                 UrlConstants.BrokerUrl + "find/unemployed" +"?title=" + title
-                        + "?page=" + page + "&size=" + size+ "&sort=" + sort,
-                Map.class);
+                        + "&page=" + page + "&size=" + size+ "&sort=" + sort,
+                PageResponse.class);
 
+    }
+
+    @Override
+    public List<Broker> findBrokers(int clientId) {
+        return restTemplate.getForObject(
+                UrlConstants.BrokerUrl + "find" +"?client-id=" + clientId,List.class);
     }
 }

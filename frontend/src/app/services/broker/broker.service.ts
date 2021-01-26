@@ -9,10 +9,12 @@ const baseUrl = 'http://localhost:8080/broker/';
 })
 export class BrokerService {
 
-constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-getAll(title: string, page: number, size: number, sort: string): Observable<any> {
-  return this.http.get(baseUrl+'find/unemployed'+`?title=${title}?page=${page}&size=${size}&sort=${sort}`);
-}
-
+  getAll(title: string, page: number, size: number, sort: string): Observable<any> {
+    return this.http.get(baseUrl + 'find/unemployed' + `?title=${title}&page=${page}&size=${size}&sort=${sort}`);
+  }
+  getClientsBrokers(clientId: number) : Observable<any>{
+    return this.http.get(baseUrl + 'find' + `?client-id=${clientId}`);
+  }
 }

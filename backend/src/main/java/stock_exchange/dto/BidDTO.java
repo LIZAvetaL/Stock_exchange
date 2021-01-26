@@ -11,10 +11,10 @@ public class BidDTO {
 
     private double maxPrice;
     private double minPrice;
-    private int priority;
+    private String priority;
 
-    private Date creationDate;
-    private Date dueDate;
+    private String creationDate;
+    private String dueDate;
 
     private String status;
     private String broker;
@@ -22,7 +22,7 @@ public class BidDTO {
 
     public BidDTO() {}
     public BidDTO(String issuer, int bidNumber, int amount, double maxPrice,
-                  double minPrice, int priority, Date creationDate, Date dueDate,
+                  double minPrice, String priority, String creationDate, String dueDate,
                   String status, String broker, String client) {
         this.issuer = issuer;
         this.bidNumber = bidNumber;
@@ -85,27 +85,27 @@ public class BidDTO {
         this.minPrice = minPrice;
     }
 
-    public int getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Date getDueDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(Date dueDate) {
+    public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
     }
 

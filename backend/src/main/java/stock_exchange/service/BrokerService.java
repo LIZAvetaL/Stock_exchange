@@ -1,7 +1,9 @@
 package stock_exchange.service;
 
+import org.springframework.data.domain.Page;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerDTO;
+import stock_exchange.model.Broker;
 import stock_exchange.model.Deal;
 
 import java.util.List;
@@ -12,11 +14,11 @@ public interface BrokerService {
 
     BrokerDTO employBroker(int clientId, int brokerId);
 
-    List<BidDTO> findBrokersBids(int id);
-
     Deal createDeal(int sellerBidId, int buyerBidId);
 
-    Map<String, Object> findAllUnemployed(String title, int page, int size, String sort);
+    Page<BrokerDTO> findAllUnemployed(String title, int page, int size, String sort);
 
     BrokerDTO findBroker(int id);
+
+    List<BrokerDTO> findBrokers(int clientId);
 }

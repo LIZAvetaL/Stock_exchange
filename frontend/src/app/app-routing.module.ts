@@ -9,6 +9,8 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { UnemployedBrokerListComponent } from './components/unemployed-broker-list/unemployed-broker-list.component';
+import { ClientBidListComponent } from './components/client-bid-list/client-bid-list.component';
+import { CreateBidComponent } from './components/create-bid/create-bid.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'admin/users', component: UserListComponent },
   { path: 'admin/user/create', component: CreateUserComponent },
   { path: 'user-details/:id', component: UserDetailsComponent },
+  { path: 'client/bids', component: ClientBidListComponent },
+  { path: 'client/create-bid', component: CreateBidComponent },
   { path: 'client/unemployed-brokers', component: UnemployedBrokerListComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 ];

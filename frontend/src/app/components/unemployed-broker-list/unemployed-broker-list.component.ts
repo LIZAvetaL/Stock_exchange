@@ -23,36 +23,13 @@ export class UnemployedBrokerListComponent implements OnInit {
   ngOnInit() {
     this.retrieveBrokers()
   }
-
-  getRequestParams(searchTitle: string, page: number, pageSize: number, sort: string) {
-    let params = {};
-
-    if (searchTitle) {
-      params[`title`] = searchTitle;
-    }
-
-    if (page) {
-      params[`page`] = page - 1;
-    }
-
-    if (pageSize) {
-      params[`size`] = pageSize;
-    }
-
-    if (sort) {
-      params[`sort`] = sort;
-    }
-
-    return params;
-  }
-
   retrieveBrokers() {
     this.brokerService.getAll(this.title, this.page - 1, this.pageSize, this.sort)
       .subscribe(
         response => {
-          const { brokers, totalItems } = response;
-          this.brokers = brokers;
-          this.count = totalItems;
+          const {content, totalElements } = response;
+          this.brokers = content;
+          this.count = totalElements;
           console.log(response);
         },
         error => {
