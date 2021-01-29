@@ -17,8 +17,9 @@ public class StockExchange {
     private String exchangeName;
     private String country;
     private String city;
-    private String creationDate;
+    private Date creationDate;
     private String description;
+    private String status;
 
     private String owner;
 }

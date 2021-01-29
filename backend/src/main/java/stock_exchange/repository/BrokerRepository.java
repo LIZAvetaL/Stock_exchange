@@ -12,4 +12,5 @@ public interface BrokerRepository extends JpaRepository<Broker, Integer> {
 
     Page<Broker> findAllByStatus(Status status, Pageable pageable);
     List<Broker> findBrokersByEmployerId(int employerId);
+    Broker findBrokerByBrokerName(String name);
 }

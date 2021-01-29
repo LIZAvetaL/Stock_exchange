@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
 import stock_exchange.model.StockExchange;
+import stock_exchange.model.response.MessageResponse;
 import stock_exchange.service.ExchangeService;
 
 import java.util.List;
@@ -27,6 +28,18 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     @Override
     public StockExchange find(int exchangeId) {
-        return restTemplate.getForObject(UrlConstants.ExchangeUrl + exchangeId, StockExchange.class);
+        return restTemplate.getForObject(UrlConstants.ExchangeUrl + "find/" + exchangeId, StockExchange.class);
+    }
+
+    @Override
+    public MessageResponse changeStatus(int exchangeId, String status) {
+        return restTemplate.postForEntity(UrlConstants.ExchangeUrl + "change-status?id="
+                + exchangeId + "&status=" + status, null, MessageResponse.class).getBody();
+    }
+
+    @Override
+    public MessageResponse update(StockExchange exchange) {
+        return restTemplate.postForEntity(UrlConstants.ExchangeUrl + "update", exchange,
+                MessageResponse.class).getBody();
     }
 }

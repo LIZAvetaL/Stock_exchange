@@ -27,7 +27,7 @@
         <tr>
           <th (click)="sortTable('id')" scope="col">#</th>
           <th (click)="sortTable('name')" scope="col">Name</th>
-          <th (click)="sortTable('exchange')" scope="col">Exchange</th>
+          <th (click)="sortTable('exchange')" scope="col">StockExchange</th>
           <th (click)="sortTable('status')" scope="col">Status</th>
         </tr>
       </thead>
@@ -44,7 +44,8 @@
           <td>{{broker.name}}</td>
           <td>{{broker.exchange}}</td>
           <td>{{broker.status}}</td>
-          <td><button class="btn btn-dark" routerLink="/user-details/{{ broker.id }}">Edit</button></td>
+          <td><button class="btn btn-dark" *ngIf="!isEmployed" (click)="employ(broker.id)" >Employ</button></td>
+          <td><button class="btn btn-primary" *ngIf="isEmployed" >Employed</button></td>
         </tr>
       </tbody>
     </table>

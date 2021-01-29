@@ -33,6 +33,11 @@ public class StockExchange {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exchange_status", referencedColumnName = "id")
+    private Status status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner", referencedColumnName = "id")
     private User owner;
+
 }

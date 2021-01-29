@@ -1,0 +1,65 @@
+
+<div class="col-md-12">
+  <div class="card card-container">
+    <form>
+      <button class="btn btn-primary btn-sm" routerLink="/exchange/edit/{{ exchange.id }}">Edit exchange</button>
+      <div class="form-group ">
+        <label for="exchangeName">StockExchange Name</label>
+        <input disabled
+               type="text"
+               id="exchangeName"
+               class="form-control"
+               [value]="exchange.exchangeName" >
+      </div>
+
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input disabled
+               type="text"
+               id="country"
+               class="form-control"
+               [value]="exchange.country">
+      </div>
+
+      <div class="form-group">
+        <label for="city">City</label>
+        <input disabled
+               type="text"
+               id="city"
+               class="form-control"
+               [value]="exchange.city">
+      </div>
+
+      <div class="form-group">
+        <label for="creationDate">Creation Date</label>
+        <input disabled
+               type="text"
+               id="creationDate"
+               class="form-control"
+               [value]="exchange.creationDate">
+      </div>
+
+      <div class="form-group col-md-8">
+        <label for="description">Description</label>
+        <textarea disabled
+                  class="form-control"
+                  id="description"
+                  rows="3">{{exchange.description}}</textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status" [(ngModel)]="status" class="form-control">
+          <option selected value="Open">Open</option>
+          <option value="Closed">Closed</option>
+          <option value="Terminated">Terminated</option>
+        </select>
+        <small id="message" class="form-text text-muted">
+          {{response.message}}
+        </small>
+      </div>
+
+      <button type="submit" class="btn btn-info" (click)="onSubmit()">Change status</button>
+    </form>
+  </div>
+</div>

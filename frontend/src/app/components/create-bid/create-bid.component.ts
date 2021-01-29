@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Broker } from 'src/app/model/broker';
-import { BrokerService } from 'src/app/services/broker/broker.service';
-import { ClientService } from 'src/app/services/client/client.service';
-import { TokenStorageService } from 'src/app/services/token-storage/token-storage.service';
+import {Component, OnInit} from '@angular/core';
+import {Broker} from 'src/app/model/broker';
+import {BrokerService} from 'src/app/services/broker/broker.service';
+import {TokenStorageService} from 'src/app/services/token-storage/token-storage.service';
+import {CreateBid} from '../../model/create-bid';
+import {BidService} from '../../services/bid/bid.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-bid',
@@ -10,19 +12,27 @@ import { TokenStorageService } from 'src/app/services/token-storage/token-storag
   styleUrls: ['./create-bid.component.css']
 })
 export class CreateBidComponent implements OnInit {
-  form: any = {};
-  brokers:Broker[];
+  createBid: CreateBid;
+  brokers: Broker[];
   clientId: number;
+  private router: Router;
+
   constructor(private tokenService: TokenStorageService,
-    private clientService:ClientService,
-    private brokerService:BrokerService) { 
-      this.clientId=tokenService.getUser().id;
-    }
+              private bidService: BidService,
+              private brokerService: BrokerService) {
+    this.clientId = tokenService.getUser().id;
+    this.createBid = new CreateBid();
+  }
 
   ngOnInit() {
     this.brokerService.getClientsBrokers(this.clientId).subscribe(data => {
       this.brokers = data;
-    })
+      console.log(data);
+    });
   }
 
+  onSubmit() {
+    this.bidService.create(this.clientId, this.createBid);
+    // this.router.navigate(['/client/bids']);
+  }
 }

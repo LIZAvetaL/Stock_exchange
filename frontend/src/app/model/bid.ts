@@ -1,5 +1,3 @@
-import { Broker } from "./broker";
-
 export class Bid {
     id: number;
     bidNumber: string;
@@ -9,7 +7,7 @@ export class Bid {
     maxPrice: number;
     priority: string;
     status: string;
-    creationDate: string;
-    dueDate: string;
+    creationDate: Date;
+    dueDate: Date;
     broker: string;
 }

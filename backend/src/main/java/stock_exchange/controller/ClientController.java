@@ -26,8 +26,4 @@ public class ClientController {
         return brokerService.findAll();
     }
 
-    @PostMapping("/employ-broker/{client-id}/{broker-id}")
-    public BrokerDTO employBroker(@PathVariable(name = "client-id") int userId,@PathVariable(name = "broker-id") int brokerId){
-        return brokerService.employBroker(userId,brokerId);
-    }
 }

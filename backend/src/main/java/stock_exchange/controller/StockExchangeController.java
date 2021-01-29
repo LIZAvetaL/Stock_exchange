@@ -2,7 +2,12 @@ package stock_exchange.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import stock_exchange.dto.StockExchangeDTO;
+import stock_exchange.model.StockExchange;
+import stock_exchange.response.MessageResponse;
 import stock_exchange.service.StockExchangeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,11 +27,25 @@ public class StockExchangeController {
     }
 
     @GetMapping("/{owner-id}")
-    public ResponseEntity findByOwner(@PathVariable("owner-id") int owner) {
+    public ResponseEntity<List<StockExchangeDTO>> findByOwner(@PathVariable("owner-id") int owner) {
         return new ResponseEntity(stockExchangeService.findByOwner(owner), HttpStatus.OK);
     }
+
     @GetMapping("find/{exchangeId}")
-    public ResponseEntity find(@PathVariable(name = "exchangeId") int exchangeId) {
+    public ResponseEntity<StockExchangeDTO> find(@PathVariable(name = "exchangeId") int exchangeId) {
         return new ResponseEntity(stockExchangeService.find(exchangeId), HttpStatus.OK);
+    }
+
+    @PostMapping("change-status")
+    public ResponseEntity<MessageResponse> changeStatus(@RequestParam(name = "id") int exchangeId,
+                                                        @RequestParam String status) {
+        MessageResponse response = stockExchangeService.changeStatus(exchangeId, status);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
+    @PostMapping("update")
+    public ResponseEntity<MessageResponse> update(@RequestBody StockExchangeDTO exchange) {
+        MessageResponse response = stockExchangeService.update(exchange);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 }

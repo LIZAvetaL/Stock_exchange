@@ -3,6 +3,7 @@ package stock_exchange.service.impl;
 import stock_exchange.model.User;
 import stock_exchange.repository.UserRepository;
 import stock_exchange.dto.UserDTO;
+import stock_exchange.response.MessageResponse;
 import stock_exchange.service.RoleService;
 import stock_exchange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,9 +69,20 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public MessageResponse update(int userId, String roleName) {
+        User user=userRepository.findById(userId).get();
+        user.setRole(roleService.findRole(roleName));
+        userRepository.save(user);
+        return new MessageResponse("<3");
+    }
+
     public User findUser(int id) {
-        User user = userRepository.findById(id).get();
-        return user;
+        return userRepository.findById(id).get();
+    }
+
+    public User findUser(String name) {
+        return userRepository.findUserByName(name);
     }
 
     private User transfer(UserDTO userDTO) {

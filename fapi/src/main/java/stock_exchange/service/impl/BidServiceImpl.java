@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
 import stock_exchange.model.Bid;
+import stock_exchange.model.request.CreateBid;
 import stock_exchange.model.response.PageResponse;
 import stock_exchange.service.BidService;
 
@@ -33,5 +34,10 @@ public class BidServiceImpl implements BidService {
         return restTemplate.getForObject(
                 UrlConstants.BidUrl + "find/clients-bids"
                         + "?page=" + page + "&size=" + size + "&clientId=" + clientId, PageResponse.class);
+    }
+
+    @Override
+    public void create(int id, CreateBid createBid) {
+        restTemplate.postForEntity(UrlConstants.BidUrl + "create/?id=" + id, createBid,String.class);
     }
 }

@@ -1,21 +1,47 @@
-<div class="container">
-  <header class="jumbotron">
-    <h3>
-      User Detail
-    </h3>
-  </header>
-  <p> 
-    <strong>Name:</strong>
-    {{ currentUser.name }}
-  </p>
-  <p>
-    <strong>Email:</strong>
-    {{ currentUser.email }}
-  </p>
-  <p>
-    <strong>Role:</strong>
 
-    {{ currentUser.role }}
-  </p>
+<div class="col-md-4">
+  <div class="card card-container">
+    <form>
+      <div class="form-group ">
+        <label >Email</label>
+        <input disabled
+               type="text"
+               class="form-control"
+               value={{user.email}}>
+      </div>
+
+      <div class="form-group">
+        <label >Name</label>
+        <input disabled
+               type="text"
+               class="form-control"
+               value={{user.name}}>
+      </div>
+
+      <div class="form-group">
+        <label>Role</label>
+        <input disabled
+               type="text"
+               class="form-control"
+               value={{user.role}}>
+      </div>
+      <small id="message" class="form-text text-muted">
+        {{response.message}}
+      </small>
+
+      <div class="form-group" *ngIf="!changeRole">
+        <label>New Role</label>
+        <select name="user.role" [(ngModel)]="user.role" class="form-control">
+          <option selected value="client">Client</option>
+          <option value="owner">Owner</option>
+          <option value="broker">Broker</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-info" *ngIf="!changeRole"
+              (click)="onSubmit()">Save</button>
+      <button type="submit" class="btn btn-info" *ngIf="changeRole"
+              (click)="changeRole=false">Change role</button>
+    </form>
+  </div>
 </div>
-

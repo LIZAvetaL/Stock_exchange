@@ -1,6 +1,7 @@
 package stock_exchange.service;
 
 import stock_exchange.model.User;
+import stock_exchange.model.response.MessageResponse;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface UserService {
     List<User> findClient();
 
     User find(int userId);
+
+    MessageResponse update(int userId, String role);
 }

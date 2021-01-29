@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Exchange } from 'src/app/model/exchange';
+import { StockExchange } from 'src/app/model/StockExchange';
 import { ExchangeService } from 'src/app/services/exchange/exchange.service';
 import { TokenStorageService } from 'src/app/services/token-storage/token-storage.service';
 
@@ -10,12 +10,12 @@ import { TokenStorageService } from 'src/app/services/token-storage/token-storag
 })
 export class ExchangeListComponent implements OnInit {
 
-  private exchanges: Exchange[];
+  private exchanges: StockExchange[];
   private ownerId: number;
 
   constructor(
     private ecxhangeService: ExchangeService,
-    private tokenStorage:TokenStorageService 
+    private tokenStorage:TokenStorageService
     ) {
     this.ownerId = tokenStorage.getUser().id;
   }
@@ -26,7 +26,7 @@ export class ExchangeListComponent implements OnInit {
     })
   }
   onSubmit() {
-    
+
   }
 
 }

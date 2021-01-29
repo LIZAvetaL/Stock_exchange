@@ -1,61 +1,65 @@
-<form>
+<form (ngSubmit)="onSubmit()">
   <div class="form-group col-md-4">
     <label for="issuer">Issuer</label>
-    <input type="text" class="form-control" placeholder="Issuer">
+    <input name="issuer" [(ngModel)]="createBid.issuer" id="issuer"
+           type="text" class="form-control" placeholder="Issuer">
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-2">
-      <label for="amount">Password</label>
-      <input type="text" class="form-control" placeholder="Amount">
+      <label for="amount">Amount</label>
+      <input name="amount" [(ngModel)]="createBid.amount" id="amount"
+             type="number" class="form-control" placeholder="Amount">
     </div>
     <div class="form-group col-md-2">
-      <label for="minPrice">Password</label>
-      <input type="text" class="form-control" placeholder="Min price">
+      <label for="minPrice">Min Price</label>
+      <input name="minPrice" [(ngModel)]="createBid.minPrice" id="minPrice"
+             type="number" class="form-control" placeholder="Min price">
     </div>
     <div class="form-group col-md-2">
-      <label for="minPrice">Password</label>
-      <input type="text" class="form-control" placeholder="Min price">
+      <label for="maxPrice">Max Price</label>
+      <input name="max" [(ngModel)]="createBid.maxPrice" id="maxPrice"
+             type="number" class="form-control" placeholder="Min price">
     </div>
   </div>
+  <div class="form-group col-md-2">
+    <label for="broker">Broker</label>
+    <select name="br" id="broker" [(ngModel)]="createBid.broker" class="form-control">
+      <option disabled selected>Choose.</option>
+      <option *ngFor="let broker of brokers" [value]="broker.name">{{broker.name}}</option>
+    </select>
+  </div>
+
 
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="priority">Priority</label>
-      <select id="priority" class="form-control">
-        <option selected>Choose.</option>
-        <option>Low</option>
-        <option>Medium</option>
-        <option>High</option>
-        <option>Extra High</option>
+      <select name="priority" [(ngModel)]="createBid.priority" id="priority" class="form-control">
+        <option disabled selected>Choose.</option>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+        <option value="Extra High">Extra High</option>
       </select>
     </div>
 
     <div class="form-group col-md-4">
       <label for="status">Status</label>
-      <select id="status" class="form-control">
-        <option selected>Choose.</option>
-        <option>Low</option>
-        <option>Medium</option>
-        <option>High</option>
-        <option>Extra High</option>
+      <select name="status" [(ngModel)]="createBid.status" id="status" class="form-control">
+        <option disabled selected>Choose.</option>
+        <option value="Open">Open</option>
+        <option value="Closed">Closed</option>
+        <option value="Terminated">Terminated</option>
       </select>
     </div>
   </div>
 
   <div class="form-row">
     <div class="form-group col-md-2">
-      <label for="dueDate">Password</label>
-      <input type="tel" class="form-control"  placeholder="Due date">
+      <label for="dueDate">Due date</label>
+      <input name="dueDate" [(ngModel)]="createBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date">
     </div>
 
-    <div class="form-group col-md-2">
-      <label for="broker">Status</label>
-      <select id="broker" class="form-control">
-        <option selected>Choose.</option>
-        <option *ngFor="let broker of brokers">{{broker.name}}</option>
-      </select>
-    </div>
   </div>
   <button type="submit" class="btn btn-primary">Create</button>
 </form>

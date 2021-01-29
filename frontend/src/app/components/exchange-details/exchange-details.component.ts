@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Exchange } from 'src/app/model/exchange';
-import { ExchangeService } from 'src/app/services/exchange/exchange.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {StockExchange} from 'src/app/model/StockExchange';
+import {ExchangeService} from 'src/app/services/exchange/exchange.service';
+import {MessageResponse} from '../../model/messageResponse';
 
 @Component({
   selector: 'app-exchange-details',
@@ -9,22 +10,34 @@ import { ExchangeService } from 'src/app/services/exchange/exchange.service';
   styleUrls: ['./exchange-details.component.css']
 })
 export class ExchangeDetailsComponent implements OnInit {
+  status: string;
+  exchange: StockExchange;
+  response: MessageResponse;
 
-  private currentExchange: Exchange;
-
-  constructor(private route: ActivatedRoute, 
-    private exchangeService : ExchangeService) { }
+  constructor(private route: ActivatedRoute,
+              private exchangeService: ExchangeService) {
+    this.exchange = new StockExchange();
+  }
 
   ngOnInit() {
     this.getExchange(this.route.snapshot.params.id);
   }
+
   getExchange(id: number) {
     this.exchangeService.get(id)
       .subscribe(
         data => {
-          this.currentExchange = data;
-          console.log(data);
-        })
+          this.exchange = data;
+          this.status = this.exchange.status;
+        });
   }
 
+  onSubmit() {
+    this.exchangeService.changeStatus(this.exchange.id, this.status)
+      .subscribe(
+        data => {
+          this.response = data;
+        }
+      );
+  }
 }

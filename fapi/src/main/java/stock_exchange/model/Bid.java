@@ -15,7 +15,7 @@ public class Bid {
 
     private int id;
     private String issuer;
-    private int bidNumber;
+    private Long bidNumber;
     private int amount;
     private double maxPrice;
     private double minPrice;

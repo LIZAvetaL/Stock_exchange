@@ -2,7 +2,10 @@ package stock_exchange.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import stock_exchange.dto.UserDTO;
+import stock_exchange.model.User;
+import stock_exchange.response.MessageResponse;
 import stock_exchange.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,5 +58,11 @@ public class UserController {
     @GetMapping("/clients")
     public ResponseEntity findClients() {
         return new ResponseEntity(userService.findClients(), HttpStatus.OK);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<MessageResponse> update(@RequestParam(name = "id") int userId,
+                                                  @RequestParam String role) {
+        return new ResponseEntity(userService.update(userId, role), HttpStatus.OK);
     }
 }

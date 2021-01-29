@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerDTO;
+import stock_exchange.dto.UnemployedBrokerDTO;
 import stock_exchange.model.Broker;
 import stock_exchange.model.Deal;
+import stock_exchange.response.MessageResponse;
 import stock_exchange.service.BrokerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +31,10 @@ public class BrokerController {
     }
 
     @GetMapping("find/unemployed")
-    public ResponseEntity findAll(@RequestParam(required = false) String title,
-                                  @RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "10") int size,
-                                  @RequestParam(defaultValue = "name") String sort) {
+    public ResponseEntity<List<UnemployedBrokerDTO>> findAll(@RequestParam(required = false) String title,
+                                                             @RequestParam(defaultValue = "0") int page,
+                                                             @RequestParam(defaultValue = "10") int size,
+                                                             @RequestParam(defaultValue = "name") String sort) {
 
         return new ResponseEntity(brokerService.findAllUnemployed(title, page, size, sort), HttpStatus.OK);
     }
@@ -51,8 +53,14 @@ public class BrokerController {
     }
 
     @PostMapping("/create-deal/{seller-bid-id}/{buyer-bid-id}")
-    public Deal employBroker(@PathVariable(name = "seller-bid-id") int sellerBidId,
+    public Deal create(@PathVariable(name = "seller-bid-id") int sellerBidId,
                              @PathVariable(name = "buyer-bid-id") int buyerBidId) {
         return brokerService.createDeal(sellerBidId, buyerBidId);
+    }
+
+    @PostMapping("/employ")
+    public ResponseEntity<MessageResponse> employ(@RequestParam int brokerId,
+                                                  @RequestParam int clientId) {
+        return new ResponseEntity(brokerService.employ(brokerId, clientId), HttpStatus.OK);
     }
 }

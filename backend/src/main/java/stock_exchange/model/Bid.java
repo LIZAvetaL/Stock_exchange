@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class Bid {
     private String issuer;
 
     @Column(name = "bid_number")
-    private int bidNumber;
+    private Long bidNumber;
     @Column(name = "amount")
     private int amount;
     @Column(name = "max_price")
@@ -36,9 +37,9 @@ public class Bid {
     private String priority;
 
     @Column(name = "creation_date")
-    private Date creationDate;
+    private LocalDate creationDate;
     @Column(name = "due_date")
-    private Date dueDate;
+    private LocalDate dueDate;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

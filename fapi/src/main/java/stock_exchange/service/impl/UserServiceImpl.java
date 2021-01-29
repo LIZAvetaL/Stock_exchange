@@ -6,6 +6,7 @@ import stock_exchange.model.User;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import stock_exchange.model.response.MessageResponse;
 import stock_exchange.service.UserService;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void register(User user) {
-        restTemplate.postForEntity(UrlConstants.UserUrl+"/registration", user, String.class);
+        restTemplate.postForEntity(UrlConstants.UserUrl + "/registration", user, String.class);
     }
 
     @Override
@@ -54,6 +55,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User find(int userId) {
         return restTemplate.getForObject(UrlConstants.UserUrl + "find/id/" + userId, User.class);
+    }
+
+    @Override
+    public MessageResponse update(int userId, String role) {
+        return restTemplate.postForEntity(UrlConstants.UserUrl + "update" + "?id=" + userId + "&role=" + role,
+                null, MessageResponse.class).getBody();
     }
 
 

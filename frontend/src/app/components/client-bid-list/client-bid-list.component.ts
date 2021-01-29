@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Bid } from 'src/app/model/bid';
-import { ClientService } from 'src/app/services/client/client.service';
-import { TokenStorageService } from 'src/app/services/token-storage/token-storage.service';
+import {Component, OnInit} from '@angular/core';
+import {Bid} from 'src/app/model/bid';
+import {TokenStorageService} from 'src/app/services/token-storage/token-storage.service';
+import {BidService} from '../../services/bid/bid.service';
 
 @Component({
   selector: 'app-bid-list',
@@ -18,20 +18,21 @@ export class ClientBidListComponent implements OnInit {
   pageSize = 3;
   pageSizes = [3, 6, 9];
 
-  constructor(private clientService: ClientService,
-    private tokenStorage: TokenStorageService
+  constructor(private bidService: BidService,
+              private tokenStorage: TokenStorageService
   ) {
     this.clientId = tokenStorage.getUser().id;
   }
 
   ngOnInit() {
-    this.retrieveBrokers()
+    this.retrieveBrokers();
   }
+
   retrieveBrokers() {
-    this.clientService.getAllBids(this.page - 1, this.pageSize, this.clientId)
+    this.bidService.getAllBids(this.page - 1, this.pageSize, this.clientId)
       .subscribe(
         response => {
-          const { content, totalElements } = response;
+          const {content, totalElements} = response;
           this.bids = content;
           this.count = totalElements;
           console.log(response);
