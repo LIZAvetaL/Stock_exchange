@@ -9,7 +9,11 @@ import java.util.List;
 public interface BrokerService {
    PageResponse<UnemployedBroker> findAllUnemployed(String title, int page, int size, String sort);
 
-    List<Broker> findBrokers(int clientId);
+    PageResponse<Broker> findBrokers(int page, int size, int clientId);
+
+    List<Broker> findBrokers( int clientId);
 
     MessageResponse employ(int brokerId, int clientId);
+
+    MessageResponse dismiss(int brokerId);
 }

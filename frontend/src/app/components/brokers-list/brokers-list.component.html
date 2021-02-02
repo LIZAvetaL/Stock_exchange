@@ -1,0 +1,50 @@
+<div class="list row">
+
+  <div class="col-md-12">
+    <pagination-controls
+      previousLabel="Prev"
+      nextLabel="Next"
+      responsive="true"
+      (pageChange)="handlePageChange($event)">
+    </pagination-controls>
+  </div>
+
+  <div class="col-md-6">
+    <h4>Brokers List</h4>
+
+    <table class="table">
+      <thead>
+      <tr>
+        <th (click)="sortTable('id')" scope="col">#</th>
+        <th (click)="sortTable('name')" scope="col">Name</th>
+        <th (click)="sortTable('exchange')" scope="col">StockExchange</th>
+        <th (click)="sortTable('status')" scope="col">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="
+    let broker of brokers | paginate : {
+            itemsPerPage: pageSize,
+            currentPage: page,
+            totalItems: count
+          };
+    let i = index;
+  ">
+        <td>{{i}}</td>
+        <td>{{broker.name}}</td>
+        <td>{{broker.exchange}}</td>
+        <td>{{broker.status}}</td>
+        <td><button class="btn btn-dark" *ngIf="!broker.isEmploy" (click)="dismiss(broker)" >Dismiss</button></td>
+        <td><button class="btn btn-primary" *ngIf="broker.isEmploy" (click)="employ(broker)" >Employ</button></td>
+      </tr>
+      </tbody>
+    </table>
+
+    Items per Page:
+    <select (change)="handlePageSizeChange($event)">
+      <option *ngFor="let size of pageSizes" [ngValue]="size">
+        {{ size }}
+      </option>
+    </select>
+  </div>
+</div>

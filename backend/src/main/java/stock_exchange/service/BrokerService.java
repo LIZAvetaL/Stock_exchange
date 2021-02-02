@@ -22,7 +22,11 @@ public interface BrokerService {
 
     Broker findBroker(String name);
 
+    Page<BrokerDTO> findBrokers(int page, int size,int clientId);
+
     List<BrokerDTO> findBrokers(int clientId);
 
     MessageResponse employ(int brokerId, int clientId);
+
+    MessageResponse dismiss(int brokerId);
 }

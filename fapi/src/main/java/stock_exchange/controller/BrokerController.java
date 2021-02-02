@@ -29,18 +29,25 @@ public class BrokerController {
 
     @GetMapping("/find/unemployed")
     public ResponseEntity<UnemployedBroker> findAll(@RequestParam(required = false) String title,
-                                  @RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "10") int size,
-                                  @RequestParam(defaultValue = "name") String sort) {
+                                                    @RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "10") int size,
+                                                    @RequestParam(defaultValue = "name") String sort) {
         PageResponse<UnemployedBroker> brokers = brokerService.findAllUnemployed(title, page, size, sort);
 
         return new ResponseEntity(brokers, HttpStatus.OK);
     }
 
-    @GetMapping("/find")
-    public ResponseEntity findAll(@RequestParam(name = "client-id") int clientId) {
-        List<Broker> brokers = brokerService.findBrokers(clientId);
+    @GetMapping("/find/all")
+    public ResponseEntity<PageResponse<Broker>> findAll(@RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size,
+                                                        @RequestParam(name = "client-id") int clientId) {
 
+        return new ResponseEntity(brokerService.findBrokers(page, size, clientId), HttpStatus.OK);
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity find(@RequestParam(name = "client-id") int clientId) {
+        List<Broker> brokers = brokerService.findBrokers(clientId);
         return new ResponseEntity(brokers, HttpStatus.OK);
     }
 
@@ -48,5 +55,10 @@ public class BrokerController {
     public ResponseEntity<MessageResponse> employ(@PathVariable(name = "broker-id") int brokerId,
                                                   @PathVariable(name = "client-id") int clientId) {
         return new ResponseEntity(brokerService.employ(brokerId, clientId), HttpStatus.OK);
+    }
+
+    @PostMapping("/dismiss/{broker-id}")
+    public ResponseEntity<MessageResponse> dismiss(@PathVariable(name = "broker-id") int brokerId) {
+        return new ResponseEntity(brokerService.dismiss(brokerId), HttpStatus.OK);
     }
 }

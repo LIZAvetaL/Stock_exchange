@@ -1,5 +1,6 @@
 package stock_exchange.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,10 +40,18 @@ public class BrokerController {
         return new ResponseEntity(brokerService.findAllUnemployed(title, page, size, sort), HttpStatus.OK);
     }
 
+    @GetMapping("/find/all")
+    public ResponseEntity findAll( @RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam(name = "client-id") int clientId) {
+        Page<BrokerDTO> brokers=brokerService.findBrokers(page, size, clientId);
+
+        return new ResponseEntity(brokers, HttpStatus.OK);
+    }
+
     @GetMapping("/find")
     public ResponseEntity findAll(@RequestParam(name = "client-id") int clientId) {
-        List<BrokerDTO> brokers=brokerService.findBrokers(clientId);
-
+        List<BrokerDTO> brokers = brokerService.findBrokers(clientId);
         return new ResponseEntity(brokers, HttpStatus.OK);
     }
 
@@ -59,8 +68,12 @@ public class BrokerController {
     }
 
     @PostMapping("/employ")
-    public ResponseEntity<MessageResponse> employ(@RequestParam int brokerId,
-                                                  @RequestParam int clientId) {
+    public ResponseEntity<MessageResponse> employ(@RequestParam (name = "broker-id") int brokerId,
+                                                  @RequestParam(name = "client-id") int clientId) {
         return new ResponseEntity(brokerService.employ(brokerId, clientId), HttpStatus.OK);
+    }
+    @PostMapping("/dismiss")
+    public ResponseEntity<MessageResponse> dismiss(@RequestParam (name = "broker-id") int brokerId) {
+        return new ResponseEntity(brokerService.dismiss(brokerId), HttpStatus.OK);
     }
 }

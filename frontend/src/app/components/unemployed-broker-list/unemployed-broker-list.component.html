@@ -38,14 +38,14 @@
             currentPage: page,
             totalItems: count
           };
-    let i = index
+    let i = index;
   ">
           <td>{{i}}</td>
           <td>{{broker.name}}</td>
           <td>{{broker.exchange}}</td>
           <td>{{broker.status}}</td>
-          <td><button class="btn btn-dark" *ngIf="!isEmployed" (click)="employ(broker.id)" >Employ</button></td>
-          <td><button class="btn btn-primary" *ngIf="isEmployed" >Employed</button></td>
+          <td><button class="btn btn-dark" *ngIf="!broker.isEmploy" (click)="employ(broker)" >Employ</button></td>
+          <td><button class="btn btn-primary" *ngIf="broker.isEmploy" (click)="dismiss(broker)" >Dismiss</button></td>
         </tr>
       </tbody>
     </table>

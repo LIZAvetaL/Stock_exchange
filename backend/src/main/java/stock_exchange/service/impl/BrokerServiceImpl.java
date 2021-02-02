@@ -8,6 +8,7 @@ import stock_exchange.config.StatusConst;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerDTO;
 import stock_exchange.dto.UnemployedBrokerDTO;
+import stock_exchange.exception.NotFoundException;
 import stock_exchange.model.Bid;
 import stock_exchange.model.Broker;
 import stock_exchange.model.Deal;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BrokerServiceImpl implements BrokerService {
@@ -67,7 +69,7 @@ public class BrokerServiceImpl implements BrokerService {
     public Page<UnemployedBrokerDTO> findAllUnemployed(String title, int page, int size, String sort) {
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(sort));
 
-        Status status = statusService.find(StatusConst.Unemployed);
+        Status status = statusService.find(StatusConst.Unemployed.toString());
         Page<Broker> tempPage = brokerRepository.findAllByStatus(status, pagingSort);
         return tempPage.map(this::transfer);
     }
@@ -85,22 +87,40 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
+    public Page<BrokerDTO> findBrokers(int page, int size, int clientId) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Broker> brokers = brokerRepository.findBrokersByEmployerId(clientId, pageable);
+        return brokers.map(this::transfertoDto);
+    }
+
+    @Override
     public List<BrokerDTO> findBrokers(int clientId) {
-        List<Broker> brokers = brokerRepository.findBrokersByEmployerId(clientId);
-        List<BrokerDTO> brokerDTOs = new ArrayList<>();
-        for (Broker broker : brokers) {
-            brokerDTOs.add(transfertoDto(broker));
-        }
-        return brokerDTOs;
+        return brokerRepository.findBrokersByEmployerId(clientId)
+                .stream()
+                .map(this::transfertoDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public MessageResponse employ(int brokerId, int clientId) {
-        Broker broker = brokerRepository.findById(brokerId).get();
+        Broker broker = brokerRepository.findById(brokerId).orElseThrow(
+                () -> new NotFoundException("User error")
+        );
         broker.setEmployer(userService.findUser(clientId));
-        broker.setStatus(statusService.find(StatusConst.Employed));
+        broker.setStatus(statusService.find(StatusConst.Employed.toString()));
         brokerRepository.save(broker);
-        return  new MessageResponse("ok");
+        return new MessageResponse("ok");
+    }
+
+    @Override
+    public MessageResponse dismiss(int brokerId) {
+        Broker broker = brokerRepository.findById(brokerId).orElseThrow(
+                () -> new NotFoundException("User error")
+        );
+        broker.setEmployer(null);
+        broker.setStatus(statusService.find(StatusConst.Unemployed.toString()));
+        brokerRepository.save(broker);
+        return new MessageResponse("ok");
     }
 
     private UnemployedBrokerDTO transfer(Broker broker) {

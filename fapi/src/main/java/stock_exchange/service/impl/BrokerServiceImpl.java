@@ -33,14 +33,28 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
+    public PageResponse<Broker> findBrokers(int page, int size,int clientId) {
+        return restTemplate.getForObject(
+                UrlConstants.BrokerUrl + "find/all" + "?page=" + page + "&size=" + size + "&client-id=" + clientId,
+                PageResponse.class);
+    }
+
+    @Override
     public List<Broker> findBrokers(int clientId) {
         return restTemplate.getForObject(
-                UrlConstants.BrokerUrl + "find" + "?client-id=" + clientId, List.class);
+                UrlConstants.BrokerUrl + "find" + "?client-id=" + clientId,
+                List.class);
     }
 
     @Override
     public MessageResponse employ(int brokerId, int clientId) {
         return restTemplate.postForEntity(UrlConstants.BrokerUrl + "employ" + "?broker-id=" + brokerId
                 + "&client-id=" + clientId, null, MessageResponse.class).getBody();
+    }
+
+    @Override
+    public MessageResponse dismiss(int brokerId) {
+        return restTemplate.postForEntity(UrlConstants.BrokerUrl + "dismiss" + "?broker-id=" + brokerId,
+                null, MessageResponse.class).getBody();
     }
 }

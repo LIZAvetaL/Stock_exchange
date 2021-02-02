@@ -18,11 +18,19 @@ export class BrokerService {
     return this.http.get(baseUrl + 'find/unemployed' + `?title=${title}&page=${page}&size=${size}&sort=${sort}`);
   }
 
-  getClientsBrokers(clientId: number): Observable<Broker[]> {
-    return this.http.get<Broker[]>(baseUrl + 'find' + `?client-id=${clientId}`);
+  getClientsBrokers(page: number, size: number, clientId: number): Observable<any> {
+    return this.http.get(baseUrl + 'find/all' + `?page=${page}&size=${size}&client-id=${clientId}`);
+  }
+
+  getBrokers(clientId: number): Observable<any> {
+    return this.http.get(baseUrl + 'find' + `?client-id=${clientId}`);
   }
 
   employ(brokerId: number, clientId: number) {
     return this.http.post(baseUrl + 'employ/' + brokerId + '/' + clientId, null);
+  }
+
+  dismiss(brokerId: number) {
+    return this.http.post(baseUrl + 'dismiss/' + brokerId , null);
   }
 }

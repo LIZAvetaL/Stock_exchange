@@ -1,23 +1,25 @@
-import {Component, OnInit} from '@angular/core';
-import {BrokerService} from 'src/app/services/broker/broker.service';
-import {TokenStorageService} from "../../services/token-storage/token-storage.service";
+import { Component, OnInit } from '@angular/core';
 import {UnemployedBroker} from "../../model/unemployed-broker";
+import {BrokerService} from "../../services/broker/broker.service";
+import {TokenStorageService} from "../../services/token-storage/token-storage.service";
+import {Broker} from "../../model/broker";
 
 @Component({
-  selector: 'app-unemployed-broker-list',
-  templateUrl: './unemployed-broker-list.component.html',
-  styleUrls: ['./unemployed-broker-list.component.css']
+  selector: 'app-brokers-list',
+  templateUrl: './brokers-list.component.html',
+  styleUrls: ['./brokers-list.component.css']
 })
-export class UnemployedBrokerListComponent implements OnInit {
+export class BrokersListComponent implements OnInit {
+
   clientId: number;
-  brokers: UnemployedBroker[];
+  brokers: Broker[];
   title = '';
 
   page = 1;
   count = 0;
   pageSize = 3;
   pageSizes = [3, 6, 9];
-  sort = 'id';
+
 
   constructor(private brokerService: BrokerService,
               private tokenService: TokenStorageService) {
@@ -29,7 +31,7 @@ export class UnemployedBrokerListComponent implements OnInit {
   }
 
   retrieveBrokers() {
-    this.brokerService.getAll(this.title, this.page - 1, this.pageSize, this.sort)
+    this.brokerService.getClientsBrokers( this.page - 1, this.pageSize, this.clientId)
       .subscribe(
         response => {
           const {content, totalElements} = response;
@@ -56,11 +58,12 @@ export class UnemployedBrokerListComponent implements OnInit {
 
   employ(broker: UnemployedBroker) {
     this.brokerService.employ(broker.id, this.clientId).subscribe();
-    broker.isEmploy = true;
+    broker.isEmploy = false;
   }
 
   dismiss(broker: UnemployedBroker) {
     this.brokerService.dismiss(broker.id).subscribe();
-    broker.isEmploy = false;
+    broker.isEmploy = true;
   }
+
 }

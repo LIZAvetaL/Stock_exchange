@@ -3,4 +3,5 @@ export class UnemployedBroker {
   name: string;
   exchange: string;
   status: string;
+  isEmploy: boolean;
 }
