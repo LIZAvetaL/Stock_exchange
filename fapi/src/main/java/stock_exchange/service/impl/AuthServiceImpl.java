@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import stock_exchange.model.CreateUser;
 import stock_exchange.model.User;
 import stock_exchange.model.request.LoginRequest;
 import stock_exchange.model.request.SignupRequest;
@@ -60,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
                     .body(new MessageResponse("Error: Email is already taken!"));
         }
 
-        User user = new User(signUpRequest.getEmail(),
+        CreateUser user = new CreateUser(signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()),
                 signUpRequest.getName(),
                 signUpRequest.getRole());

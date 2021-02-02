@@ -1,5 +1,7 @@
 package stock_exchange.service.impl;
 
+import stock_exchange.dto.CreateUserDTO;
+import stock_exchange.exception.NotFoundException;
 import stock_exchange.model.User;
 import stock_exchange.repository.UserRepository;
 import stock_exchange.dto.UserDTO;
@@ -26,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findById(int id) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("user exception") );
         return transfer(user);
     }
 
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(UserDTO userDTO) {
+    public void register(CreateUserDTO userDTO) {
         User user = transfer(userDTO);
         userRepository.save(user);
     }
@@ -86,6 +88,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private User transfer(UserDTO userDTO) {
+        return new User(userDTO.getEmail(), userDTO.getPassword(), userDTO.getName(),
+                roleService.findRole(userDTO.getRole()));
+    }
+
+    private User transfer(CreateUserDTO userDTO) {
         return new User(userDTO.getEmail(), userDTO.getPassword(), userDTO.getName(),
                 roleService.findRole(userDTO.getRole()));
     }

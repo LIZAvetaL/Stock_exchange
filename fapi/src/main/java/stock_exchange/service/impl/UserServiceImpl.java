@@ -1,7 +1,10 @@
 package stock_exchange.service.impl;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.web.client.ResponseErrorHandler;
 import stock_exchange.config.UrlConstants;
+import stock_exchange.exception.RestTemplateResponseErrorHandler;
+import stock_exchange.model.CreateUser;
 import stock_exchange.model.User;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(RestTemplateBuilder restTemplate) {
 
-        this.restTemplate = restTemplate.build();
+        this.restTemplate = restTemplate.errorHandler( new RestTemplateResponseErrorHandler())
+                .build();
     }
 
     @Override
@@ -43,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) {
+    public void register(CreateUser user) {
         restTemplate.postForEntity(UrlConstants.UserUrl + "/registration", user, String.class);
     }
 

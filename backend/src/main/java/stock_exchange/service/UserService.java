@@ -1,5 +1,6 @@
 package stock_exchange.service;
 
+import stock_exchange.dto.CreateUserDTO;
 import stock_exchange.dto.UserDTO;
 import stock_exchange.model.User;
 import stock_exchange.response.MessageResponse;
@@ -22,7 +23,7 @@ public interface UserService {
 
     boolean existsByEmail(String email);
 
-    void register(UserDTO user);
+    void register(CreateUserDTO user);
 
     List<UserDTO> findClients();
 

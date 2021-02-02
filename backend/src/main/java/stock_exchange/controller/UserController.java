@@ -3,6 +3,7 @@ package stock_exchange.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
+import stock_exchange.dto.CreateUserDTO;
 import stock_exchange.dto.UserDTO;
 import stock_exchange.model.User;
 import stock_exchange.response.MessageResponse;
@@ -51,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public void register(@RequestBody UserDTO user) {
+    public void register(@RequestBody CreateUserDTO user) {
         userService.register(user);
     }
 

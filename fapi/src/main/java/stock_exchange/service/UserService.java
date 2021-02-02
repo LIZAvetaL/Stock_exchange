@@ -1,5 +1,6 @@
 package stock_exchange.service;
 
+import stock_exchange.model.CreateUser;
 import stock_exchange.model.User;
 import stock_exchange.model.response.MessageResponse;
 
@@ -15,7 +16,7 @@ public interface UserService {
 
     boolean existsByEmail(String email);
 
-    void register(User user);
+    void register(CreateUser user);
 
     List<User> findClient();
 
