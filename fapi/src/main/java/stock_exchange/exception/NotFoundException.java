@@ -1,6 +1,5 @@
 package stock_exchange.exception;
 
-
 public class NotFoundException extends RuntimeException {
 
     public NotFoundException() {
@@ -11,5 +10,4 @@ public class NotFoundException extends RuntimeException {
 
         super(message);
     }
-
 }
