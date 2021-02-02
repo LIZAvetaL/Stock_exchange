@@ -12,7 +12,9 @@ import {UnemployedBrokerListComponent} from './components/unemployed-broker-list
 import {ClientBidListComponent} from './components/client-bid-list/client-bid-list.component';
 import {CreateBidComponent} from './components/create-bid/create-bid.component';
 import {ExchangeDetailsComponent} from './components/exchange-details/exchange-details.component';
-import {EditExchangeComponent} from './components/edit-exchange/edit-exchange.component';
+import {BidDetailsComponent} from "./components/bid-details/bid-details.component";
+import {BrokersListComponent} from "./components/brokers-list/brokers-list.component";
+
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -20,13 +22,14 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponent},
   {path: 'owner/exchanges', component: ExchangeListComponent},
   {path: 'exchange-details/:id', component: ExchangeDetailsComponent},
-  {path: 'exchange/edit/:id', component: EditExchangeComponent},
   {path: 'admin/users', component: UserListComponent},
   {path: 'admin/user/create', component: CreateUserComponent},
   {path: 'user-details/:id', component: UserDetailsComponent},
   {path: 'client/bids', component: ClientBidListComponent},
   {path: 'client/create-bid', component: CreateBidComponent},
+  {path: 'client/bid-details/:id', component: BidDetailsComponent},
   {path: 'client/unemployed-brokers', component: UnemployedBrokerListComponent},
+  {path: 'client/brokers', component: BrokersListComponent},
   {path: '', redirectTo: 'login', pathMatch: 'full'}
 ];
 

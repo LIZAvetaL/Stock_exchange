@@ -3,10 +3,13 @@ package stock_exchange.service.impl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.CreateBidDTO;
+import stock_exchange.exception.NotFoundException;
 import stock_exchange.model.Bid;;
 import stock_exchange.repository.BidRepository;
+import stock_exchange.response.MessageResponse;
 import stock_exchange.service.BidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +18,11 @@ import stock_exchange.service.StatusService;
 import stock_exchange.service.UserService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 
 @Service
@@ -30,8 +37,8 @@ public class BidServiceImpl implements BidService {
                           StatusService statusService, BrokerService brokerService) {
         this.bidRepository = bidRepository;
         this.userService = userService;
-        this.statusService=statusService;
-        this.brokerService=brokerService;
+        this.statusService = statusService;
+        this.brokerService = brokerService;
     }
 
     @Override
@@ -47,19 +54,39 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Page<BidDTO> findClientsBids(int page, int size, int clientId) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<BidDTO> findClientsBids(int page, int size, String[] sort, int clientId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortType(sort)));
         Page<Bid> bids = bidRepository.findBidsByClientId(clientId, pageable);
         return bids.map(this::transfer);
     }
 
+    private List<Sort.Order> sortType(String[] sort) {
+        List<Sort.Order> list = new ArrayList<>();
+        list.add(new Sort.Order(Sort.Direction.fromString(sort[0]), sort[1]));
+        return list;
+    }
+
     @Override
     public void create(int clientId, CreateBidDTO createBid) {
-        Bid bid= transfer(createBid);
+        Bid bid = transfer(createBid);
         bid.setBidNumber(generateRandom());
         bid.setCreationDate(LocalDate.now());
         bid.setClient(userService.findUser(clientId));
         bidRepository.save(bid);
+    }
+
+    @Override
+    public MessageResponse update(BidDTO bidDTO) {
+        bidRepository.save(transfer(bidDTO));
+        return new MessageResponse("<3");
+    }
+
+    @Override
+    public BidDTO find(int id) {
+        Bid bid = bidRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Bid error")
+        );
+        return transfer(bid);
     }
 
     private long generateRandom() {
@@ -85,11 +112,28 @@ public class BidServiceImpl implements BidService {
         bidDTO.setDueDate(bid.getDueDate());
         bidDTO.setStatus(bid.getStatus().getStatusName());
         bidDTO.setBroker(bid.getBroker().getBroker().getName());
+        bidDTO.setClient(bid.getClient().getName());
         return bidDTO;
     }
+    public Bid transfer(BidDTO bidDTO) {
+        Bid bid = new Bid();
+        bid.setId(bidDTO.getId());
+        bid.setAmount(bidDTO.getAmount());
+        bid.setIssuer(bidDTO.getIssuer());
+        bid.setBidNumber(bidDTO.getBidNumber());
+        bid.setMaxPrice(bidDTO.getMaxPrice());
+        bid.setMinPrice(bidDTO.getMinPrice());
+        bid.setPriority(bidDTO.getPriority());
+        bid.setCreationDate(bidDTO.getCreationDate());
+        bid.setDueDate(bidDTO.getDueDate());
+        bid.setStatus(statusService.find(bidDTO.getStatus()));
+        bid.setBroker(brokerService.findBroker(bidDTO.getBroker()));
+        bid.setClient(userService.findUser(bidDTO.getClient()));
+        return bid;
+    }
 
-    private Bid transfer(CreateBidDTO createBidDTO){
-        Bid bid=new Bid();
+    private Bid transfer(CreateBidDTO createBidDTO) {
+        Bid bid = new Bid();
         bid.setIssuer(createBidDTO.getIssuer());
         bid.setAmount(createBidDTO.getAmount());
         bid.setMinPrice(createBidDTO.getMinPrice());

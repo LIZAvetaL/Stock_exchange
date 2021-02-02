@@ -2,10 +2,10 @@
 <div class="col-md-12">
   <div class="card card-container">
     <form>
-      <button class="btn btn-primary btn-sm" routerLink="/exchange/edit/{{ exchange.id }}">Edit exchange</button>
+      <button class="btn btn-primary btn-sm" (click)="edit()">Edit exchange</button>
       <div class="form-group ">
         <label for="exchangeName">StockExchange Name</label>
-        <input disabled
+        <input [disabled]="!isEdit"
                type="text"
                id="exchangeName"
                class="form-control"
@@ -14,7 +14,7 @@
 
       <div class="form-group">
         <label for="country">Country</label>
-        <input disabled
+        <input [disabled]="!isEdit"
                type="text"
                id="country"
                class="form-control"
@@ -23,7 +23,7 @@
 
       <div class="form-group">
         <label for="city">City</label>
-        <input disabled
+        <input [disabled]="!isEdit"
                type="text"
                id="city"
                class="form-control"
@@ -41,7 +41,7 @@
 
       <div class="form-group col-md-8">
         <label for="description">Description</label>
-        <textarea disabled
+        <textarea [disabled]="!isEdit"
                   class="form-control"
                   id="description"
                   rows="3">{{exchange.description}}</textarea>
@@ -59,7 +59,8 @@
         </small>
       </div>
 
-      <button type="submit" class="btn btn-info" (click)="onSubmit()">Change status</button>
+      <button *ngIf="!isEdit" type="submit" class="btn btn-info" (click)="onSubmit()">Change status</button>
+      <button *ngIf="isEdit" type="submit" class="btn btn-info" (click)="Save()">Save</button>
     </form>
   </div>
 </div>

@@ -17,11 +17,13 @@ export class ClientBidListComponent implements OnInit {
   count = 0;
   pageSize = 3;
   pageSizes = [3, 6, 9];
+  sort: string[];
 
   constructor(private bidService: BidService,
               private tokenStorage: TokenStorageService
   ) {
     this.clientId = tokenStorage.getUser().id;
+    this.sort = ['desc', 'bidNumber'];
   }
 
   ngOnInit() {
@@ -29,7 +31,7 @@ export class ClientBidListComponent implements OnInit {
   }
 
   retrieveBrokers() {
-    this.bidService.getAllBids(this.page - 1, this.pageSize, this.clientId)
+    this.bidService.getAllBids(this.page - 1, this.pageSize, this.sort, this.clientId)
       .subscribe(
         response => {
           const {content, totalElements} = response;
@@ -51,6 +53,11 @@ export class ClientBidListComponent implements OnInit {
   handlePageSizeChange(event) {
     this.pageSize = event.target.value;
     this.page = 1;
+    this.retrieveBrokers();
+  }
+
+  sortTable(columnName: string) {
+    this.sort = ['asc', columnName];
     this.retrieveBrokers();
   }
 }

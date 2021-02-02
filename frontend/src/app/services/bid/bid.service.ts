@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {CreateBid} from '../../model/create-bid';
+import {Bid} from "../../model/bid";
+import {MessageResponse} from "../../model/messageResponse";
 
 const baseUrl = 'http://localhost:8080/bid/';
 const httpOptions = {
@@ -19,22 +21,19 @@ export class BidService {
   constructor(private http: HttpClient) {
   }
 
-  getAllBids(page: number, size: number, clientId: number): Observable<any> {
-    return this.http.get(baseUrl + 'find/clients-bids' + `?page=${page}&size=${size}&clientId=${clientId}`);
+  getAllBids(page: number, size: number, sort: string[], clientId: number): Observable<any> {
+    return this.http.get(baseUrl + 'find/clients-bids' + `?page=${page}&size=${size}&sort=${sort}&clientId=${clientId}`);
   }
 
   create(clientId: number, createBid: CreateBid) {
-    const body = {
-      issuer: createBid.issuer,
-      amount: createBid.amount,
-      minPrice: createBid.minPrice,
-      maxPrice: createBid.maxPrice,
-      priority: createBid.priority,
-      status: createBid.status,
-      dueDate: createBid.dueDate,
-      broker: createBid.broker
-    };
-    console.log(body);
-    return this.http.post(baseUrl + 'create' + `?id=${clientId}`, body);
+    return this.http.post(baseUrl + 'create' + `?id=${clientId}`, createBid);
+  }
+
+  update(editBid: Bid): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(baseUrl + 'update', editBid);
+  }
+
+  getBid(bidId: number): Observable<Bid> {
+    return this.http.get<Bid>(baseUrl + 'find' + `?id=${bidId}`);
   }
 }

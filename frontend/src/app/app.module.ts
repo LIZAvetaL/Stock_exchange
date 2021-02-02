@@ -19,8 +19,9 @@ import {UnemployedBrokerListComponent} from './components/unemployed-broker-list
 import {ClientBidListComponent} from './components/client-bid-list/client-bid-list.component';
 import {CreateBidComponent} from './components/create-bid/create-bid.component';
 import {ExchangeDetailsComponent} from './components/exchange-details/exchange-details.component';
-import {EditExchangeComponent} from './components/edit-exchange/edit-exchange.component';
-import {ExchangeService} from './services/exchange/exchange.service';
+import {BidDetailsComponent} from "./components/bid-details/bid-details.component";
+import {BrokersListComponent} from "./components/brokers-list/brokers-list.component";
+
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {ExchangeService} from './services/exchange/exchange.service';
     ClientBidListComponent,
     CreateBidComponent,
     ExchangeDetailsComponent,
-    EditExchangeComponent
+    BidDetailsComponent,
+    BrokersListComponent
   ],
   imports: [
     BrowserModule,

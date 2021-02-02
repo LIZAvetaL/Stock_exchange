@@ -9,8 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.CreateBidDTO;
+import stock_exchange.model.Bid;
+import stock_exchange.response.MessageResponse;
 import stock_exchange.service.BidService;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/bid")
@@ -21,6 +26,11 @@ public class BidController {
         this.bidService = bidService;
     }
 
+    @GetMapping("/find")
+    public ResponseEntity<BidDTO> find(@RequestParam int id){
+        return new ResponseEntity(bidService.find(id), HttpStatus.OK);
+    }
+
     @GetMapping("find/brokers-bids")
     public ResponseEntity findBrokersBids(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
@@ -29,10 +39,11 @@ public class BidController {
     }
 
     @GetMapping("find/clients-bids")
-    public ResponseEntity indBrokersBids(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity findClientBids(@RequestParam(defaultValue = "0") int page,
                                          @RequestParam(defaultValue = "10") int size,
+                                         @RequestParam String[] sort,
                                          @RequestParam int clientId) {
-        return new ResponseEntity(bidService.findClientsBids(page, size, clientId), HttpStatus.OK);
+        return new ResponseEntity(bidService.findClientsBids(page, size, sort, clientId), HttpStatus.OK);
     }
     @PostMapping("/create")
     public  ResponseEntity create(@RequestParam int id,
@@ -41,4 +52,9 @@ public class BidController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PostMapping("/update")
+    public  ResponseEntity<MessageResponse> update(@RequestBody BidDTO bid){
+
+        return new ResponseEntity(bidService.update(bid),HttpStatus.OK);
+    }
 }

@@ -25,14 +25,13 @@ export class CreateBidComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.brokerService.getClientsBrokers(this.clientId).subscribe(data => {
+    this.brokerService.getBrokers(this.clientId).subscribe(data => {
       this.brokers = data;
       console.log(data);
     });
   }
 
   onSubmit() {
-    this.bidService.create(this.clientId, this.createBid);
-    // this.router.navigate(['/client/bids']);
+    this.bidService.create(this.clientId, this.createBid).subscribe();
   }
 }

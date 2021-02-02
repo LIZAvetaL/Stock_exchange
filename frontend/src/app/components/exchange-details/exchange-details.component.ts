@@ -14,9 +14,12 @@ export class ExchangeDetailsComponent implements OnInit {
   exchange: StockExchange;
   response: MessageResponse;
 
+  isEdit: boolean;
+
   constructor(private route: ActivatedRoute,
               private exchangeService: ExchangeService) {
     this.exchange = new StockExchange();
+    this.isEdit = false;
   }
 
   ngOnInit() {
@@ -39,5 +42,18 @@ export class ExchangeDetailsComponent implements OnInit {
           this.response = data;
         }
       );
+  }
+
+  edit() {
+    this.isEdit = true;
+  }
+
+  Save() {
+    this.exchangeService.updateExchange(this.exchange).subscribe(
+      data => {
+        this.response = data;
+        this.isEdit = false;
+      }
+    );
   }
 }
