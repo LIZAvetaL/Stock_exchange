@@ -21,7 +21,7 @@
           <th (click)="sortTable('maxPrice')" scope="col">Max price</th>
           <th (click)="sortTable('priority')" scope="col">Priority</th>
           <th (click)="sortTable('status')" scope="col">Status</th>
-          <th (click)="sortTable('creationDate')" scope="col">Creation Date</th>
+          <th (click)="sortTable('type')" scope="col">Type</th>
           <th (click)="sortTable('dueDate')" scope="col">Due date</th>
           <th (click)="sortTable('broker')" scope="col">Broker</th>
 
@@ -41,7 +41,7 @@
           <td>{{bid.maxPrice}}</td>
           <td>{{bid.priority}}</td>
           <td>{{bid.status}}</td>
-          <td>{{bid.creationDate}}</td>
+          <td>{{bid.type}}</td>
           <td>{{bid.dueDate}}</td>
           <td>{{bid.broker}}</td>
           <td><button class="btn btn-dark" [routerLink]="['/client/bid-details/', bid.id]">Edit</button></td>

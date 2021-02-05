@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -35,7 +36,7 @@ public class Deal {
     @Column(name = "total_price")
     private Double totalPrice;
     @Column(name = "bargain_date")
-    private Date bargainDate;
+    private LocalDate bargainDate;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "seller", referencedColumnName = "id")

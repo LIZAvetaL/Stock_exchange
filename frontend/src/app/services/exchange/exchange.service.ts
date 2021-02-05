@@ -28,6 +28,10 @@ export class ExchangeService {
 
   updateExchange(stockExchange: StockExchange): Observable<MessageResponse> {
     console.log(stockExchange);
-    return this.http.post<MessageResponse>( 'http://localhost:8080/exchange/update', stockExchange);
+    return this.http.post<MessageResponse>('http://localhost:8080/exchange/update', stockExchange);
+  }
+
+  saveExchange(exchange: StockExchange, id: number) {
+    return this.http.post(API_URL + 'create' + '?owner-id=' + id, exchange);
   }
 }

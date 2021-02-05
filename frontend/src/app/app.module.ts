@@ -21,6 +21,9 @@ import {CreateBidComponent} from './components/create-bid/create-bid.component';
 import {ExchangeDetailsComponent} from './components/exchange-details/exchange-details.component';
 import {BidDetailsComponent} from "./components/bid-details/bid-details.component";
 import {BrokersListComponent} from "./components/brokers-list/brokers-list.component";
+import {CreateExchangeComponent} from "./components/create-exchange/create-exchange.component";
+import {CreateDealComponent} from "./components/create-deal/create-deal.component";
+import {BrokerBidListComponent} from "./components/broker-bid-list/broker-bid-list.component";
 
 
 @NgModule({
@@ -38,7 +41,10 @@ import {BrokersListComponent} from "./components/brokers-list/brokers-list.compo
     CreateBidComponent,
     ExchangeDetailsComponent,
     BidDetailsComponent,
-    BrokersListComponent
+    BrokersListComponent,
+    CreateExchangeComponent,
+    CreateDealComponent,
+    BrokerBidListComponent
   ],
   imports: [
     BrowserModule,

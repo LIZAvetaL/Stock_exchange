@@ -26,6 +26,10 @@
       <li class="nav-item" *ngIf="showClientBoard">
         <a href="/client/bids" class="nav-link" routerLink="client/bids">Bids</a>
       </li>
+
+      <li class="nav-item" *ngIf="showBrokerBoard">
+        <a href="/broker/bids" class="nav-link" routerLink="broker/bids">Bids</a>
+      </li>
     </ul>
 
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import stock_exchange.model.Bid;
+import stock_exchange.model.Deal;
 import stock_exchange.model.request.CreateBid;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.service.BidService;
@@ -26,35 +27,51 @@ public class BidController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<Bid> find(@RequestParam int id){
+    public ResponseEntity<Bid> find(@RequestParam int id) {
         return new ResponseEntity(bidService.find(id), HttpStatus.OK);
     }
 
     @GetMapping("/find/brokers-bids")
     public ResponseEntity findBrokersBids(@RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "10") int size,
+                                          @RequestParam String[] sort,
                                           @RequestParam int brokerId) {
-        return new ResponseEntity(bidService.findBrokersBids(page, size, brokerId), HttpStatus.OK);
+        return new ResponseEntity(bidService.findBrokersBids(page, size, sort, brokerId), HttpStatus.OK);
     }
 
     @GetMapping("/find/clients-bids")
     public ResponseEntity findClientsBids(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "10") int size,
+                                          @RequestParam(defaultValue = "10") int size,
                                           @RequestParam String[] sort,
-                                         @RequestParam int clientId) {
+                                          @RequestParam int clientId) {
         return new ResponseEntity(bidService.findClientsBids(page, size, sort, clientId), HttpStatus.OK);
     }
 
+    @GetMapping("/find/bids-for-deal")
+    public ResponseEntity findBids(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "10") int size,
+                                   @RequestParam String[] sort,
+                                   @RequestParam int bidId) {
+        return new ResponseEntity(bidService.findBids(page, size, sort, bidId), HttpStatus.OK);
+    }
+
     @PostMapping("/create")
-    public  ResponseEntity create(@RequestParam int id,
-                                  @RequestBody CreateBid createBid){
+    public ResponseEntity create(@RequestParam int id,
+                                 @RequestBody CreateBid createBid) {
         bidService.create(id, createBid);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/update")
-    public  ResponseEntity<MessageResponse> update(@RequestBody Bid bid){
+    public ResponseEntity<MessageResponse> update(@RequestBody Bid bid) {
 
-        return new ResponseEntity(bidService.update(bid),HttpStatus.OK);
+        return new ResponseEntity(bidService.update(bid), HttpStatus.OK);
+    }
+
+    @PostMapping("/create-deal/{seller-bid-id}/{buyer-bid-id}/{price}")
+    public ResponseEntity<MessageResponse> create(@PathVariable(name = "seller-bid-id") int sellerBidId,
+                                                  @PathVariable(name = "buyer-bid-id") int buyerBidId,
+                                                  @PathVariable double price) {
+        return new ResponseEntity<>(bidService.createDeal(sellerBidId, buyerBidId, price), HttpStatus.OK);
     }
 }

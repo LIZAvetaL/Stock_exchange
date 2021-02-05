@@ -42,4 +42,10 @@ public class ExchangeServiceImpl implements ExchangeService {
         return restTemplate.postForEntity(UrlConstants.ExchangeUrl + "update", exchange,
                 MessageResponse.class).getBody();
     }
+
+    @Override
+    public MessageResponse create(int ownerId, StockExchange exchange) {
+        return restTemplate.postForEntity(UrlConstants.ExchangeUrl + "create?owner-id="+ownerId, exchange,
+                MessageResponse.class).getBody();
+    }
 }

@@ -86,6 +86,11 @@ public class BrokerServiceImpl implements BrokerService {
         return brokerRepository.findBrokerByBrokerName(name);
     }
 
+    public Broker find(int id) {
+
+        return brokerRepository.findBrokerByBrokerId(id);
+    }
+
     @Override
     public Page<BrokerDTO> findBrokers(int page, int size, int clientId) {
         Pageable pageable = PageRequest.of(page, size);

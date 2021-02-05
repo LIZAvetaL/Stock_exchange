@@ -20,6 +20,7 @@ public class CreateBidDTO {
     private double minPrice;
     private String priority;
     private LocalDate dueDate;
+    private String type;
 
     private String status;
     private String broker;

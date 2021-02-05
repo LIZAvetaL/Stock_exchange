@@ -1,6 +1,8 @@
 package stock_exchange.service;
 
 import stock_exchange.model.Bid;
+import stock_exchange.model.BrokerBid;
+import stock_exchange.model.Deal;
 import stock_exchange.model.request.CreateBid;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.model.response.PageResponse;
@@ -8,7 +10,7 @@ import stock_exchange.model.response.PageResponse;
 import java.util.Map;
 
 public interface BidService {
-    PageResponse<Bid> findBrokersBids(int page, int size,int brokerId);
+    PageResponse<Bid> findBrokersBids(int page, int size, String[] sort,int brokerId);
 
     PageResponse<Bid> findClientsBids(int page, int size,String[] sort, int clientId);
 
@@ -17,4 +19,8 @@ public interface BidService {
     MessageResponse update(Bid bid);
 
     Bid find(int id);
+
+    PageResponse<BrokerBid> findBids(int page, int size, String[] sort, int bidId);
+
+    MessageResponse createDeal(int sellerBidId, int buyerBidId, double price);
 }

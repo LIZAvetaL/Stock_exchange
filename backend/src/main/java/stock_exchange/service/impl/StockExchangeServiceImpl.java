@@ -1,5 +1,6 @@
 package stock_exchange.service.impl;
 
+import stock_exchange.dto.CreateStockExchangeDTO;
 import stock_exchange.model.StockExchange;
 import stock_exchange.repository.StockExchangeRepository;
 import stock_exchange.dto.StockExchangeDTO;
@@ -60,6 +61,12 @@ public class StockExchangeServiceImpl implements StockExchangeService {
         return new MessageResponse("Status was changed");
     }
 
+    @Override
+    public MessageResponse create(int ownerId, CreateStockExchangeDTO exchange) {
+        stockExchangeRepository.save(transfer(exchange, ownerId));
+        return new MessageResponse("ok");
+    }
+
     private StockExchangeDTO transfer(StockExchange exchange) {
         return new StockExchangeDTO(exchange.getId(), exchange.getExchangeName(),
                 exchange.getCountry(), exchange.getCity(), exchange.getCreationDate(),
@@ -72,5 +79,16 @@ public class StockExchangeServiceImpl implements StockExchangeService {
                 exchangeDTO.getCountry(), exchangeDTO.getCity(), exchangeDTO.getCreationDate(),
                 exchangeDTO.getDescription(), statusService.find(exchangeDTO.getStatus()),
                 userService.findUser(exchangeDTO.getOwner()));
+    }
+    private StockExchange transfer(CreateStockExchangeDTO exchangeDTO, int id) {
+        StockExchange exchange = new StockExchange();
+        exchange.setExchangeName(exchangeDTO.getExchangeName());
+        exchange.setCountry(exchangeDTO.getCountry());
+        exchange.setCity(exchangeDTO.getCity());
+        exchange.setCreationDate(exchangeDTO.getCreationDate());
+        exchange.setDescription(exchangeDTO.getDescription());
+        exchange.setStatus(statusService.find(exchangeDTO.getStatus()));
+        exchange.setOwner(userService.findUser(id));
+        return exchange;
     }
 }

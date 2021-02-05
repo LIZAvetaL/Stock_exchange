@@ -2,11 +2,20 @@
   <div class="card card-container">
 
   <form (ngSubmit)="onSubmit()">
-  <div class="form-group ">
-    <label for="issuer">Issuer</label>
-    <input name="issuer" [(ngModel)]="createBid.issuer" id="issuer"
-           type="text" class="form-control" placeholder="Issuer">
-  </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="issuer">Issuer</label>
+        <input name="issuer" [(ngModel)]="createBid.issuer" id="issuer"
+               type="text" class="form-control">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="type">Type</label>
+        <select name="Type" [(ngModel)]="createBid.type" id="type"  class="form-control">
+          <option value="Buy">Buy</option>
+          <option value="Sale">Sale</option>
+        </select>
+      </div>
+    </div>
 
     <div class="row">
     <div class="form-group col-md-4">
@@ -60,7 +69,8 @@
       <input name="dueDate" [(ngModel)]="createBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date">
     </div>
   </div>
-  <button type="submit" class="btn btn-primary" routerLink="/client/bids">Create</button>
+  <button type="submit" class="btn btn-primary"
+          (click)="onSubmit()" routerLink="/client/bids">Create</button>
 </form>
   </div>
 </div>

@@ -7,4 +7,5 @@ export class CreateBid {
   status: string;
   dueDate: string;
   broker: string;
+  type: string;
 }

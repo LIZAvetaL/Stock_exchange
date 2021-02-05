@@ -2,11 +2,21 @@
   <div class="card card-container">
   <form>
   <button *ngIf="!isEdit" (click)="edit()" type="submit" class="btn btn-primary btn-sml">Edit</button>
-  <div class="form-group">
+ <div class="row">
+  <div class="form-group col-md-6">
     <label for="issuer">Issuer</label>
     <input name="issuer" [(ngModel)]="editBid.issuer" id="issuer"
            type="text" class="form-control" [disabled]="!isEdit">
   </div>
+   <div class="form-group col-md-6">
+     <label for="type">Type</label>
+     <select name="Type" [(ngModel)]="editBid.type" id="type"
+             disabled class="form-control">
+       <option value="Buy">Buy</option>
+       <option value="Sale">Sale</option>
+     </select>
+   </div>
+ </div>
 
   <div class="row">
     <div class="form-group col-md-4">

@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   showAdminBoard = false;
   showOwnerBoard = false;
   showClientBoard = false;
+  showBrokerBoard = false;
   email: string;
 
   constructor(private tokenStorageService: TokenStorageService) { }
@@ -25,6 +26,7 @@ export class AppComponent implements OnInit {
       this.showAdminBoard = this.role.includes('admin');
       this.showOwnerBoard = this.role.includes('owner');
       this.showClientBoard = this.role.includes('client');
+      this.showBrokerBoard = this.role.includes('broker');
       this.email = user.email;
     }
   }

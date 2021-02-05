@@ -22,6 +22,8 @@ public interface BrokerService {
 
     Broker findBroker(String name);
 
+    Broker find(int id);
+
     Page<BrokerDTO> findBrokers(int page, int size,int clientId);
 
     List<BrokerDTO> findBrokers(int clientId);

@@ -5,26 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bid {
+public class BrokerBid {
 
     private int id;
     private String issuer;
+
     private Long bidNumber;
     private int amount;
-    private double maxPrice;
-    private double minPrice;
-    private String priority;
-    private String type;
-    private Date creationDate;
-    private Date dueDate;
 
-    private String status;
+    private double price;
     private String broker;
-    private String client;
 }

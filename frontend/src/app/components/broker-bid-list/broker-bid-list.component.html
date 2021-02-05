@@ -1,0 +1,58 @@
+<div class="list row">
+  <button class="btn btn-primary btn-sm" routerLink="/client/create-bid">Create Bid</button>
+  <div class="col-md-12">
+    <pagination-controls
+      previousLabel="Prev"
+      nextLabel="Next"
+      responsive="true"
+      (pageChange)="handlePageChange($event)">
+    </pagination-controls>
+  </div>
+
+  <h4>clients List</h4>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th (click)="sortTable('bidNumber')" scope="col">Bid number</th>
+      <th (click)="sortTable('issuer')" scope="col">Issuer</th>
+      <th (click)="sortTable('amount')" scope="col">Amount</th>
+      <th (click)="sortTable('minPrice')" scope="col">Min price</th>
+      <th (click)="sortTable('maxPrice')" scope="col">Max price</th>
+      <th (click)="sortTable('priority')" scope="col">Priority</th>
+      <th (click)="sortTable('type')" scope="col">Type</th>
+      <th (click)="sortTable('dueDate')" scope="col">Due date</th>
+      <th (click)="sortTable('client')" scope="col">Client</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="
+    let bid of bids | paginate : {
+            itemsPerPage: pageSize,
+            currentPage: page,
+            totalItems: count
+          }">
+      <td>{{bid.bidNumber}}</td>
+      <td>{{bid.issuer}}</td>
+      <td>{{bid.amount}}</td>
+      <td>{{bid.minPrice}}</td>
+      <td>{{bid.maxPrice}}</td>
+      <td>{{bid.priority}}</td>
+      <td>{{bid.type}}</td>
+      <td>{{bid.dueDate}}</td>
+      <td>{{bid.client}}</td>
+      <td><button class="btn btn-dark" [routerLink]="['/broker/create-deal/', bid.id]">Find</button></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="col-md-6">
+    Items per Page:
+    <select (change)="handlePageSizeChange($event)">
+      <option *ngFor="let size of pageSizes" [ngValue]="size">
+        {{ size }}
+      </option>
+    </select>
+  </div>
+</div>

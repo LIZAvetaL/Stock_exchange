@@ -46,4 +46,11 @@ public class ExchangeController {
         MessageResponse response = exchangeService.update(exchange);
         return new ResponseEntity(response, HttpStatus.OK);
     }
+
+    @PostMapping("create")
+    public ResponseEntity<MessageResponse> create(@RequestParam(name = "owner-id") int ownerId,
+                                                @RequestBody StockExchange exchange) {
+        MessageResponse response = exchangeService.create(ownerId, exchange);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
 }

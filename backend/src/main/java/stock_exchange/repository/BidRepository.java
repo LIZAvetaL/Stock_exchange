@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BidRepository extends JpaRepository<Bid, Integer> {
-    Page<Bid> findBidsByBrokerId(int id, Pageable pageable);
+    Page<Bid> findBidsByBrokerIdAndStatusStatusName(int id,String statusName, Pageable pageable);
 
     Page<Bid> findBidsByClientId(int clientId, Pageable pageable);
+
+    List<Bid> findBidsByStatusStatusNameAndIssuerAndType(String statusName, String issuer, String type);
 }

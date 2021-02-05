@@ -11,4 +11,5 @@ export class Bid {
   dueDate: Date;
   broker: string;
   client: string;
+  type: string;
 }

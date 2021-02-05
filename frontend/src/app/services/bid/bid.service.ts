@@ -25,6 +25,10 @@ export class BidService {
     return this.http.get(baseUrl + 'find/clients-bids' + `?page=${page}&size=${size}&sort=${sort}&clientId=${clientId}`);
   }
 
+  getAllBrokerBids(page: number, size: number, sort: string[], clientId: number): Observable<any> {
+    return this.http.get(baseUrl + 'find/brokers-bids' + `?page=${page}&size=${size}&sort=${sort}&brokerId=${clientId}`);
+  }
+
   create(clientId: number, createBid: CreateBid) {
     return this.http.post(baseUrl + 'create' + `?id=${clientId}`, createBid);
   }
@@ -35,5 +39,13 @@ export class BidService {
 
   getBid(bidId: number): Observable<Bid> {
     return this.http.get<Bid>(baseUrl + 'find' + `?id=${bidId}`);
+  }
+
+  getBidsForCreateDeal(page: number, size: number, sort: string[], bidId: number): Observable<any> {
+    return this.http.get(baseUrl + 'find/bids-for-deal' + `?page=${page}&size=${size}&sort=${sort}&bidId=${bidId}`);
+  }
+
+  createDeal(bidId: number, sellerBidId: number) {
+    return this.http.post(baseUrl + 'create-deal/' + bidId + '/' + sellerBidId, null);
   }
 }

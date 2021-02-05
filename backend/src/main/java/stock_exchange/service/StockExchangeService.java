@@ -1,5 +1,6 @@
 package stock_exchange.service;
 
+import stock_exchange.dto.CreateStockExchangeDTO;
 import stock_exchange.dto.StockExchangeDTO;
 import stock_exchange.model.StockExchange;
 import stock_exchange.response.MessageResponse;
@@ -14,4 +15,6 @@ public interface StockExchangeService {
     StockExchangeDTO find(int exchangeId);
 
     MessageResponse changeStatus(int exchangeId, String status);
+
+    MessageResponse create(int ownerId, CreateStockExchangeDTO exchange);
 }

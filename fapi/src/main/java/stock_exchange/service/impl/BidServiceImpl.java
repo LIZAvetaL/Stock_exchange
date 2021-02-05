@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
 import stock_exchange.model.Bid;
+import stock_exchange.model.BrokerBid;
 import stock_exchange.model.request.CreateBid;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.model.response.PageResponse;
@@ -27,10 +28,11 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public PageResponse<Bid> findBrokersBids(int page, int size, int brokerId) {
+    public PageResponse<Bid> findBrokersBids(int page, int size, String[] sort, int brokerId) {
         return restTemplate.getForObject(
                 UrlConstants.BidUrl + "find/brokers-bids"
-                        + "?page=" + page + "&size=" + size + "&brokerId=" + brokerId, PageResponse.class);
+                        + "?page=" + page + "&size=" + size + "&sort=" + String.join(",", sort)
+                        + "&brokerId=" + brokerId, PageResponse.class);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public void create(int id, CreateBid createBid) {
-        restTemplate.postForEntity(UrlConstants.BidUrl + "create/?id=" + id, createBid, String.class);
+        restTemplate.postForEntity(UrlConstants.BidUrl + "create?id=" + id, createBid, String.class);
     }
 
     @Override
@@ -54,5 +56,19 @@ public class BidServiceImpl implements BidService {
     @Override
     public Bid find(int id) {
         return restTemplate.getForObject(UrlConstants.BidUrl + "find" + "?id=" + id, Bid.class);
+    }
+
+    @Override
+    public PageResponse<BrokerBid> findBids(int page, int size, String[] sort, int bidId) {
+        return restTemplate.getForObject(
+                UrlConstants.BidUrl + "find/bids-for-deal"
+                        + "?page=" + page + "&size=" + size + "&sort=" + String.join(",", sort)
+                        + "&bidId=" + bidId, PageResponse.class);
+    }
+
+    @Override
+    public MessageResponse createDeal(int sellerBidId, int buyerBidId, double price) {
+        return restTemplate.postForEntity(UrlConstants.BidUrl + "create-deal/" + sellerBidId + "/" + buyerBidId
+                + "/" + price, null, MessageResponse.class).getBody();
     }
 }

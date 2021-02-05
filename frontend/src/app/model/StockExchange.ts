@@ -3,7 +3,7 @@ export class StockExchange {
   exchangeName: string;
   country: string;
   city: string;
-  creationDate: string;
+  creationDate: number;
   description: string;
   status: string;
   owner: string;

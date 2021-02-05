@@ -13,4 +13,6 @@ public interface ExchangeService {
     MessageResponse changeStatus(int exchangeId, String status);
 
     MessageResponse update(StockExchange exchange);
+
+    MessageResponse create(int ownerId, StockExchange exchange);
 }

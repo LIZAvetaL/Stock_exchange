@@ -35,6 +35,8 @@ public class Bid {
 
     @Column(name = "priority")
     private String priority;
+    @Column(name = "type")
+    private String type;
 
     @Column(name = "creation_date")
     private LocalDate creationDate;

@@ -14,6 +14,9 @@ import {CreateBidComponent} from './components/create-bid/create-bid.component';
 import {ExchangeDetailsComponent} from './components/exchange-details/exchange-details.component';
 import {BidDetailsComponent} from "./components/bid-details/bid-details.component";
 import {BrokersListComponent} from "./components/brokers-list/brokers-list.component";
+import {CreateExchangeComponent} from "./components/create-exchange/create-exchange.component";
+import {CreateDealComponent} from "./components/create-deal/create-deal.component";
+import {BrokerBidListComponent} from "./components/broker-bid-list/broker-bid-list.component";
 
 
 const routes: Routes = [
@@ -21,10 +24,13 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
   {path: 'owner/exchanges', component: ExchangeListComponent},
+  {path: 'owner/create-exchange', component: CreateExchangeComponent},
   {path: 'exchange-details/:id', component: ExchangeDetailsComponent},
   {path: 'admin/users', component: UserListComponent},
   {path: 'admin/user/create', component: CreateUserComponent},
   {path: 'user-details/:id', component: UserDetailsComponent},
+  {path: 'broker/bids', component: BrokerBidListComponent},
+  {path: 'broker/create-deal/:id', component: CreateDealComponent},
   {path: 'client/bids', component: ClientBidListComponent},
   {path: 'client/create-bid', component: CreateBidComponent},
   {path: 'client/bid-details/:id', component: BidDetailsComponent},

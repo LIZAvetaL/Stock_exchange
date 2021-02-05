@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import stock_exchange.dto.CreateStockExchangeDTO;
 import stock_exchange.dto.StockExchangeDTO;
 import stock_exchange.model.StockExchange;
 import stock_exchange.response.MessageResponse;
@@ -46,6 +47,13 @@ public class StockExchangeController {
     @PostMapping("update")
     public ResponseEntity<MessageResponse> update(@RequestBody StockExchangeDTO exchange) {
         MessageResponse response = stockExchangeService.update(exchange);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
+    @PostMapping("create")
+    public ResponseEntity<MessageResponse> create(@RequestParam (name = "owner-id") int ownerId,
+                                                  @RequestBody CreateStockExchangeDTO exchange) {
+        MessageResponse response = stockExchangeService.create(ownerId, exchange);
         return new ResponseEntity(response, HttpStatus.OK);
     }
 }

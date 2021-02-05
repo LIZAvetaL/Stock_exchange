@@ -19,6 +19,7 @@ public class CreateBid{
     private double minPrice;
     private String priority;
     private Date dueDate;
+    private String type;
 
     private String status;
     private String broker;
