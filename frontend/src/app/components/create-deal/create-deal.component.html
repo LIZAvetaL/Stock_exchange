@@ -1,23 +1,24 @@
-<div class="list row">
-  <button class="btn btn-primary btn-sm" routerLink="/client/create-bid">Create Bid</button>
-  <div class="col-md-12">
-    <pagination-controls
-      previousLabel="Prev"
-      nextLabel="Next"
-      responsive="true"
-      (pageChange)="handlePageChange($event)">
-    </pagination-controls>
+<div class="row">
+  <div class=" col-md-2">
+    <div class="card-header py-1">
+      <strong>
+        Current Bid
+      </strong>
+    </div>
+    <ul class="list-group list-group-flush" style="font-size: 12px;">
+      <li class="list-group-item py-1"><strong>Issuer: </strong>{{bid.issuer}}</li>
+      <li class="list-group-item py-1"><strong>Amount: </strong>{{bid.amount}}</li>
+      <li class="list-group-item py-1"><strong>Min Price: </strong>{{bid.minPrice}}</li>
+    </ul>
   </div>
-
-  <h4>clients List</h4>
-
+<div class="col-md-10 ">
   <table class="table">
     <thead>
     <tr>
       <th (click)="sortTable('bidNumber')" scope="col">Bid number</th>
       <th (click)="sortTable('issuer')" scope="col">Issuer</th>
       <th (click)="sortTable('amount')" scope="col">Amount</th>
-      <th  scope="col">Price</th>
+      <th scope="col">Price</th>
       <th (click)="sortTable('broker')" scope="col">Broker</th>
 
     </tr>
@@ -34,17 +35,34 @@
       <td>{{bid.amount}}</td>
       <td>{{bid.price}}</td>
       <td>{{bid.broker}}</td>
-      <td><button (click)="createDeal(bid.id)" class="btn btn-dark" >Buy</button></td>
+      <td>
+        <button (click)="createDeal(bid.id, bid.price)" class="btn btn-dark btn-sm">Make a Deal</button>
+      </td>
     </tr>
     </tbody>
   </table>
+</div>
+</div>
 
-  <div class="col-md-6">
-    Items per Page:
-    <select (change)="handlePageSizeChange($event)">
-      <option *ngFor="let size of pageSizes" [ngValue]="size">
-        {{ size }}
-      </option>
-    </select>
+<div class=" col-md-12">
+  Items per Page:
+  <select (change)="handlePageSizeChange($event)">
+    <option *ngFor="let size of pageSizes" [ngValue]="size">
+      {{ size }}
+    </option>
+  </select>
+
+  <div class="d-inline-block">
+    <pagination-controls
+      previousLabel="Prev"
+      nextLabel="Next"
+      responsive="true"
+      (pageChange)="handlePageChange($event)">
+    </pagination-controls>
   </div>
 </div>
+
+<div class="col-md-4">
+
+</div>
+

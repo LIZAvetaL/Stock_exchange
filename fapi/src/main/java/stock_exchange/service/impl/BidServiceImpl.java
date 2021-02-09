@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
 import stock_exchange.model.Bid;
 import stock_exchange.model.BrokerBid;
+import stock_exchange.model.Deal;
 import stock_exchange.model.request.CreateBid;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.model.response.PageResponse;
@@ -70,5 +71,13 @@ public class BidServiceImpl implements BidService {
     public MessageResponse createDeal(int sellerBidId, int buyerBidId, double price) {
         return restTemplate.postForEntity(UrlConstants.BidUrl + "create-deal/" + sellerBidId + "/" + buyerBidId
                 + "/" + price, null, MessageResponse.class).getBody();
+    }
+
+    @Override
+    public PageResponse<Bid> findAll(int page, int size, String[] sort) {
+        return restTemplate.getForObject(
+                UrlConstants.BidUrl + "find/all"
+                        + "?page=" + page + "&size=" + size + "&sort=" + String.join(",", sort)
+                        , PageResponse.class);
     }
 }

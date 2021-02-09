@@ -29,6 +29,8 @@ public class Deal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
+    @Column(name = "deal_number")
+    private int dealNumber;
     @Column(name = "amount")
     private int amount;
     @Column(name = "price")

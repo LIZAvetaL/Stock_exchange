@@ -13,6 +13,7 @@ import java.util.Date;
 public class Deal {
 
     private int id;
+    private int dealNumber;
     private int amount;
     private Double price;
     private Double totalPrice;

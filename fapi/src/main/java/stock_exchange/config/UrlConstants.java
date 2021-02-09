@@ -6,4 +6,5 @@ public class UrlConstants {
     public static final String ExchangeUrl = Url + "/exchange/";
     public static final String BrokerUrl = Url + "/broker/";
     public static final String BidUrl = Url + "/bid/";
+    public static final String DealUrl = Url + "/deal/";
 }

@@ -8,7 +8,7 @@
     </pagination-controls>
   </div>
 
-  <h4>Bids List</h4>
+  <h4>Brokers List</h4>
 
   <table class="table">
     <thead>
@@ -19,9 +19,8 @@
       <th (click)="sortTable('minPrice')" scope="col">Min price</th>
       <th (click)="sortTable('maxPrice')" scope="col">Max price</th>
       <th (click)="sortTable('priority')" scope="col">Priority</th>
-      <th (click)="sortTable('type')" scope="col">Type</th>
       <th (click)="sortTable('dueDate')" scope="col">Due date</th>
-      <th (click)="sortTable('client')" scope="col">Client</th>
+      <th (click)="sortTable('broker')" scope="col">Broker</th>
 
     </tr>
     </thead>
@@ -37,11 +36,9 @@
       <td>{{bid.amount}}</td>
       <td>{{bid.minPrice}}</td>
       <td>{{bid.maxPrice}}</td>
-      <td>{{bid.priority}}</td>
       <td>{{bid.type}}</td>
       <td>{{bid.dueDate}}</td>
-      <td>{{bid.client}}</td>
-      <td><button class="btn btn-dark" [routerLink]="['/broker/create-deal/', bid.id]">Find</button></td>
+      <td>{{bid.broker}}</td>
     </tr>
     </tbody>
   </table>

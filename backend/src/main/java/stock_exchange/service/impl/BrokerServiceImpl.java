@@ -57,15 +57,6 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
-    public Deal createDeal(int sellerBidId, int buyerBidId) {
-        //Bid sellerBid = bidService.getBid(sellerBidId);
-        // Bid buyerBid = bidService.getBid(buyerBidId);
-        Deal deal = new Deal();
-        dealService.save(deal);
-        return deal;
-    }
-
-    @Override
     public Page<UnemployedBrokerDTO> findAllUnemployed(String title, int page, int size, String sort) {
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(sort));
 

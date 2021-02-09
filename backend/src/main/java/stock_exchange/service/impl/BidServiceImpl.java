@@ -148,6 +148,13 @@ public class BidServiceImpl implements BidService {
         }
     }
 
+    @Override
+    public Page<BidDTO> findAll(int page, int size, String[] sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortType(sort)));
+        return bidRepository.findBidsByStatusStatusName(StatusConst.Active.toString(), pageable)
+                .map(this::transfer);
+    }
+
     private void changeStatus(Bid bid) {
         bid.setStatus(statusService.find(StatusConst.Completed.toString()));
         bidRepository.save(bid);

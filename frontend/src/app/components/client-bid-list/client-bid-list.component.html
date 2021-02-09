@@ -1,15 +1,7 @@
 <div class="list row">
   <button class="btn btn-primary btn-sm" routerLink="/client/create-bid">Create Bid</button>
-  <div class="col-md-12">
-    <pagination-controls
-     previousLabel="Prev"
-     nextLabel="Next"
-     responsive="true"
-    (pageChange)="handlePageChange($event)">
-    </pagination-controls>
-  </div>
 
-    <h4>Brokers List</h4>
+    <h4>Bids List</h4>
 
     <table class="table">
       <thead>
@@ -49,12 +41,21 @@
       </tbody>
     </table>
 
-  <div class="col-md-6">
+  <div class=" col-md-12">
     Items per Page:
     <select (change)="handlePageSizeChange($event)">
       <option *ngFor="let size of pageSizes" [ngValue]="size">
         {{ size }}
       </option>
     </select>
+
+    <div class="d-inline-block">
+      <pagination-controls
+        previousLabel="Prev"
+        nextLabel="Next"
+        responsive="true"
+        (pageChange)="handlePageChange($event)">
+      </pagination-controls>
+    </div>
   </div>
 </div>

@@ -1,5 +1,6 @@
 package stock_exchange.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,13 @@ public class BidController {
     @GetMapping("/find")
     public ResponseEntity<BidDTO> find(@RequestParam int id) {
         return new ResponseEntity(bidService.find(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/all")
+    public ResponseEntity<Page<BidDTO>> findAll(@RequestParam int page,
+                                              @RequestParam int size,
+                                              @RequestParam String[] sort) {
+        return new ResponseEntity(bidService.findAll(page, size, sort), HttpStatus.OK);
     }
 
     @GetMapping("find/brokers-bids")

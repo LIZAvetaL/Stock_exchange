@@ -30,6 +30,9 @@
       <li class="nav-item" *ngIf="showBrokerBoard">
         <a href="/broker/bids" class="nav-link" routerLink="broker/bids">Bids</a>
       </li>
+      <li class="nav-item" *ngIf="showBrokerBoard">
+        <a href="/broker/deals" class="nav-link" routerLink="broker/deals">Deals</a>
+      </li>
     </ul>
 
     <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
@@ -42,9 +45,6 @@
     </ul>
 
     <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
-      <li class="nav-item">
-        <a href="/profile" class="nav-link" routerLink="profile">{{ name }}</a>
-      </li>
       <li class="nav-item">
         <a href class="nav-link" (click)="logout()">LogOut</a>
       </li>

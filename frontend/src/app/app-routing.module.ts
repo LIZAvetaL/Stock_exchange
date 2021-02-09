@@ -17,9 +17,12 @@ import {BrokersListComponent} from "./components/brokers-list/brokers-list.compo
 import {CreateExchangeComponent} from "./components/create-exchange/create-exchange.component";
 import {CreateDealComponent} from "./components/create-deal/create-deal.component";
 import {BrokerBidListComponent} from "./components/broker-bid-list/broker-bid-list.component";
+import {DealListComponent} from "./components/deal-list/deal-list.component";
+import {HomeComponent} from "./components/home/home.component";
 
 
 const routes: Routes = [
+  {path: 'home', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'profile', component: ProfileComponent},
@@ -30,13 +33,14 @@ const routes: Routes = [
   {path: 'admin/user/create', component: CreateUserComponent},
   {path: 'user-details/:id', component: UserDetailsComponent},
   {path: 'broker/bids', component: BrokerBidListComponent},
+  {path: 'broker/deals', component: DealListComponent},
   {path: 'broker/create-deal/:id', component: CreateDealComponent},
   {path: 'client/bids', component: ClientBidListComponent},
   {path: 'client/create-bid', component: CreateBidComponent},
   {path: 'client/bid-details/:id', component: BidDetailsComponent},
   {path: 'client/unemployed-brokers', component: UnemployedBrokerListComponent},
   {path: 'client/brokers', component: BrokersListComponent},
-  {path: '', redirectTo: 'login', pathMatch: 'full'}
+  {path: '', redirectTo: 'home', pathMatch: 'full'}
 ];
 
 @NgModule({

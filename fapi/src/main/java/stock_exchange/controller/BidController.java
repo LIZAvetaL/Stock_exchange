@@ -13,6 +13,7 @@ import stock_exchange.model.Bid;
 import stock_exchange.model.Deal;
 import stock_exchange.model.request.CreateBid;
 import stock_exchange.model.response.MessageResponse;
+import stock_exchange.model.response.PageResponse;
 import stock_exchange.service.BidService;
 
 import java.util.Map;
@@ -29,6 +30,13 @@ public class BidController {
     @GetMapping("/find")
     public ResponseEntity<Bid> find(@RequestParam int id) {
         return new ResponseEntity(bidService.find(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/all")
+    public ResponseEntity<PageResponse<Bid>> findAll(@RequestParam int page,
+                                                      @RequestParam int size,
+                                                      @RequestParam String[] sort) {
+        return new ResponseEntity(bidService.findAll(page, size, sort), HttpStatus.OK);
     }
 
     @GetMapping("/find/brokers-bids")

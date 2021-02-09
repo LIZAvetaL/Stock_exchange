@@ -1,0 +1,52 @@
+<div class="list row">
+  <div class="col-md-12">
+    <pagination-controls
+      previousLabel="Prev"
+      nextLabel="Next"
+      responsive="true"
+      (pageChange)="handlePageChange($event)">
+    </pagination-controls>
+  </div>
+
+  <h4>Deals List</h4>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th (click)="sortTable('dealNumber')" scope="col">Deal number</th>
+      <th (click)="sortTable('bargainDate')" scope="col">Bargain date</th>
+      <th (click)="sortTable('amount')" scope="col">Amount</th>
+      <th (click)="sortTable('price')" scope="col">Price</th>
+      <th (click)="sortTable('totalPrice')" scope="col">Total price</th>
+      <th (click)="sortTable('seller')" scope="col">Seller</th>
+      <th (click)="sortTable('buyer')" scope="col">Buyer</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="
+    let deal of deals | paginate : {
+            itemsPerPage: pageSize,
+            currentPage: page,
+            totalItems: count
+          }">
+      <td>{{deal.dealNumber}}</td>
+      <td>{{deal.bargainDate}}</td>
+      <td>{{deal.amount}}</td>
+      <td>{{deal.price}}</td>
+      <td>{{deal.totalPrice}}</td>
+      <td>{{deal.seller}}</td>
+      <td>{{deal.buyer}}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="col-md-6">
+    Items per Page:
+    <select (change)="handlePageSizeChange($event)">
+      <option *ngFor="let size of pageSizes" [ngValue]="size">
+        {{ size }}
+      </option>
+    </select>
+  </div>
+</div>

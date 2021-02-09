@@ -23,4 +23,6 @@ public interface BidService {
     Streamable<BrokerBidDTO> findBids(int page, int size, String[] sort, int bidId);
 
     MessageResponse createDeal(int sellerBidId, int buyerBidId, double price);
+
+    Page<BidDTO> findAll(int page, int size, String[] sort);
 }

@@ -61,12 +61,6 @@ public class BrokerController {
         return new ResponseEntity(brokerService.findBroker(id), HttpStatus.OK);
     }
 
-    @PostMapping("/create-deal/{seller-bid-id}/{buyer-bid-id}")
-    public Deal create(@PathVariable(name = "seller-bid-id") int sellerBidId,
-                             @PathVariable(name = "buyer-bid-id") int buyerBidId) {
-        return brokerService.createDeal(sellerBidId, buyerBidId);
-    }
-
     @PostMapping("/employ")
     public ResponseEntity<MessageResponse> employ(@RequestParam (name = "broker-id") int brokerId,
                                                   @RequestParam(name = "client-id") int clientId) {

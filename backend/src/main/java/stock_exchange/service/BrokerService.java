@@ -14,7 +14,6 @@ import java.util.Map;
 
 public interface BrokerService {
     List<BrokerDTO> findAll();
-    Deal createDeal(int sellerBidId, int buyerBidId);
 
     Page<UnemployedBrokerDTO> findAllUnemployed(String title, int page, int size, String sort);
 
