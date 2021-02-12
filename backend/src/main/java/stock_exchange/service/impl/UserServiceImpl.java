@@ -6,6 +6,7 @@ import stock_exchange.model.User;
 import stock_exchange.repository.UserRepository;
 import stock_exchange.dto.UserDTO;
 import stock_exchange.response.MessageResponse;
+import stock_exchange.service.EmailSender;
 import stock_exchange.service.RoleService;
 import stock_exchange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final EmailSender emailSender;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService,
+                           EmailSender emailSender) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.emailSender = emailSender;
     }
 
     @Override
@@ -65,6 +69,7 @@ public class UserServiceImpl implements UserService {
     public void register(CreateUserDTO userDTO) {
         User user = transfer(userDTO);
         userRepository.save(user);
+        emailSender.sendMessage(userDTO.getEmail());
     }
 
     @Override
