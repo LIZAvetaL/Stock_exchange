@@ -12,7 +12,7 @@ public interface BidService {
 
     PageResponse<Bid> findClientsBids(int page, int size,String[] sort, int clientId);
 
-    void create(int id, CreateBid createBid);
+    MessageResponse create(int id, CreateBid createBid);
 
     MessageResponse update(Bid bid);
 

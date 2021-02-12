@@ -64,10 +64,10 @@ public class BidController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity create(@RequestParam int id,
+    public ResponseEntity createBid(@RequestParam int id,
                                  @RequestBody CreateBid createBid) {
-        bidService.create(id, createBid);
-        return new ResponseEntity(HttpStatus.OK);
+
+        return new ResponseEntity(bidService.create(id, createBid),HttpStatus.OK);
     }
 
     @PostMapping("/update")

@@ -1,16 +1,16 @@
 <div class="col-md-12">
   <div class="card card-container">
 
-  <form (ngSubmit)="onSubmit()">
+  <form #f="ngForm">
     <div class="row">
       <div class="form-group col-md-6">
         <label for="issuer">Issuer</label>
         <input name="issuer" [(ngModel)]="createBid.issuer" id="issuer"
-               type="text" class="form-control">
+               type="text" class="form-control" required>
       </div>
       <div class="form-group col-md-6">
         <label for="type">Type</label>
-        <select name="Type" [(ngModel)]="createBid.type" id="type"  class="form-control">
+        <select name="Type" [(ngModel)]="createBid.type" id="type"  class="form-control" required>
           <option value="Buy">Buy</option>
           <option value="Sale">Sale</option>
         </select>
@@ -21,24 +21,29 @@
     <div class="form-group col-md-4">
       <label for="amount">Amount</label>
       <input name="amount" [(ngModel)]="createBid.amount" id="amount"
-             type="number" class="form-control" placeholder="Amount">
+             type="number" class="form-control" placeholder="Amount"
+             min="1"
+             pattern="^[0-9]+$"
+             required>
     </div>
     <div class="form-group col-md-4">
       <label for="minPrice">Min Price</label>
       <input name="minPrice" [(ngModel)]="createBid.minPrice" id="minPrice"
-             type="number" class="form-control" placeholder="Min price">
+             type="number" class="form-control" placeholder="Min price"
+             min="1" required>
     </div>
     <div class="form-group col-md-4">
       <label for="maxPrice">Max Price</label>
       <input name="max" [(ngModel)]="createBid.maxPrice" id="maxPrice"
-             type="number" class="form-control" placeholder="Min price">
+             type="number" class="form-control" placeholder="Min price"
+             min="{{createBid.minPrice+1}}" required>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col-md-6">
       <label for="priority">Priority</label>
-      <select name="priority" [(ngModel)]="createBid.priority" id="priority" class="form-control">
+      <select name="priority" [(ngModel)]="createBid.priority" id="priority" class="form-control" required>
         <option value="Low">Low</option>
         <option value="Medium">Medium</option>
         <option value="High">High</option>
@@ -48,29 +53,46 @@
 
     <div class="form-group col-md-6">
       <label for="status">Status</label>
-      <select name="status" [(ngModel)]="createBid.status" id="status" class="form-control">
+      <select name="status" [(ngModel)]="createBid.status" id="status" class="form-control" required>
         <option value="Draft">Draft</option>
         <option value="Active">Active</option>
-        <option value="Completed">Completed</option>
-        <option value="Cancelled">Cancelled</option>
       </select>
     </div>
   </div>
   <div class="row">
     <div class="form-group col-md-6">
       <label for="broker">Broker</label>
-      <select name="br" id="broker" [(ngModel)]="createBid.broker" class="form-control">
+      <select name="br" id="broker" [(ngModel)]="createBid.broker" class="form-control" required>
         <option *ngFor="let broker of brokers" [value]="broker.name">{{broker.name}}</option>
       </select>
     </div>
 
     <div class="form-group col-md-6">
       <label for="dueDate">Due date</label>
-      <input name="dueDate" [(ngModel)]="createBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date">
+      <input name="dueDate" [(ngModel)]="createBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date"
+             required>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary"
-          (click)="onSubmit()" routerLink="/client/bids">Create</button>
+  <button type="submit" class="btn btn-primary" (click)="onSubmit(f)"
+          data-bs-toggle="modal" data-bs-target="#exampleModal" >Create</button>
 </form>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{response.message}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
   </div>
 </div>

@@ -12,7 +12,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<String> handleModelNotFoundException(NotFoundException e) {
 
-        return new ResponseEntity( e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity( e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 

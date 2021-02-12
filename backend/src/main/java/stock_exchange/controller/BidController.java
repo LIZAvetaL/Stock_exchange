@@ -65,10 +65,10 @@ public class BidController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity create(@RequestParam int id,
-                                 @RequestBody CreateBidDTO createBid) {
+    public ResponseEntity createBid(@RequestParam int id,
+                                    @RequestBody CreateBidDTO createBid) {
         bidService.create(id, createBid);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(new MessageResponse("vse horosho"),HttpStatus.OK);
     }
 
     @PostMapping("/update")

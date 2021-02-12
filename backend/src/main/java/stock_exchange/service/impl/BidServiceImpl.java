@@ -9,6 +9,7 @@ import stock_exchange.config.StatusConst;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerBidDTO;
 import stock_exchange.dto.CreateBidDTO;
+import stock_exchange.exception.BusinessException;
 import stock_exchange.exception.NotFoundException;
 import stock_exchange.model.Bid;;
 import stock_exchange.model.Broker;
@@ -82,11 +83,27 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public void create(int clientId, CreateBidDTO createBid) {
+        checkBid(createBid);
+
         Bid bid = transfer(createBid);
         bid.setBidNumber(generateRandom());
         bid.setCreationDate(LocalDate.now());
         bid.setClient(userService.findUser(clientId));
         bidRepository.save(bid);
+    }
+
+    private void checkBid(CreateBidDTO createBid) {
+        if (createBid.getAmount()<1){
+            throw new BusinessException();
+        }
+
+        if (createBid.getMinPrice()>=createBid.getMaxPrice()){
+            throw new BusinessException();
+        }
+
+        if (LocalDate.now().isAfter(createBid.getDueDate()) || LocalDate.now().isEqual(createBid.getDueDate())){
+            throw new BusinessException();
+        }
     }
 
     @Override

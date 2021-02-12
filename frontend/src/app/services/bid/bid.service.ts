@@ -29,7 +29,7 @@ export class BidService {
     return this.http.get(baseUrl + 'find/brokers-bids' + `?page=${page}&size=${size}&sort=${sort}&brokerId=${clientId}`);
   }
 
-  create(clientId: number, createBid: CreateBid) {
+  create(clientId: number, createBid: CreateBid): Observable<any> {
     return this.http.post(baseUrl + 'create' + `?id=${clientId}`, createBid);
   }
 

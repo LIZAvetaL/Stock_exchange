@@ -14,7 +14,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<MessageResponse> handleModelNotFoundException(NotFoundException e) {
 
         MessageResponse messageResponse=new MessageResponse(e.getMessage());
-        return new ResponseEntity( messageResponse, HttpStatus.NOT_ACCEPTABLE);
+        return new ResponseEntity( messageResponse, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    protected ResponseEntity<MessageResponse> handleModelBusinessException(BusinessException ex) {
+
+        MessageResponse messageResponse=new MessageResponse("Error! Operation failed");
+        return new ResponseEntity( messageResponse, HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<MessageResponse> handleModelException(Exception ex) {
+
+        MessageResponse messageResponse=new MessageResponse("Please try again or contact administrator.");
+        return new ResponseEntity( messageResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
 

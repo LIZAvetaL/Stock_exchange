@@ -23,9 +23,9 @@ public class BidServiceImpl implements BidService {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public BidServiceImpl(RestTemplateBuilder restTemplate) {
+    public BidServiceImpl(RestTemplate restTemplate) {
 
-        this.restTemplate = restTemplate.build();
+        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -45,8 +45,8 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public void create(int id, CreateBid createBid) {
-        restTemplate.postForEntity(UrlConstants.BidUrl + "create?id=" + id, createBid, String.class);
+    public MessageResponse create(int id, CreateBid createBid) {
+       return restTemplate.postForEntity(UrlConstants.BidUrl + "create?id=" + id, createBid, MessageResponse.class).getBody();
     }
 
     @Override
