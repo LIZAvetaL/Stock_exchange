@@ -3,6 +3,7 @@ package stock_exchange.service;
 import org.springframework.data.domain.Page;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerDTO;
+import stock_exchange.dto.BrokerStatisticsDTO;
 import stock_exchange.dto.UnemployedBrokerDTO;
 import stock_exchange.model.Broker;
 import stock_exchange.model.Deal;
@@ -30,4 +31,6 @@ public interface BrokerService {
     MessageResponse employ(int brokerId, int clientId);
 
     MessageResponse dismiss(int brokerId);
+
+    Page<BrokerStatisticsDTO> getStatistics(int page, int size,int clientId);
 }

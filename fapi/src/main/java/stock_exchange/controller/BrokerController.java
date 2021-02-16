@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import stock_exchange.model.Broker;
+import stock_exchange.model.BrokerStatisticsDTO;
 import stock_exchange.model.UnemployedBroker;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.model.response.PageResponse;
@@ -60,5 +61,14 @@ public class BrokerController {
     @PostMapping("/dismiss/{broker-id}")
     public ResponseEntity<MessageResponse> dismiss(@PathVariable(name = "broker-id") int brokerId) {
         return new ResponseEntity(brokerService.dismiss(brokerId), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/statistics")
+    public ResponseEntity<PageResponse<BrokerStatisticsDTO>> getStatistics(@RequestParam int page,
+                                                                           @RequestParam int size,
+                                                                           @RequestParam int clientId) {
+
+        PageResponse<BrokerStatisticsDTO> brokerStatisticsDTOS = brokerService.getStatistics(page, size, clientId);
+        return new ResponseEntity(brokerStatisticsDTOS, HttpStatus.OK);
     }
 }

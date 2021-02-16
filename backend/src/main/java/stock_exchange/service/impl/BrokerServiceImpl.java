@@ -1,12 +1,15 @@
 package stock_exchange.service.impl;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import stock_exchange.config.StatusConst;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerDTO;
+import stock_exchange.dto.BrokerStatisticsDTO;
 import stock_exchange.dto.UnemployedBrokerDTO;
 import stock_exchange.exception.NotFoundException;
 import stock_exchange.model.Bid;
@@ -34,15 +37,15 @@ public class BrokerServiceImpl implements BrokerService {
     private final BrokerRepository brokerRepository;
     private final UserService userService;
 
-    private final DealService dealService;
+    private final BidService bidService;
     private final StatusService statusService;
 
     @Autowired
     public BrokerServiceImpl(BrokerRepository brokerRepository, UserService userService,
-                             DealService dealService, StatusService statusService) {
+                             @Lazy BidService bidService, StatusService statusService) {
         this.brokerRepository = brokerRepository;
         this.userService = userService;
-        this.dealService = dealService;
+        this.bidService = bidService;
         this.statusService = statusService;
     }
 
@@ -117,6 +120,28 @@ public class BrokerServiceImpl implements BrokerService {
         broker.setStatus(statusService.find(StatusConst.Unemployed.toString()));
         brokerRepository.save(broker);
         return new MessageResponse("ok");
+    }
+
+    @Override
+    public Page<BrokerStatisticsDTO> getStatistics(int page, int size, int clientId) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Broker> brokers = brokerRepository.findBrokersByEmployerId(clientId, pageable);
+
+        List<BrokerStatisticsDTO> brokerStatisticsDTOs = new ArrayList<>();
+        for (Broker broker : brokers) {
+            int totalAmount = getTotalAmount(clientId, broker.getId());
+            brokerStatisticsDTOs.add(new BrokerStatisticsDTO(transfertoDto(broker), totalAmount));
+        }
+        return new PageImpl<>(brokerStatisticsDTOs, brokers.getPageable(), brokers.getTotalElements());
+    }
+
+    private int getTotalAmount(int clientId, int brokerId) {
+        List<Bid> bids = bidService.getCompletedBids(clientId, brokerId);
+        int totalAmount = 0;
+        for (Bid bid : bids) {
+            totalAmount += bid.getAmount();
+        }
+        return totalAmount;
     }
 
     private UnemployedBrokerDTO transfer(Broker broker) {

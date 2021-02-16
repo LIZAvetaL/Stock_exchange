@@ -172,6 +172,12 @@ public class BidServiceImpl implements BidService {
                 .map(this::transfer);
     }
 
+    @Override
+    public List<Bid> getCompletedBids(int clientId, int brokerId) {
+        return bidRepository.findBidsByClientIdAndBrokerIdAndStatusStatusName(
+                clientId, brokerId, StatusConst.Completed.toString());
+    }
+
     private void changeStatus(Bid bid) {
         bid.setStatus(statusService.find(StatusConst.Completed.toString()));
         bidRepository.save(bid);

@@ -9,6 +9,8 @@ import stock_exchange.model.Bid;
 import stock_exchange.model.Deal;
 import stock_exchange.response.MessageResponse;
 
+import java.util.List;
+
 public interface BidService {
     Page<BidDTO> findBrokersBids(int page, int size, String[] sort,int brokerId);
     Bid getBid(int sellerBidId);
@@ -25,4 +27,6 @@ public interface BidService {
     MessageResponse createDeal(int sellerBidId, int buyerBidId, double price);
 
     Page<BidDTO> findAll(int page, int size, String[] sort);
+
+    List<Bid> getCompletedBids(int clientId, int brokerId);
 }

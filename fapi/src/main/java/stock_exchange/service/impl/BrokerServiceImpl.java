@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
 import stock_exchange.model.Broker;
+import stock_exchange.model.BrokerStatisticsDTO;
 import stock_exchange.model.UnemployedBroker;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.model.response.PageResponse;
@@ -33,7 +34,7 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
-    public PageResponse<Broker> findBrokers(int page, int size,int clientId) {
+    public PageResponse<Broker> findBrokers(int page, int size, int clientId) {
         return restTemplate.getForObject(
                 UrlConstants.BrokerUrl + "find/all" + "?page=" + page + "&size=" + size + "&client-id=" + clientId,
                 PageResponse.class);
@@ -56,5 +57,11 @@ public class BrokerServiceImpl implements BrokerService {
     public MessageResponse dismiss(int brokerId) {
         return restTemplate.postForEntity(UrlConstants.BrokerUrl + "dismiss" + "?broker-id=" + brokerId,
                 null, MessageResponse.class).getBody();
+    }
+
+    @Override
+    public PageResponse<BrokerStatisticsDTO> getStatistics(int page, int size, int clientId) {
+        return restTemplate.getForObject(UrlConstants.BrokerUrl + "find/statistics"
+                + "?page=" + page + "&size=" + size +"&clientId="+ clientId, PageResponse.class);
     }
 }
