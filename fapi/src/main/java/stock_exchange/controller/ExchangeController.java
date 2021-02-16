@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import stock_exchange.model.CreateStockExchange;
 import stock_exchange.model.StockExchange;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.service.ExchangeService;
@@ -49,7 +50,7 @@ public class ExchangeController {
 
     @PostMapping("create")
     public ResponseEntity<MessageResponse> create(@RequestParam(name = "owner-id") int ownerId,
-                                                @RequestBody StockExchange exchange) {
+                                                  @RequestBody CreateStockExchange exchange) {
         MessageResponse response = exchangeService.create(ownerId, exchange);
         return new ResponseEntity(response, HttpStatus.OK);
     }

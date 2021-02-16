@@ -1,15 +1,5 @@
 <div class="list row">
 
-  <div class="col-md-12">
-    <pagination-controls
-      previousLabel="Prev"
-      nextLabel="Next"
-      responsive="true"
-      (pageChange)="handlePageChange($event)">
-    </pagination-controls>
-  </div>
-
-  <div class="col-md-6">
     <h4>Brokers List</h4>
 
     <table class="table">
@@ -18,12 +8,12 @@
         <th (click)="sortTable('id')" scope="col">#</th>
         <th (click)="sortTable('name')" scope="col">Name</th>
         <th (click)="sortTable('exchange')" scope="col">StockExchange</th>
-        <th (click)="sortTable('status')" scope="col">Status</th>
+        <th (click)="sortTable('status')" scope="col">Total Amount Of Completed Bid</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="
-    let broker of brokers | paginate : {
+    let statistic of statistics | paginate : {
             itemsPerPage: pageSize,
             currentPage: page,
             totalItems: count
@@ -31,20 +21,30 @@
     let i = index;
   ">
         <td>{{i}}</td>
-        <td>{{broker.name}}</td>
-        <td>{{broker.exchange}}</td>
-        <td>{{broker.status}}</td>
-        <td><button class="btn btn-dark" *ngIf="!broker.isEmploy" (click)="dismiss(broker)" >Dismiss</button></td>
-        <td><button class="btn btn-primary" *ngIf="broker.isEmploy" (click)="employ(broker)" >Employ</button></td>
+        <td>{{statistic.broker.name}}</td>
+        <td>{{statistic.broker.exchange}}</td>
+        <td>{{statistic.totalAmount}}</td>
+        <td><button class="btn btn-dark" *ngIf="!statistic.broker.isEmploy" (click)="dismiss(broker)" >Dismiss</button></td>
+        <td><button class="btn btn-primary" *ngIf="statistic.broker.isEmploy" (click)="employ(broker)" >Employ</button></td>
       </tr>
       </tbody>
     </table>
 
+  <div class="col-md-12">
     Items per Page:
     <select (change)="handlePageSizeChange($event)">
       <option *ngFor="let size of pageSizes" [ngValue]="size">
         {{ size }}
       </option>
     </select>
+
+    <div class="d-inline-block">
+      <pagination-controls
+        previousLabel="Prev"
+        nextLabel="Next"
+        responsive="true"
+        (pageChange)="handlePageChange($event)">
+      </pagination-controls>
+    </div>
   </div>
 </div>

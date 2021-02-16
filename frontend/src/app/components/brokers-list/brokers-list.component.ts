@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UnemployedBroker} from "../../model/unemployed-broker";
 import {BrokerService} from "../../services/broker/broker.service";
 import {TokenStorageService} from "../../services/token-storage/token-storage.service";
 import {Broker} from "../../model/broker";
+import {BrokerStatistics} from "../../model/BrokerStatistics";
 
 @Component({
   selector: 'app-brokers-list',
@@ -12,8 +13,9 @@ import {Broker} from "../../model/broker";
 export class BrokersListComponent implements OnInit {
 
   clientId: number;
-  brokers: Broker[];
   title = '';
+  statistics: BrokerStatistics[];
+  brokers: Broker[];
 
   page = 1;
   count = 0;
@@ -27,11 +29,25 @@ export class BrokersListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getBrokerStatistics();
     this.retrieveBrokers();
   }
 
+  getBrokerStatistics() {
+    this.brokerService.getStatistics(this.page - 1, this.pageSize, this.clientId).subscribe(
+      response => {
+        const {content, totalElements} = response;
+        this.statistics = content;
+        this.count = totalElements;
+        console.log(response);
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
   retrieveBrokers() {
-    this.brokerService.getClientsBrokers( this.page - 1, this.pageSize, this.clientId)
+    this.brokerService.getClientsBrokers(this.page - 1, this.pageSize, this.clientId)
       .subscribe(
         response => {
           const {content, totalElements} = response;
@@ -47,13 +63,13 @@ export class BrokersListComponent implements OnInit {
 
   handlePageChange(event) {
     this.page = event;
-    this.retrieveBrokers();
+    this.getBrokerStatistics();
   }
 
   handlePageSizeChange(event) {
     this.pageSize = event.target.value;
     this.page = 1;
-    this.retrieveBrokers();
+    this.getBrokerStatistics();
   }
 
   employ(broker: UnemployedBroker) {

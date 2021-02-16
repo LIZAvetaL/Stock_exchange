@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,7 +15,7 @@ public class StockExchangeDTO {
     private String exchangeName;
     private String country;
     private String city;
-    private Date creationDate;
+    private LocalDate creationDate;
     private String description;
     private String status;
     private String owner;

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "stock_exchange")
@@ -28,7 +29,7 @@ public class StockExchange {
     @Column(name = "city")
     private String city;
     @Column(name = "creation_date")
-    private Date creationDate;
+    private LocalDate creationDate;
     @Column(name = "description")
     private String description;
 

@@ -1,5 +1,6 @@
 package stock_exchange.service.impl;
 
+import stock_exchange.config.StatusConst;
 import stock_exchange.dto.CreateStockExchangeDTO;
 import stock_exchange.model.StockExchange;
 import stock_exchange.repository.StockExchangeRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import stock_exchange.service.UserService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,9 +87,9 @@ public class StockExchangeServiceImpl implements StockExchangeService {
         exchange.setExchangeName(exchangeDTO.getExchangeName());
         exchange.setCountry(exchangeDTO.getCountry());
         exchange.setCity(exchangeDTO.getCity());
-        exchange.setCreationDate(exchangeDTO.getCreationDate());
+        exchange.setCreationDate(LocalDate.now());
         exchange.setDescription(exchangeDTO.getDescription());
-        exchange.setStatus(statusService.find(exchangeDTO.getStatus()));
+        exchange.setStatus(statusService.find(StatusConst.Open.toString()));
         exchange.setOwner(userService.findUser(id));
         return exchange;
     }

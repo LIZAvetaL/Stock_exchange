@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {UnemployedBroker} from '../../model/unemployed-broker';
 import {Broker} from '../../model/broker';
+import {BrokerStatistics} from "../../model/BrokerStatistics";
 
 const baseUrl = 'http://localhost:8080/broker/';
 
@@ -31,6 +32,11 @@ export class BrokerService {
   }
 
   dismiss(brokerId: number) {
-    return this.http.post(baseUrl + 'dismiss/' + brokerId , null);
+    return this.http.post(baseUrl + 'dismiss/' + brokerId, null);
+  }
+
+  getStatistics( page: number, size: number, clientId: number): Observable<any> {
+    return this.http.get(baseUrl + 'find/statistics'+ `?page=${page}&size=${size}&clientId=${clientId}`);
+
   }
 }

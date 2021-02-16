@@ -2,14 +2,14 @@
 <div class="col-md-12">
   <div class="card card-container">
     <form>
-      <button class="btn btn-primary btn-sm" (click)="edit()">Edit exchange</button>
       <div class="form-group ">
         <label for="exchangeName">StockExchange Name</label>
         <input [disabled]="!isEdit"
                type="text"
                id="exchangeName"
                class="form-control"
-               [value]="exchange.exchangeName" >
+               [value]="exchange.exchangeName"
+               required>
       </div>
 
       <div class="form-group">
@@ -18,7 +18,8 @@
                type="text"
                id="country"
                class="form-control"
-               [value]="exchange.country">
+               [value]="exchange.country"
+               required>
       </div>
 
       <div class="form-group">
@@ -27,7 +28,8 @@
                type="text"
                id="city"
                class="form-control"
-               [value]="exchange.city">
+               [value]="exchange.city"
+               required>
       </div>
 
       <div class="form-group">
@@ -36,12 +38,14 @@
                type="text"
                id="creationDate"
                class="form-control"
-               [value]="exchange.creationDate">
+               [value]="exchange.creationDate"
+               required>
       </div>
 
       <div class="form-group col-md-8">
         <label for="description">Description</label>
         <textarea [disabled]="!isEdit"
+                  required
                   class="form-control"
                   id="description"
                   rows="3">{{exchange.description}}</textarea>
@@ -49,18 +53,21 @@
 
       <div class="form-group">
         <label>Status</label>
-        <select name="status" [(ngModel)]="status" class="form-control">
+        <select required [disabled]="!isEdit" name="status" [(ngModel)]="status" class="form-control">
           <option selected value="Open">Open</option>
           <option value="Closed">Closed</option>
           <option value="Terminated">Terminated</option>
         </select>
-        <small id="message" class="form-text text-muted">
+        <small id="message" *ngIf="showMessage" >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+          </svg>
           {{response.message}}
         </small>
       </div>
-
-      <button *ngIf="!isEdit" type="submit" class="btn btn-info" (click)="onSubmit()">Change status</button>
-      <button *ngIf="isEdit" type="submit" class="btn btn-info" (click)="Save()">Save</button>
+      <button class="btn btn-dark btn-sm" *ngIf="!isEdit" (click)="edit()">Edit exchange</button>
+      <button *ngIf="isEdit" type="submit" class="btn btn-primary btn-sm" (click)="Save()">Save</button>
     </form>
   </div>
 </div>

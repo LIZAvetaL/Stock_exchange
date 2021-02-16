@@ -1,79 +1,97 @@
 <div class="col-md-12">
   <div class="card card-container">
-  <form>
-  <button *ngIf="!isEdit" (click)="edit()" type="submit" class="btn btn-primary btn-sml">Edit</button>
- <div class="row">
-  <div class="form-group col-md-6">
-    <label for="issuer">Issuer</label>
-    <input name="issuer" [(ngModel)]="editBid.issuer" id="issuer"
-           type="text" class="form-control" [disabled]="!isEdit">
-  </div>
-   <div class="form-group col-md-6">
-     <label for="type">Type</label>
-     <select name="Type" [(ngModel)]="editBid.type" id="type"
-             disabled class="form-control">
-       <option value="Buy">Buy</option>
-       <option value="Sale">Sale</option>
-     </select>
-   </div>
- </div>
-
-  <div class="row">
-    <div class="form-group col-md-4">
-      <label for="amount">Amount</label>
-      <input name="amount" [(ngModel)]="editBid.amount" id="amount"
-             type="number" class="form-control" [disabled]="!isEdit">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="minPrice">Min Price</label>
-      <input name="minPrice" [(ngModel)]="editBid.minPrice" id="minPrice"
-             type="number" class="form-control" [disabled]="!isEdit">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="maxPrice">Max Price</label>
-      <input name="max" [(ngModel)]="editBid.maxPrice" id="maxPrice"
-             type="number" class="form-control" [disabled]="!isEdit">
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label for="priority">Priority</label>
-      <select name="priority" [(ngModel)]="editBid.priority" id="priority" [disabled]="!isEdit" class="form-control">
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-        <option value="Extra High">Extra High</option>
-      </select>
+  <form #f="ngForm">
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="issuer">Issuer</label>
+        <input name="issuer" [(ngModel)]="editBid.issuer" id="issuer"
+               type="text" class="form-control" required
+               [disabled]="isEdit">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="type">Type</label>
+        <select name="Type" [(ngModel)]="editBid.type" id="type"  class="form-control" disabled>
+          <option value="Buy">Buy</option>
+          <option value="Sale">Sale</option>
+        </select>
+      </div>
     </div>
 
-    <div class="form-group col-md-6">
-      <label for="status">Status</label>
-      <select name="status" [(ngModel)]="editBid.status" [disabled]="!isEdit" id="status" class="form-control">
-        <option value="Draft">Draft</option>
-        <option value="Active">Active</option>
-        <option value="Completed">Completed</option>
-        <option value="Cancelled">Cancelled</option>
-      </select>
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="amount">Amount</label>
+        <input name="amount" [(ngModel)]="editBid.amount" id="amount"
+               type="number" class="form-control" placeholder="Amount"
+               min="1"
+               #amount="ngModel"
+               required
+               [disabled]="isEdit">
+        <small class="form-text text-muted" *ngIf="(amount.dirty || amount.touched) && isAmount()">Amount must be more than 0</small>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="minPrice">Min Price</label>
+        <input name="minPrice" [(ngModel)]="editBid.minPrice" id="minPrice"
+               type="number" class="form-control" placeholder="Min price"
+               min="1"
+               #minPrice="ngModel"
+               required
+               [disabled]="isEdit">
+        <small *ngIf="(minPrice.dirty || minPrice.touched) && isMinPrice()">Min Price must be more than 0</small>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="maxPrice">Max Price</label>
+        <input name="max" [(ngModel)]="editBid.maxPrice" id="maxPrice"
+               type="number" class="form-control" placeholder="Min price"
+               min="{{editBid.minPrice+1}}"
+               #maxPrice="ngModel"
+               required
+               [disabled]="isEdit">
+        <small *ngIf="(maxPrice.dirty || maxPrice.touched) && isMaxPrice()">Max Price must be more than Min Price</small>
+      </div>
     </div>
-  </div>
 
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="priority">Priority</label>
+        <select name="priority" [(ngModel)]="editBid.priority" id="priority" class="form-control"
+                [disabled]="isEdit"
+                required>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+          <option value="Extra High">Extra High</option>
+        </select>
+      </div>
 
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label for="broker">Broker</label>
-      <select name="br" id="broker" [(ngModel)]="editBid.broker" class="form-control" [disabled]="!isEdit">
-        <option *ngFor="let broker of brokers" [value]="broker.name">{{broker.name}}</option>
-      </select>
+      <div class="form-group col-md-6">
+        <label for="status">Status</label>
+        <select [disabled]="isEdit" name="status" [(ngModel)]="editBid.status" id="status" class="form-control" required>
+          <option value="Draft">Draft</option>
+          <option value="Active">Active</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
     </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="broker">Broker</label>
+        <select name="br" id="broker" [(ngModel)]="editBid.broker" class="form-control" required
+        [disabled]="isEdit">
+          <option *ngFor="let broker of brokers" [value]="broker.name">{{broker.name}}</option>
+        </select>
+      </div>
 
-    <div class="form-group col-md-6">
-      <label for="dueDate">Due date</label>
-      <input name="dueDate" [(ngModel)]="editBid.dueDate" id="dueDate"
-             type="date" class="form-control" [disabled]="!isEdit">
+      <div class="form-group col-md-6">
+        <label for="dueDate">Due date</label>
+        <input name="dueDate" [(ngModel)]="editBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date"
+               #dueDate="ngModel"
+               required
+               [disabled]="isEdit">
+      </div>
     </div>
-  </div>
-  <button *ngIf="isEdit" (click)="save()" type="submit" class="btn btn-primary">Save</button>
+    <button *ngIf="!isEdit" (click)="edit()" type="submit" class="btn btn-dark btn-sml">Edit</button>
+  <button *ngIf="isEdit" (click)="save(f)" type="submit" class="btn btn-primary">Save</button>
   </form>
   </div>
 </div>
+

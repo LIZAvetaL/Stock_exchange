@@ -1,8 +1,10 @@
 package stock_exchange.service;
 
+import stock_exchange.model.CreateStockExchange;
 import stock_exchange.model.StockExchange;
 import stock_exchange.model.response.MessageResponse;
 
+import java.net.CacheRequest;
 import java.util.List;
 
 public interface ExchangeService {
@@ -14,5 +16,5 @@ public interface ExchangeService {
 
     MessageResponse update(StockExchange exchange);
 
-    MessageResponse create(int ownerId, StockExchange exchange);
+    MessageResponse create(int ownerId, CreateStockExchange exchange);
 }

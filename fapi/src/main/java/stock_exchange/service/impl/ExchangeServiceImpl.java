@@ -5,6 +5,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
+import stock_exchange.model.CreateStockExchange;
 import stock_exchange.model.StockExchange;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.service.ExchangeService;
@@ -44,7 +45,7 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public MessageResponse create(int ownerId, StockExchange exchange) {
+    public MessageResponse create(int ownerId, CreateStockExchange exchange) {
         return restTemplate.postForEntity(UrlConstants.ExchangeUrl + "create?owner-id="+ownerId, exchange,
                 MessageResponse.class).getBody();
     }

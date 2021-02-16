@@ -5,6 +5,8 @@ import {TokenStorageService} from '../../services/token-storage/token-storage.se
 import {BidService} from '../../services/bid/bid.service';
 import {BrokerService} from '../../services/broker/broker.service';
 import {Bid} from '../../model/bid';
+import {NgForm} from "@angular/forms";
+import {MessageResponse} from "../../model/messageResponse";
 
 @Component({
   selector: 'app-bid-details',
@@ -17,6 +19,7 @@ export class BidDetailsComponent implements OnInit {
   brokers: Broker[];
   clientId: number;
   bidId: number;
+  response: MessageResponse;
 
   isEdit: boolean;
 
@@ -28,6 +31,7 @@ export class BidDetailsComponent implements OnInit {
     this.clientId = tokenService.getUser().id;
     this.editBid = new Bid();
     this.isEdit = false;
+    this.response = new MessageResponse();
   }
 
   ngOnInit() {
@@ -42,12 +46,28 @@ export class BidDetailsComponent implements OnInit {
     );
   }
 
-  save() {
-    this.bidService.update(this.editBid).subscribe();
-    this.isEdit = false;
+  save(form: NgForm) {
+    if (form.invalid || this.isAmount() || this.isMinPrice() || this.isMaxPrice()) {
+      this.response.message = 'check data';
+    } else {
+      this.bidService.update(this.editBid).subscribe();
+      this.isEdit = false;
+    }
   }
 
   edit() {
     this.isEdit = true;
+  }
+
+  isAmount() {
+    return (this.editBid.amount <= 0);
+  }
+
+  isMinPrice() {
+    return (this.editBid.minPrice <= 0);
+  }
+
+  isMaxPrice() {
+    return this.isMinPrice() || (this.editBid.maxPrice <= this.editBid.minPrice);
   }
 }

@@ -5,8 +5,9 @@ import {TokenStorageService} from 'src/app/services/token-storage/token-storage.
 import {CreateBid} from '../../model/create-bid';
 import {BidService} from '../../services/bid/bid.service';
 import {Router} from '@angular/router';
-import {MessageResponse} from "../../model/messageResponse";
-import {NgForm} from "@angular/forms";
+import {MessageResponse} from '../../model/messageResponse';
+import {NgForm} from '@angular/forms';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-create-bid',
@@ -21,6 +22,7 @@ export class CreateBidComponent implements OnInit {
 
   isError: boolean;
   response: MessageResponse;
+  datePipe: DatePipe;
 
   constructor(private tokenService: TokenStorageService,
               private bidService: BidService,
@@ -52,10 +54,23 @@ export class CreateBidComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    if (form.invalid) {
+    if (form.invalid || this.isAmount() || this.isMinPrice() || this.isMaxPrice()) {
       this.response.message = 'check data';
     } else {
-      this.create();
+      console.log(this.createBid);
+      this.response.message = 'check';
     }
+  }
+
+  isAmount() {
+    return (this.createBid.amount <= 0);
+  }
+
+  isMinPrice() {
+    return (this.createBid.minPrice <= 0);
+  }
+
+  isMaxPrice() {
+    return this.isMinPrice() || (this.createBid.maxPrice <= this.createBid.minPrice);
   }
 }

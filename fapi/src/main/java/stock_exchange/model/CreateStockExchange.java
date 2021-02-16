@@ -13,7 +13,5 @@ public class CreateStockExchange {
     private String exchangeName;
     private String country;
     private String city;
-    private Date creationDate;
     private String description;
-    private String status;
 }

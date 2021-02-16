@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {MessageResponse} from '../../model/messageResponse';
 import {StockExchange} from '../../model/StockExchange';
+import {CreateExchange} from "../../model/create-exchange";
 
 const API_URL = 'http://localhost:8080/exchange/';
 
@@ -31,7 +32,8 @@ export class ExchangeService {
     return this.http.post<MessageResponse>('http://localhost:8080/exchange/update', stockExchange);
   }
 
-  saveExchange(exchange: StockExchange, id: number) {
-    return this.http.post(API_URL + 'create' + '?owner-id=' + id, exchange);
+  saveExchange(exchange: CreateExchange, id: number): Observable<MessageResponse> {
+    console.log(exchange);
+    return this.http.post<MessageResponse>(API_URL + 'create' + '?owner-id=' + id, exchange);
   }
 }

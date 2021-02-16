@@ -1,5 +1,5 @@
-<button class="btn btn-primary btn-sm" routerLink="/owner/create-exchange">Create Stock Exchange</button>
-<table class="table">
+<button class="btn btn-primary btn-sm create" routerLink="/owner/create-exchange">Create Stock Exchange</button>
+<table class="table table-hover">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -14,7 +14,7 @@
       <td>{{exchange.exchangeName}}</td>
       <td>{{exchange.status}}</td>
       <td>{{exchange.description}}</td>
-      <td><button class="btn btn-dark" routerLink="/exchange-details/{{ exchange.id }}">Profile</button></td>
+      <td><button class="btn btn-dark btn-sm" routerLink="/exchange-details/{{ exchange.id }}">Profile</button></td>
     </tr>
   </tbody>
 </table>
