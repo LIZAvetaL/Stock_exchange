@@ -6,8 +6,11 @@
         <label for="issuer">Issuer</label>
         <input name="issuer" [(ngModel)]="editBid.issuer" id="issuer"
                type="text" class="form-control" required
-               [disabled]="isEdit">
-      </div>
+               [disabled]="!isEdit" #issuer="ngModel">
+        <div class="alert alert-danger message"
+        role="alert"
+        *ngIf="(issuer.dirty || issuer.touched) && issuer.errors.required">Issuer is required</div>
+    </div>
       <div class="form-group col-md-6">
         <label for="type">Type</label>
         <select name="Type" [(ngModel)]="editBid.type" id="type"  class="form-control" disabled>
@@ -25,8 +28,10 @@
                min="1"
                #amount="ngModel"
                required
-               [disabled]="isEdit">
-        <small class="form-text text-muted" *ngIf="(amount.dirty || amount.touched) && isAmount()">Amount must be more than 0</small>
+               [disabled]="!isEdit">
+        <div class="alert alert-danger message"
+               role="alert"
+               *ngIf="(amount.dirty || amount.touched) && isAmount()">Amount must be more than 0</div>
       </div>
       <div class="form-group col-md-4">
         <label for="minPrice">Min Price</label>
@@ -35,9 +40,12 @@
                min="1"
                #minPrice="ngModel"
                required
-               [disabled]="isEdit">
-        <small *ngIf="(minPrice.dirty || minPrice.touched) && isMinPrice()">Min Price must be more than 0</small>
+               [disabled]="!isEdit">
+        <div class="alert alert-danger message"
+             role="alert"
+             *ngIf="(minPrice.dirty || minPrice.touched) && isMinPrice()">Min Price must be more than 0</div>
       </div>
+
       <div class="form-group col-md-4">
         <label for="maxPrice">Max Price</label>
         <input name="max" [(ngModel)]="editBid.maxPrice" id="maxPrice"
@@ -45,8 +53,10 @@
                min="{{editBid.minPrice+1}}"
                #maxPrice="ngModel"
                required
-               [disabled]="isEdit">
-        <small *ngIf="(maxPrice.dirty || maxPrice.touched) && isMaxPrice()">Max Price must be more than Min Price</small>
+               [disabled]="!isEdit">
+        <div class="alert alert-danger message"
+               role="alert"
+               *ngIf="(maxPrice.dirty || maxPrice.touched) && isMaxPrice()">Max Price must be more than Min Price</div>
       </div>
     </div>
 
@@ -54,7 +64,7 @@
       <div class="form-group col-md-6">
         <label for="priority">Priority</label>
         <select name="priority" [(ngModel)]="editBid.priority" id="priority" class="form-control"
-                [disabled]="isEdit"
+                [disabled]="!isEdit"
                 required>
           <option value="Low">Low</option>
           <option value="Medium">Medium</option>
@@ -65,7 +75,7 @@
 
       <div class="form-group col-md-6">
         <label for="status">Status</label>
-        <select [disabled]="isEdit" name="status" [(ngModel)]="editBid.status" id="status" class="form-control" required>
+        <select [disabled]="!isEdit" name="status" [(ngModel)]="editBid.status" id="status" class="form-control" required>
           <option value="Draft">Draft</option>
           <option value="Active">Active</option>
           <option value="Cancelled">Cancelled</option>
@@ -76,7 +86,7 @@
       <div class="form-group col-md-6">
         <label for="broker">Broker</label>
         <select name="br" id="broker" [(ngModel)]="editBid.broker" class="form-control" required
-        [disabled]="isEdit">
+        [disabled]="!isEdit">
           <option *ngFor="let broker of brokers" [value]="broker.name">{{broker.name}}</option>
         </select>
       </div>
@@ -86,11 +96,15 @@
         <input name="dueDate" [(ngModel)]="editBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date"
                #dueDate="ngModel"
                required
-               [disabled]="isEdit">
+               [disabled]="!isEdit">
+        <div class="alert alert-danger message"
+             role="alert"
+             *ngIf="(dueDate.dirty || dueDate.touched) && isDueDate()">Due Date must be more than Current Date</div>
       </div>
     </div>
     <button *ngIf="!isEdit" (click)="edit()" type="submit" class="btn btn-dark btn-sml">Edit</button>
   <button *ngIf="isEdit" (click)="save(f)" type="submit" class="btn btn-primary">Save</button>
+    <small>{{response.message}}</small>
   </form>
   </div>
 </div>

@@ -1,8 +1,11 @@
 package stock_exchange.controller;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestParam;
+import stock_exchange.dto.CreateBidDTO;
+import stock_exchange.dto.CreateBrokerDTO;
 import stock_exchange.dto.CreateUserDTO;
 import stock_exchange.dto.UserDTO;
 import stock_exchange.model.User;
@@ -26,9 +29,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity findAll() {
-
-        return new ResponseEntity(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Page<UserDTO>> findAll(@RequestParam int page,
+                                                 @RequestParam int size,
+                                                 @RequestParam String[] sort) {
+        return new ResponseEntity(userService.findAll(page, size, sort), HttpStatus.OK);
     }
 
     @GetMapping("find/id/{id}")
@@ -56,6 +60,11 @@ public class UserController {
         userService.register(user);
     }
 
+    @PostMapping("/registration/broker")
+    public void register(@RequestBody CreateBrokerDTO broker) {
+        userService.registerBroker(broker);
+    }
+
     @GetMapping("/clients")
     public ResponseEntity findClients() {
         return new ResponseEntity(userService.findClients(), HttpStatus.OK);
@@ -65,5 +74,15 @@ public class UserController {
     public ResponseEntity<MessageResponse> update(@RequestParam(name = "id") int userId,
                                                   @RequestParam String role) {
         return new ResponseEntity(userService.update(userId, role), HttpStatus.OK);
+    }
+
+    @PostMapping("/block")
+    public ResponseEntity<MessageResponse> block(@RequestParam(name = "id") int userId) {
+        return new ResponseEntity(userService.block(userId), HttpStatus.OK);
+    }
+
+    @PostMapping("/unblock")
+    public ResponseEntity<MessageResponse> unblock(@RequestParam(name = "id") int userId) {
+        return new ResponseEntity(userService.unblock(userId), HttpStatus.OK);
     }
 }

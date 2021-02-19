@@ -23,7 +23,15 @@ label {
 .btn{
   margin-top: 10px;
 }
-small{
+.message{
   color: green;
   font-size: 15px;
+}
+
+small{
+  font-weight: bold;
+  color: red;
+  font-size: 12px;
+  position: relative;
+  top: -5px;
 }

@@ -1,6 +1,8 @@
 package stock_exchange.service.impl;
 
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import stock_exchange.exception.NotFoundException;
+import stock_exchange.model.CreateBroker;
 import stock_exchange.model.CreateUser;
 import stock_exchange.model.User;
 import stock_exchange.model.request.LoginRequest;
@@ -50,23 +54,30 @@ public class AuthServiceImpl implements AuthService {
                 userDetails.getId(),
                 userDetails.getName(),
                 userDetails.getUsername(),
-                userDetails.getRole());
+                userDetails.getRole(),
+                userDetails.getStatus());
     }
 
     @Override
     public ResponseEntity registerUser(SignupRequest signUpRequest) {
         if (userService.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already taken!"));
+            throw new NotFoundException("Error: Email is already taken!");
         }
 
-        CreateUser user = new CreateUser(signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getName(),
-                signUpRequest.getRole());
-
-        userService.register(user);
+        if (signUpRequest.getExchange() == null) {
+            CreateUser user = new CreateUser(signUpRequest.getEmail(),
+                    signUpRequest.getName(),
+                    encoder.encode(signUpRequest.getPassword()),
+                    signUpRequest.getRole());
+            userService.register(user);
+        } else {
+            CreateBroker broker = new CreateBroker(signUpRequest.getEmail(),
+                    signUpRequest.getName(),
+                    encoder.encode(signUpRequest.getPassword()),
+                    signUpRequest.getRole(),
+                    signUpRequest.getExchange());
+            userService.registerBroker(broker);
+        }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

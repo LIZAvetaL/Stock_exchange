@@ -36,4 +36,8 @@ export class ExchangeService {
     console.log(exchange);
     return this.http.post<MessageResponse>(API_URL + 'create' + '?owner-id=' + id, exchange);
   }
+
+  getAll(): Observable<any> {
+    return this.http.get(API_URL + 'find/all');
+  }
 }

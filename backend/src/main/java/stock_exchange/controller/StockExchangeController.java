@@ -37,6 +37,11 @@ public class StockExchangeController {
         return new ResponseEntity(stockExchangeService.find(exchangeId), HttpStatus.OK);
     }
 
+    @GetMapping("find/all")
+    public ResponseEntity findAll() {
+        return new ResponseEntity(stockExchangeService.findAll(), HttpStatus.OK);
+    }
+
     @PostMapping("change-status")
     public ResponseEntity<MessageResponse> changeStatus(@RequestParam(name = "id") int exchangeId,
                                                         @RequestParam String status) {

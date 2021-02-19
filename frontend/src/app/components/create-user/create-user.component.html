@@ -67,41 +67,47 @@
         </div>
       </div>
 
-      <div class="form-check ">
-        <input class="form-check-input" 
-          type="radio" 
-          name="role" 
-          id="clientRole" 
-          value="client"
-          [(ngModel)]="form.role">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input"
+               type="radio"
+               name="role"
+               id="clientRole"
+               value="ROLE_CLIENT"
+               (click)="isBrokerRole()"
+               [(ngModel)]="form.role">
         <label class="form-check-label" for="clientRole">client</label>
       </div>
-      <div class="form-check ">
-        <input class="form-check-input" 
-          type="radio" 
-          name="role"
-          id="ownerRole" 
-          value="owner"
-          [(ngModel)]="form.role">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input"
+               type="radio"
+               name="role"
+               id="ownerRole"
+               value="ROLE_OWNER"
+               (click)="isBrokerRole()"
+               [(ngModel)]="form.role">
         <label class="form-check-label" for="ownerRole">owner</label>
       </div>
-      <div class="form-check ">
-        <input class="form-check-input" 
-          type="radio" 
-          name="role" 
-          id="brokerRole" 
-          value="broker"
-          [(ngModel)]="form.role">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input"
+               type="radio"
+               name="role"
+               id="brokerRole"
+               value="ROLE_BROKER"
+               [(ngModel)]="form.role"
+               (click)="showExchange()">
         <label class="form-check-label" for="brokerRole">broker</label>
       </div>
-      <div class="form-check ">
-        <input class="form-check-input" 
-          type="radio" 
-          name="role" 
-          id="adminRole" 
-          value="admin"
-          [(ngModel)]="form.role">
-        <label class="form-check-label" for="adminRole">admin</label>
+      <div *ngIf="isBroker" class="form-group"><div class="form-group col-md-6">
+        <label for="exchange">Stock Exchange</label>
+        <select name="br" id="exchange" [(ngModel)]="form.exchange" class="form-control"
+                #exchange="ngModel" required>
+          <option *ngFor="let exchange of exchanges" [value]="exchange.exchangeName">{{exchange.exchangeName}}</option>
+        </select>
+
+        <div class="alert-danger" *ngIf="f.submitted && exchange.invalid">
+          <div *ngIf="email.errors.required">Stock Exchange is required</div>
+        </div>
+      </div>
       </div>
 
       <div class="form-group">
@@ -114,7 +120,7 @@
     </form>
 
     <div class="alert alert-success" *ngIf="isSuccessful">
-      Your registration is successful!
+      Registration is successful!
     </div>
   </div>
 </div>

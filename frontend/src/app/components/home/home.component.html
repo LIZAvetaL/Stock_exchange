@@ -1,4 +1,16 @@
 <div class="list row">
+
+  <div class="col-md-8" style="margin-top: 5px;">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search by Issuer" [(ngModel)]="title" />
+      <div class="input-group-append">
+        <button class="btn btn-dark" type="button" (click)="retrieveBids()">
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+
   <h4>Bids List</h4>
   <table class="table">
     <thead>

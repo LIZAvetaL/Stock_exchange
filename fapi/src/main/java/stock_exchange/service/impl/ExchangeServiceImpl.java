@@ -17,14 +17,19 @@ public class ExchangeServiceImpl implements ExchangeService {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public ExchangeServiceImpl(RestTemplateBuilder restTemplate) {
+    public ExchangeServiceImpl(RestTemplate restTemplate) {
 
-        this.restTemplate = restTemplate.build();
+        this.restTemplate = restTemplate;
     }
 
     @Override
     public List<StockExchange> findAll(int ownerId) {
         return restTemplate.getForObject(UrlConstants.ExchangeUrl + ownerId, List.class);
+    }
+
+    @Override
+    public List<StockExchange> findAll() {
+        return restTemplate.getForObject(UrlConstants.ExchangeUrl+"find/all", List.class);
     }
 
     @Override

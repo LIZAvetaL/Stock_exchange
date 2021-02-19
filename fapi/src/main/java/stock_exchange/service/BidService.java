@@ -22,5 +22,5 @@ public interface BidService {
 
     MessageResponse createDeal(int sellerBidId, int buyerBidId, double price);
 
-    PageResponse<Bid> findAll(int page, int size, String[] sort);
+    PageResponse<Bid> findAll(String issuer, int page, int size, String[] sort);
 }

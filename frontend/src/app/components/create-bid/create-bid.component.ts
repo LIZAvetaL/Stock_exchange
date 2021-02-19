@@ -18,9 +18,7 @@ export class CreateBidComponent implements OnInit {
   createBid: CreateBid;
   brokers: Broker[];
   clientId: number;
-  private router: Router;
 
-  isError: boolean;
   response: MessageResponse;
   datePipe: DatePipe;
 
@@ -29,14 +27,12 @@ export class CreateBidComponent implements OnInit {
               private brokerService: BrokerService) {
     this.clientId = tokenService.getUser().id;
     this.createBid = new CreateBid();
-    this.isError = true;
     this.response = new MessageResponse();
   }
 
   ngOnInit() {
     this.brokerService.getBrokers(this.clientId).subscribe(data => {
       this.brokers = data;
-      console.log(data);
     });
   }
 
@@ -44,21 +40,17 @@ export class CreateBidComponent implements OnInit {
     this.bidService.create(this.clientId, this.createBid).subscribe(
       data => {
         this.response = data;
-        console.log(data);
-        this.isError = true;
       },
       error => {
-        console.log(error);
         this.response.message = error.error;
       });
   }
 
   onSubmit(form: NgForm) {
-    if (form.invalid || this.isAmount() || this.isMinPrice() || this.isMaxPrice()) {
-      this.response.message = 'check data';
+    if (form.invalid || this.isAmount() || this.isMinPrice() || this.isMaxPrice() || this.isDueDate()) {
+      this.response.message = 'Check input data';
     } else {
-      console.log(this.createBid);
-      this.response.message = 'check';
+      this.create();
     }
   }
 
@@ -72,5 +64,9 @@ export class CreateBidComponent implements OnInit {
 
   isMaxPrice() {
     return this.isMinPrice() || (this.createBid.maxPrice <= this.createBid.minPrice);
+  }
+
+  isDueDate() {
+    return this.createBid.dueDate < '2021-02-19';
   }
 }

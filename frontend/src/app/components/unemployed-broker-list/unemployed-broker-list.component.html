@@ -1,15 +1,4 @@
 <div class="list row">
-  <div class="col-md-8">
-    <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Search by title" [(ngModel)]="title" />
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary" type="button" (click)="retrieveBrokers()">
-          Search
-        </button>
-      </div>
-    </div>
-  </div>
-
     <h4>Brokers List</h4>
 
     <table class="table">
@@ -30,12 +19,12 @@
           };
     let i = index;
   ">
-          <td>{{i}}</td>
+          <td>{{i+1}}</td>
           <td>{{broker.name}}</td>
           <td>{{broker.exchange}}</td>
           <td>{{broker.status}}</td>
-          <td><button class="btn btn-dark" *ngIf="!broker.isEmploy" (click)="employ(broker)" >Employ</button></td>
-          <td><button class="btn btn-primary" *ngIf="broker.isEmploy" (click)="dismiss(broker)" >Dismiss</button></td>
+          <td><button class="btn btn-dark" *ngIf="!broker.isEmploy" (click)="employ(broker)" >Employ</button>
+              <button class="btn btn-primary" *ngIf="broker.isEmploy" (click)="dismiss(broker)" >Dismiss</button></td>
         </tr>
       </tbody>
     </table>

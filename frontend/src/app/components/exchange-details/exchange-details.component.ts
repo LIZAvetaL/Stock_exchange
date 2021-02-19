@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {StockExchange} from 'src/app/model/StockExchange';
 import {ExchangeService} from 'src/app/services/exchange/exchange.service';
 import {MessageResponse} from '../../model/messageResponse';
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-exchange-details',
@@ -10,7 +11,6 @@ import {MessageResponse} from '../../model/messageResponse';
   styleUrls: ['./exchange-details.component.css']
 })
 export class ExchangeDetailsComponent implements OnInit {
-  status: string;
   exchange: StockExchange;
   response: MessageResponse;
 
@@ -34,7 +34,6 @@ export class ExchangeDetailsComponent implements OnInit {
       .subscribe(
         data => {
           this.exchange = data;
-          this.status = this.exchange.status;
         });
   }
 
@@ -43,13 +42,15 @@ export class ExchangeDetailsComponent implements OnInit {
     this.showMessage = false;
   }
 
-  Save() {
-    this.exchangeService.updateExchange(this.exchange).subscribe(
-      data => {
-        this.response = data;
-        this.isEdit = false;
-        this.showMessage = true;
-      }
-    );
+  Save(f: NgForm) {
+    if (f.valid) {
+      this.exchangeService.updateExchange(this.exchange).subscribe(
+        data => {
+          this.response = data;
+          this.isEdit = false;
+          this.showMessage = true;
+        }
+      );
+    }
   }
 }

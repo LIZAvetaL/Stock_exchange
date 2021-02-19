@@ -14,7 +14,11 @@ public interface BidRepository extends JpaRepository<Bid, Integer> {
 
     Page<Bid> findBidsByStatusStatusName(String statusName, Pageable pageable);
 
+    Page<Bid> findBidsByStatusStatusNameAndIssuer(String statusName, String issuer, Pageable pageable);
+
     List<Bid> findBidsByStatusStatusNameAndIssuerAndType(String statusName, String issuer, String type);
 
     List<Bid> findBidsByClientIdAndBrokerIdAndStatusStatusName(int clientId, int brokerId, String statusName);
+
+    Boolean existsBidsByBrokerIdAndStatusStatusName(int id, String name);
 }

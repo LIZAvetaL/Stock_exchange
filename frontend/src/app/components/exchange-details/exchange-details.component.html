@@ -1,15 +1,18 @@
 
 <div class="col-md-12">
   <div class="card card-container">
-    <form>
+    <form #f="ngForm">
       <div class="form-group ">
         <label for="exchangeName">StockExchange Name</label>
         <input [disabled]="!isEdit"
                type="text"
                id="exchangeName"
                class="form-control"
-               [value]="exchange.exchangeName"
+               name="name"
+               [(ngModel)]="exchange.exchangeName"
+               #name="ngModel"
                required>
+        <small *ngIf="f.submitted && name.invalid">Name is required</small>
       </div>
 
       <div class="form-group">
@@ -18,8 +21,11 @@
                type="text"
                id="country"
                class="form-control"
-               [value]="exchange.country"
+               name="country"
+               [(ngModel)]="exchange.country"
+               #country="ngModel"
                required>
+        <small *ngIf="f.submitted && country.invalid">Country is required</small>
       </div>
 
       <div class="form-group">
@@ -28,8 +34,11 @@
                type="text"
                id="city"
                class="form-control"
-               [value]="exchange.city"
+               name="city"
+               [(ngModel)]="exchange.city"
+               #city="ngModel"
                required>
+        <small *ngIf="f.submitted && city.invalid">City is required</small>
       </div>
 
       <div class="form-group">
@@ -38,7 +47,8 @@
                type="text"
                id="creationDate"
                class="form-control"
-               [value]="exchange.creationDate"
+               name="creat"
+               [(ngModel)]="exchange.creationDate"
                required>
       </div>
 
@@ -48,17 +58,21 @@
                   required
                   class="form-control"
                   id="description"
+                  name="description"
+                  [(ngModel)]="exchange.description"
+                  #description="ngModel"
                   rows="3">{{exchange.description}}</textarea>
+        <small *ngIf="f.submitted && description.invalid">Description is required</small>
       </div>
 
       <div class="form-group">
         <label>Status</label>
-        <select required [disabled]="!isEdit" name="status" [(ngModel)]="status" class="form-control">
+        <select required [disabled]="!isEdit" name="status" [(ngModel)]="exchange.status" class="form-control">
           <option selected value="Open">Open</option>
           <option value="Closed">Closed</option>
           <option value="Terminated">Terminated</option>
         </select>
-        <small id="message" *ngIf="showMessage" >
+        <small class="message" *ngIf="showMessage" >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
             <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
@@ -67,7 +81,7 @@
         </small>
       </div>
       <button class="btn btn-dark btn-sm" *ngIf="!isEdit" (click)="edit()">Edit exchange</button>
-      <button *ngIf="isEdit" type="submit" class="btn btn-primary btn-sm" (click)="Save()">Save</button>
+      <button *ngIf="isEdit" type="submit" class="btn btn-primary btn-sm" (click)="Save(f)">Save</button>
     </form>
   </div>
 </div>

@@ -10,6 +10,7 @@ import stock_exchange.config.StatusConst;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerDTO;
 import stock_exchange.dto.BrokerStatisticsDTO;
+import stock_exchange.dto.StockExchangeDTO;
 import stock_exchange.dto.UnemployedBrokerDTO;
 import stock_exchange.exception.NotFoundException;
 import stock_exchange.model.Bid;
@@ -23,6 +24,7 @@ import stock_exchange.service.BidService;
 import stock_exchange.service.BrokerService;
 import stock_exchange.service.DealService;
 import stock_exchange.service.StatusService;
+import stock_exchange.service.StockExchangeService;
 import stock_exchange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,14 +41,17 @@ public class BrokerServiceImpl implements BrokerService {
 
     private final BidService bidService;
     private final StatusService statusService;
+    private final StockExchangeService stockExchangeService;
 
     @Autowired
     public BrokerServiceImpl(BrokerRepository brokerRepository, UserService userService,
-                             @Lazy BidService bidService, StatusService statusService) {
+                             @Lazy BidService bidService, StatusService statusService,
+                             StockExchangeService stockExchangeService) {
         this.brokerRepository = brokerRepository;
         this.userService = userService;
         this.bidService = bidService;
         this.statusService = statusService;
+        this.stockExchangeService = stockExchangeService;
     }
 
     @Override
@@ -63,7 +68,7 @@ public class BrokerServiceImpl implements BrokerService {
     public Page<UnemployedBrokerDTO> findAllUnemployed(String title, int page, int size, String sort) {
         Pageable pagingSort = PageRequest.of(page, size, Sort.by(sort));
 
-        Status status = statusService.find(StatusConst.Unemployed.toString());
+        Status status = statusService.find(StatusConst.UNEMPLOYED.getName());
         Page<Broker> tempPage = brokerRepository.findAllByStatus(status, pagingSort);
         return tempPage.map(this::transfer);
     }
@@ -106,7 +111,7 @@ public class BrokerServiceImpl implements BrokerService {
                 () -> new NotFoundException("User error")
         );
         broker.setEmployer(userService.findUser(clientId));
-        broker.setStatus(statusService.find(StatusConst.Employed.toString()));
+        broker.setStatus(statusService.find(StatusConst.EMPLOYED.getName()));
         brokerRepository.save(broker);
         return new MessageResponse("ok");
     }
@@ -116,8 +121,11 @@ public class BrokerServiceImpl implements BrokerService {
         Broker broker = brokerRepository.findById(brokerId).orElseThrow(
                 () -> new NotFoundException("User error")
         );
+        if (bidService.existsBrokerBid(broker.getId())){
+            throw new NotFoundException("Error! Broker has active bids!");
+        }
         broker.setEmployer(null);
-        broker.setStatus(statusService.find(StatusConst.Unemployed.toString()));
+        broker.setStatus(statusService.find(StatusConst.UNEMPLOYED.getName()));
         brokerRepository.save(broker);
         return new MessageResponse("ok");
     }
@@ -133,6 +141,23 @@ public class BrokerServiceImpl implements BrokerService {
             brokerStatisticsDTOs.add(new BrokerStatisticsDTO(transfertoDto(broker), totalAmount));
         }
         return new PageImpl<>(brokerStatisticsDTOs, brokers.getPageable(), brokers.getTotalElements());
+    }
+
+    @Override
+    public void save(User user, String exchangeName) {
+        Broker broker = new Broker();
+        broker.setBroker(user);
+        broker.setStatus(statusService.find(StatusConst.UNEMPLOYED.getName()));
+        broker.setExchange(stockExchangeService.find(exchangeName));
+        brokerRepository.save(broker);
+    }
+
+    @Override
+    public MessageResponse update(int userId, String exchange) {
+        User user = userService.findUser(userId);
+        userService.changeRole(user, "ROLE_BROKER");
+        save(user, exchange);
+        return new MessageResponse("Role was changed");
     }
 
     private int getTotalAmount(int clientId, int brokerId) {

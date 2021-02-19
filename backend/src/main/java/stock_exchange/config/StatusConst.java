@@ -1,18 +1,30 @@
 package stock_exchange.config;
 
 public enum StatusConst {
-    Open,
-    Closed,
+    OPEN("Open"),
+    CLOSED("Closed"),
 
-    Employed,
-    Unemployed,
+    EMPLOYED("Employed"),
+    UNEMPLOYED("Unemployed"),
 
-    Draft,
-    Active,
-    Completed,
-    Cancelled,
+    DRAFT("Draft"),
+    ACTIVE("Active"),
+    COMPLETED("Completed"),
+    CANCELLED("Cancelled"),
 
-    Sale,
-    Buy
+    SALE("Sale"),
+    BUY("Buy"),
 
+    BLOCK("Block"),
+    UNBLOCK("Unblock");
+
+    private String name;
+
+    StatusConst(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

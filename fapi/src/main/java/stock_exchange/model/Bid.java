@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -15,14 +16,17 @@ public class Bid {
 
     private int id;
     private String issuer;
+
     private Long bidNumber;
     private int amount;
+
     private double maxPrice;
     private double minPrice;
     private String priority;
     private String type;
-    private Date creationDate;
-    private Date dueDate;
+
+    private LocalDate creationDate;
+    private LocalDate dueDate;
 
     private String status;
     private String broker;

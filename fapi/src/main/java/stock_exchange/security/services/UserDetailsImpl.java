@@ -21,6 +21,7 @@ public class UserDetailsImpl implements UserDetails {
 	@JsonIgnore
 	private String password;
 	private String role;
+	private String status;
 
 
 	public UserDetailsImpl(User user) {
@@ -29,6 +30,7 @@ public class UserDetailsImpl implements UserDetails {
 		this.role = user.getRole();
 		this.id= user.getId();
 		this.name=getUsername();
+		this.status=user.getStatus();
 	}
 
 	@Override
@@ -58,9 +60,13 @@ public class UserDetailsImpl implements UserDetails {
 		return role;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
 	@Override
 	public boolean isAccountNonExpired() {
-		return true;
+		return "Unblock".equals(status);
 	}
 
 	@Override

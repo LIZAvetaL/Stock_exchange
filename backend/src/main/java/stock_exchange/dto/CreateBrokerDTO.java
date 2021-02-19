@@ -7,12 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserDTO {
-
-    private int id;
+public class CreateBrokerDTO {
     private String email;
-    private String password;
     private String name;
+    private String password;
     private String role;
-    private String status;
+    private String exchange;
 }

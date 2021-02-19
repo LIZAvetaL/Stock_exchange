@@ -14,8 +14,8 @@ export class UserService {
   constructor(private http: HttpClient) {
   }
 
-  getAll(): Observable<any> {
-    return this.http.get(API_URL);
+  getAll(page: number, size: number, sort: string[]): Observable<any> {
+    return this.http.get(API_URL + `?page=${page}&size=${size}&sort=${sort}`);
   }
 
   get(id: number): Observable<any> {
@@ -24,5 +24,13 @@ export class UserService {
 
   update(id: number, role: string): Observable<MessageResponse> {
     return this.http.post<MessageResponse>(API_URL + 'update' + `?id=${id}&role=${role}`, null);
+  }
+
+  blockUser(id: number): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(API_URL + 'block' + `?id=${id}`, null);
+  }
+
+  unblockUser(id: number): Observable<MessageResponse> {
+    return this.http.post<MessageResponse>(API_URL + 'unblock' + `?id=${id}`, null);
   }
 }

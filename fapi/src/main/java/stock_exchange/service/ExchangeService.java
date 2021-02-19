@@ -10,6 +10,8 @@ import java.util.List;
 public interface ExchangeService {
     List<StockExchange> findAll(int ownerId);
 
+    List<StockExchange> findAll();
+
     StockExchange find(int exchangeId);
 
     MessageResponse changeStatus(int exchangeId, String status);

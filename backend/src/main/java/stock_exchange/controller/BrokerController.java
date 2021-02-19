@@ -3,13 +3,16 @@ package stock_exchange.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerDTO;
 import stock_exchange.dto.BrokerStatisticsDTO;
+import stock_exchange.dto.StockExchangeDTO;
 import stock_exchange.dto.UnemployedBrokerDTO;
 import stock_exchange.model.Broker;
 import stock_exchange.model.Deal;
+import stock_exchange.model.StockExchange;
 import stock_exchange.response.MessageResponse;
 import stock_exchange.service.BrokerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +83,11 @@ public class BrokerController {
 
         Page<BrokerStatisticsDTO> brokerStatisticsDTOS = brokerService.getStatistics(page, size, clientId);
         return new ResponseEntity(brokerStatisticsDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping("/update/{broker-id}/{exchange}")
+    public ResponseEntity<MessageResponse> update(@PathVariable(name = "broker-id") int brokerId,
+                                                  @PathVariable String exchange) {
+        return new ResponseEntity(brokerService.update(brokerId, exchange), HttpStatus.OK);
     }
 }

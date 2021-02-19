@@ -64,7 +64,7 @@ public class BidServiceImpl implements BidService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortType(sort)));
         Broker broker = brokerService.find(brokerId);
         Page<Bid> bids = bidRepository.findBidsByBrokerIdAndStatusStatusName(broker.getId(),
-                StatusConst.Active.toString(), pageable);
+                StatusConst.ACTIVE.getName(), pageable);
         return bids.map(this::transfer);
     }
 
@@ -77,14 +77,14 @@ public class BidServiceImpl implements BidService {
 
     private List<Sort.Order> sortType(String[] sort) {
         List<Sort.Order> list = new ArrayList<>();
-        list.add(new Sort.Order(Sort.Direction.fromString(sort[0]), sort[1]));
+        for (int i = 0; i< sort.length;i++ ) {
+            list.add(new Sort.Order(Sort.Direction.fromString(sort[i]), sort[++i]));
+        }
         return list;
     }
 
     @Override
     public void create(int clientId, CreateBidDTO createBid) {
-        checkBid(createBid);
-
         Bid bid = transfer(createBid);
         bid.setBidNumber(generateRandom());
         bid.setCreationDate(LocalDate.now());
@@ -92,30 +92,16 @@ public class BidServiceImpl implements BidService {
         bidRepository.save(bid);
     }
 
-    private void checkBid(CreateBidDTO createBid) {
-        if (createBid.getAmount()<1){
-            throw new BusinessException();
-        }
-
-        if (createBid.getMinPrice()>=createBid.getMaxPrice()){
-            throw new BusinessException();
-        }
-
-        if (LocalDate.now().isAfter(createBid.getDueDate()) || LocalDate.now().isEqual(createBid.getDueDate())){
-            throw new BusinessException();
-        }
-    }
-
     @Override
     public MessageResponse update(BidDTO bidDTO) {
         bidRepository.save(transfer(bidDTO));
-        return new MessageResponse("<3");
+        return new MessageResponse("Bid has been edited");
     }
 
     @Override
     public BidDTO find(int id) {
         Bid bid = bidRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Bid error")
+                () -> new NotFoundException("Bid hasn't been found")
         );
         return transfer(bid);
     }
@@ -127,7 +113,7 @@ public class BidServiceImpl implements BidService {
         );
         String type = type(bid.getType());
         List<BrokerBidDTO> bids = bidRepository.findBidsByStatusStatusNameAndIssuerAndType(
-                StatusConst.Active.toString(), bid.getIssuer(), type)
+                StatusConst.ACTIVE.getName(), bid.getIssuer(), type)
                 .stream()
                 .filter(item -> checkPrice(item, bid))
                 .map(item -> transfer(item, bid.getMinPrice()))
@@ -150,49 +136,75 @@ public class BidServiceImpl implements BidService {
         dealService.create(sellerBid, buyerBid, price);
 
         if (sellerBid.getAmount() > buyerBid.getAmount()) {
-            changeAmount(sellerBid, sellerBid.getAmount() - buyerBid.getAmount());
+            changeAmount(sellerBid,  buyerBid.getAmount());
             changeStatus(buyerBid);
-            return new MessageResponse("<3");
         }
         if (sellerBid.getAmount() < buyerBid.getAmount()) {
-            changeAmount(buyerBid, buyerBid.getAmount() - sellerBid.getAmount());
+            changeAmount(buyerBid,  sellerBid.getAmount());
             changeStatus(sellerBid);
-            return new MessageResponse("<3");
         } else {
             changeStatus(sellerBid);
             changeStatus(buyerBid);
-            return new MessageResponse("<3");
         }
+        return new MessageResponse("");
     }
 
     @Override
-    public Page<BidDTO> findAll(int page, int size, String[] sort) {
+    public Page<BidDTO> findAll(String issuer, int page, int size, String[] sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortType(sort)));
-        return bidRepository.findBidsByStatusStatusName(StatusConst.Active.toString(), pageable)
-                .map(this::transfer);
+
+        if ("".equals(issuer)){
+            return bidRepository.findBidsByStatusStatusName(StatusConst.ACTIVE.getName(), pageable)
+                    .map(this::transfer);
+        }else{
+            return bidRepository.findBidsByStatusStatusNameAndIssuer(StatusConst.ACTIVE.getName(), issuer, pageable)
+                    .map(this::transfer);
+        }
     }
 
     @Override
     public List<Bid> getCompletedBids(int clientId, int brokerId) {
         return bidRepository.findBidsByClientIdAndBrokerIdAndStatusStatusName(
-                clientId, brokerId, StatusConst.Completed.toString());
+                clientId, brokerId, StatusConst.COMPLETED.getName());
+    }
+
+    @Override
+    public boolean existsBrokerBid(int brokerId) {
+        return bidRepository.existsBidsByBrokerIdAndStatusStatusName(brokerId, StatusConst.ACTIVE.getName());
     }
 
     private void changeStatus(Bid bid) {
-        bid.setStatus(statusService.find(StatusConst.Completed.toString()));
+        bid.setStatus(statusService.find(StatusConst.COMPLETED.getName()));
         bidRepository.save(bid);
     }
 
     private void changeAmount(Bid bid, int amount) {
+        create(bid, amount);
         bid.setAmount(amount);
+        bid.setStatus(statusService.find(StatusConst.COMPLETED.getName()));
         bidRepository.save(bid);
+    }
+
+    private void create(Bid bid, int amount){
+        Bid newBid =new Bid();
+        newBid.setAmount(bid.getAmount()-amount);
+        newBid.setStatus(bid.getStatus());
+        newBid.setType(bid.getType());
+        newBid.setMinPrice(bid.getMinPrice());
+        newBid.setMaxPrice(bid.getMaxPrice());
+        newBid.setClient(bid.getClient());
+        newBid.setBroker(bid.getBroker());
+        newBid.setPriority(bid.getPriority());
+        newBid.setIssuer(bid.getIssuer());
+        newBid.setBidNumber(generateRandom());
+        bidRepository.save(newBid);
     }
 
 
     private String type(String type) {
-        if (StatusConst.Buy.toString().equals(type)) {
-            return StatusConst.Sale.toString();
-        } else return StatusConst.Buy.toString();
+        if (StatusConst.BUY.getName().equals(type)) {
+            return StatusConst.SALE.getName();
+        } else return StatusConst.BUY.getName();
     }
 
     private boolean checkPrice(Bid tempBid, Bid bid) {

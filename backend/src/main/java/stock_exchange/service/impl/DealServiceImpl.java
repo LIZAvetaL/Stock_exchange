@@ -35,7 +35,7 @@ public class DealServiceImpl implements DealService {
         deal.setPrice(price);
         deal.setTotalPrice(deal.getAmount() * price);
         deal.setBargainDate(LocalDate.now());
-        if (sellerBid.getType().equals(StatusConst.Sale.toString())) {
+        if (sellerBid.getType().equals(StatusConst.SALE.getName())) {
             deal.setSeller(sellerBid.getBroker());
             deal.setBuyer(buyerBid.getBroker());
         } else {

@@ -1,6 +1,7 @@
 package stock_exchange.service;
 import stock_exchange.model.Broker;
 import stock_exchange.model.BrokerStatisticsDTO;
+import stock_exchange.model.StockExchange;
 import stock_exchange.model.UnemployedBroker;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.model.response.PageResponse;
@@ -19,4 +20,6 @@ public interface BrokerService {
     MessageResponse dismiss(int brokerId);
 
     PageResponse<BrokerStatisticsDTO> getStatistics(int page, int size, int clientId);
+
+    MessageResponse update(int brokerId, String exchange);
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import stock_exchange.model.User;
 import stock_exchange.model.response.MessageResponse;
+import stock_exchange.model.response.PageResponse;
 import stock_exchange.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +25,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity findAll() {
-        return new ResponseEntity(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<PageResponse<User>> findAll(@RequestParam int page,
+                                                @RequestParam int size,
+                                                @RequestParam String[] sort) {
+        return new ResponseEntity(userService.findAll(page, size, sort), HttpStatus.OK);
     }
 
     @GetMapping("/find/id/{userId}")
@@ -42,6 +45,16 @@ public class UserController {
     public ResponseEntity<MessageResponse> update(@RequestParam(name = "id") int userId,
                                                   @RequestParam String role) {
         return new ResponseEntity(userService.update(userId, role), HttpStatus.OK);
+    }
+
+    @PostMapping("/block")
+    public ResponseEntity<MessageResponse> block(@RequestParam(name = "id") int userId) {
+        return new ResponseEntity(userService.block(userId), HttpStatus.OK);
+    }
+
+    @PostMapping("/unblock")
+    public ResponseEntity<MessageResponse> unblock(@RequestParam(name = "id") int userId) {
+        return new ResponseEntity(userService.unblock(userId), HttpStatus.OK);
     }
 
 }

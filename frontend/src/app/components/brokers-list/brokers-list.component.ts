@@ -4,6 +4,7 @@ import {BrokerService} from "../../services/broker/broker.service";
 import {TokenStorageService} from "../../services/token-storage/token-storage.service";
 import {Broker} from "../../model/broker";
 import {BrokerStatistics} from "../../model/BrokerStatistics";
+import {MessageResponse} from "../../model/messageResponse";
 
 @Component({
   selector: 'app-brokers-list',
@@ -16,21 +17,24 @@ export class BrokersListComponent implements OnInit {
   title = '';
   statistics: BrokerStatistics[];
   brokers: Broker[];
+  response: MessageResponse;
 
   page = 1;
   count = 0;
   pageSize = 3;
   pageSizes = [3, 6, 9];
+  isOperationFailed: boolean;
 
 
   constructor(private brokerService: BrokerService,
               private tokenService: TokenStorageService) {
     this.clientId = tokenService.getUser().id;
+    this.response = new MessageResponse();
+    this.isOperationFailed = false;
   }
 
   ngOnInit() {
     this.getBrokerStatistics();
-    this.retrieveBrokers();
   }
 
   getBrokerStatistics() {
@@ -42,23 +46,9 @@ export class BrokersListComponent implements OnInit {
         console.log(response);
       },
       error => {
-        console.log(error);
+        this.response.message = error.error.message;
+        this.isOperationFailed = true;
       });
-  }
-
-  retrieveBrokers() {
-    this.brokerService.getClientsBrokers(this.page - 1, this.pageSize, this.clientId)
-      .subscribe(
-        response => {
-          const {content, totalElements} = response;
-          this.brokers = content;
-          this.count = totalElements;
-          console.log(response);
-        },
-        error => {
-          console.log(error);
-        });
-
   }
 
   handlePageChange(event) {
@@ -72,14 +62,24 @@ export class BrokersListComponent implements OnInit {
     this.getBrokerStatistics();
   }
 
-  employ(broker: UnemployedBroker) {
+  employ(broker: Broker) {
     this.brokerService.employ(broker.id, this.clientId).subscribe();
     broker.isEmploy = false;
+    this.isOperationFailed = false;
   }
 
-  dismiss(broker: UnemployedBroker) {
-    this.brokerService.dismiss(broker.id).subscribe();
-    broker.isEmploy = true;
+  dismiss(broker: Broker) {
+    this.brokerService.dismiss(broker.id).subscribe(
+      data => {
+        this.response = data;
+        broker.isEmploy = true;
+        this.isOperationFailed = false;
+      }, error => {
+        this.isOperationFailed = true;
+        console.log(error);
+        this.response.message = error.error.message;
+      }
+    );
   }
 
 }

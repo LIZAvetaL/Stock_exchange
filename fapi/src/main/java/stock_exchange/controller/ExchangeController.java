@@ -26,13 +26,18 @@ public class ExchangeController {
     }
 
     @GetMapping("{ownerId}")
-    public ResponseEntity findAll(@PathVariable(name = "ownerId") int ownerId) {
+    public ResponseEntity findAllByOwner(@PathVariable(name = "ownerId") int ownerId) {
         return new ResponseEntity(exchangeService.findAll(ownerId), HttpStatus.OK);
     }
 
     @GetMapping("find/{exchangeId}")
     public ResponseEntity find(@PathVariable(name = "exchangeId") int exchangeId) {
         return new ResponseEntity(exchangeService.find(exchangeId), HttpStatus.OK);
+    }
+
+    @GetMapping("find/all")
+    public ResponseEntity findAll() {
+        return new ResponseEntity(exchangeService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("change-status")

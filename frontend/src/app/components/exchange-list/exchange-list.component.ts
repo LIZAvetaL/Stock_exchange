@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { StockExchange } from 'src/app/model/StockExchange';
-import { ExchangeService } from 'src/app/services/exchange/exchange.service';
-import { TokenStorageService } from 'src/app/services/token-storage/token-storage.service';
+import {Component, OnInit} from '@angular/core';
+import {StockExchange} from 'src/app/model/StockExchange';
+import {ExchangeService} from 'src/app/services/exchange/exchange.service';
+import {TokenStorageService} from 'src/app/services/token-storage/token-storage.service';
 
 @Component({
   selector: 'app-exchange-list',
@@ -15,16 +15,17 @@ export class ExchangeListComponent implements OnInit {
 
   constructor(
     private ecxhangeService: ExchangeService,
-    private tokenStorage:TokenStorageService
-    ) {
+    private tokenStorage: TokenStorageService
+  ) {
     this.ownerId = tokenStorage.getUser().id;
   }
 
   ngOnInit() {
     this.ecxhangeService.getExchange(this.ownerId).subscribe(data => {
       this.exchanges = data;
-    })
+    });
   }
+
   onSubmit() {
 
   }

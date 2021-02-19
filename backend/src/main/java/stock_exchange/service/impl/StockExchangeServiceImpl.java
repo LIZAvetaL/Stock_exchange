@@ -15,6 +15,7 @@ import stock_exchange.service.UserService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StockExchangeServiceImpl implements StockExchangeService {
@@ -29,6 +30,15 @@ public class StockExchangeServiceImpl implements StockExchangeService {
         this.stockExchangeRepository = stockExchangeRepository;
         this.userService = userService;
         this.statusService = statusService;
+    }
+
+    @Override
+    public List<StockExchangeDTO> findAll() {
+        return stockExchangeRepository.findStockExchangesByStatusStatusName(
+                StatusConst.OPEN.getName())
+                .stream()
+                .map(this::transfer)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -69,6 +79,11 @@ public class StockExchangeServiceImpl implements StockExchangeService {
         return new MessageResponse("ok");
     }
 
+    @Override
+    public StockExchange find(String name) {
+        return stockExchangeRepository.findStockExchangeByExchangeName(name);
+    }
+
     private StockExchangeDTO transfer(StockExchange exchange) {
         return new StockExchangeDTO(exchange.getId(), exchange.getExchangeName(),
                 exchange.getCountry(), exchange.getCity(), exchange.getCreationDate(),
@@ -89,7 +104,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
         exchange.setCity(exchangeDTO.getCity());
         exchange.setCreationDate(LocalDate.now());
         exchange.setDescription(exchangeDTO.getDescription());
-        exchange.setStatus(statusService.find(StatusConst.Open.toString()));
+        exchange.setStatus(statusService.find(StatusConst.OPEN.getName()));
         exchange.setOwner(userService.findUser(id));
         return exchange;
     }

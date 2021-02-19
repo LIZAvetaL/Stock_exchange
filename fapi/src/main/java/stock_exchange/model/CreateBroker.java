@@ -1,4 +1,4 @@
-package stock_exchange.dto;
+package stock_exchange.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,12 +7,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserDTO {
-
-    private int id;
+public class CreateBroker {
     private String email;
-    private String password;
     private String name;
+    private String password;
     private String role;
-    private String status;
+    private String exchange;
 }

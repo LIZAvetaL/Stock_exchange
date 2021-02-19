@@ -5,7 +5,7 @@ export class CreateBid {
   maxPrice: number;
   priority: string;
   status: string;
-  dueDate: number;
+  dueDate: string;
   broker: string;
   type: string;
 }

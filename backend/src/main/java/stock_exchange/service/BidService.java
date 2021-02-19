@@ -26,7 +26,9 @@ public interface BidService {
 
     MessageResponse createDeal(int sellerBidId, int buyerBidId, double price);
 
-    Page<BidDTO> findAll(int page, int size, String[] sort);
+    Page<BidDTO> findAll(String issuer, int page, int size, String[] sort);
 
     List<Bid> getCompletedBids(int clientId, int brokerId);
+
+    boolean existsBrokerBid(int id);
 }

@@ -48,15 +48,20 @@ export class BidDetailsComponent implements OnInit {
 
   save(form: NgForm) {
     if (form.invalid || this.isAmount() || this.isMinPrice() || this.isMaxPrice()) {
-      this.response.message = 'check data';
+      this.response.message = 'Check input data';
     } else {
-      this.bidService.update(this.editBid).subscribe();
+      this.bidService.update(this.editBid).subscribe(
+        data => {
+          this.response = data;
+        }
+      );
       this.isEdit = false;
     }
   }
 
   edit() {
     this.isEdit = true;
+    this.response.message = '';
   }
 
   isAmount() {
@@ -69,5 +74,9 @@ export class BidDetailsComponent implements OnInit {
 
   isMaxPrice() {
     return this.isMinPrice() || (this.editBid.maxPrice <= this.editBid.minPrice);
+  }
+
+  isDueDate() {
+    return this.editBid.dueDate < new Date('18-02-2021');
   }
 }

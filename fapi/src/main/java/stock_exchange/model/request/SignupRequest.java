@@ -3,6 +3,7 @@ package stock_exchange.model.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import stock_exchange.model.StockExchange;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -24,6 +25,9 @@ public class SignupRequest {
 
     @NotBlank
     private String role;
+
+    @NotBlank
+    private String exchange;
 
     @NotBlank
     @Size(min = 6, max = 40)

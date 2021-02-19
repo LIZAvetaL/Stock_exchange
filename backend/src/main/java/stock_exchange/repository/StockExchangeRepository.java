@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface StockExchangeRepository extends JpaRepository<StockExchange, Integer> {
     List<StockExchange> findStockExchangesByOwnerId(int ownerId);
+    List<StockExchange> findStockExchangesByStatusStatusName(String statusName);
+    StockExchange findStockExchangeByExchangeName(String name);
 }

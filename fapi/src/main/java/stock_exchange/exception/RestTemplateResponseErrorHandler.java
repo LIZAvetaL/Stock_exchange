@@ -28,7 +28,6 @@ public class RestTemplateResponseErrorHandler
     @Override
     public void handleError(ClientHttpResponse httpResponse)
             throws IOException {
-
         throw new NotFoundException(mapper.readValue(httpResponse.getBody(), MessageResponse.class).getMessage());
 
     }

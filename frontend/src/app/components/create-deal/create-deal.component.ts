@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BidService} from "../../services/bid/bid.service";
 import {TokenStorageService} from "../../services/token-storage/token-storage.service";
 import {BrokerBid} from "../../model/broker-bid";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Bid} from "../../model/bid";
 
 @Component({
@@ -20,12 +20,16 @@ export class CreateDealComponent implements OnInit {
   pageSize = 3;
   pageSizes = [3, 6, 9];
   sort: string[];
+  userId: number;
 
   constructor(private bidService: BidService,
-              private router: ActivatedRoute) {
+              private router: ActivatedRoute,
+              private route: Router,
+              private tokenService: TokenStorageService) {
     this.bid = new Bid();
     this.bid.id = this.router.snapshot.params.id;
     this.sort = ['desc', 'bidNumber'];
+    this.userId = tokenService.getUser().id;
   }
 
   ngOnInit() {
@@ -72,6 +76,10 @@ export class CreateDealComponent implements OnInit {
   }
 
   createDeal(sellerBidId: number, price: number) {
-    this.bidService.createDeal(this.bid.id, sellerBidId, this.bid, price).subscribe();
+    this.bidService.createDeal(this.bid.id, sellerBidId, this.bid, price).subscribe(
+      data => {
+        this.route.navigate(['broker/deals']);
+      }
+    );
   }
 }

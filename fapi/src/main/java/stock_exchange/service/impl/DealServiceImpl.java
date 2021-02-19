@@ -16,9 +16,9 @@ public class DealServiceImpl implements DealService {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public DealServiceImpl(RestTemplateBuilder restTemplate) {
+    public DealServiceImpl(RestTemplate restTemplate) {
 
-        this.restTemplate = restTemplate.build();
+        this.restTemplate = restTemplate;
     }
 
     @Override

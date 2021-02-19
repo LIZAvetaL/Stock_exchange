@@ -38,10 +38,15 @@ public class User {
     @JoinColumn(name = "role", referencedColumnName = "id")
     private Role role;
 
-    public User(String email, String password, String name, Role role) {
+    @ManyToOne( fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_status", referencedColumnName = "id")
+    private Status status;
+
+    public User(String email, String password, String name, Role role, Status status) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.role = role;
+        this.status=status;
     }
 }

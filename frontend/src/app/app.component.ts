@@ -23,10 +23,10 @@ export class AppComponent implements OnInit {
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
       this.role = user.role;
-      this.showAdminBoard = this.role.includes('admin');
-      this.showOwnerBoard = this.role.includes('owner');
-      this.showClientBoard = this.role.includes('client');
-      this.showBrokerBoard = this.role.includes('broker');
+        this.showAdminBoard = this.role.includes('ROLE_ADMIN');
+      this.showOwnerBoard = this.role.includes('ROLE_OWNER');
+      this.showClientBoard = this.role.includes('ROLE_CLIENT');
+      this.showBrokerBoard = this.role.includes('ROLE_BROKER');
       this.email = user.email;
     }
   }

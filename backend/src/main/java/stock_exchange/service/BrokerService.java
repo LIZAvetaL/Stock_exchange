@@ -4,9 +4,11 @@ import org.springframework.data.domain.Page;
 import stock_exchange.dto.BidDTO;
 import stock_exchange.dto.BrokerDTO;
 import stock_exchange.dto.BrokerStatisticsDTO;
+import stock_exchange.dto.StockExchangeDTO;
 import stock_exchange.dto.UnemployedBrokerDTO;
 import stock_exchange.model.Broker;
 import stock_exchange.model.Deal;
+import stock_exchange.model.User;
 import stock_exchange.response.MessageResponse;
 import sun.security.util.ManifestEntryVerifier;
 
@@ -33,4 +35,8 @@ public interface BrokerService {
     MessageResponse dismiss(int brokerId);
 
     Page<BrokerStatisticsDTO> getStatistics(int page, int size,int clientId);
+
+    void save(User user, String exchangeName);
+
+    MessageResponse update(int brokerId, String exchange);
 }

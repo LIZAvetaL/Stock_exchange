@@ -2,6 +2,16 @@
 
     <h4>Brokers List</h4>
 
+  <div class="form-group">
+    <div
+      class="alert alert-danger"
+      role="alert"
+      *ngIf="isOperationFailed"
+    >
+       {{ response.message }}
+    </div>
+  </div>
+
     <table class="table">
       <thead>
       <tr>
@@ -13,19 +23,19 @@
       </thead>
       <tbody>
       <tr *ngFor="
-    let statistic of statistics | paginate : {
+    let item of statistics | paginate : {
             itemsPerPage: pageSize,
             currentPage: page,
             totalItems: count
           };
     let i = index;
   ">
-        <td>{{i}}</td>
-        <td>{{statistic.broker.name}}</td>
-        <td>{{statistic.broker.exchange}}</td>
-        <td>{{statistic.totalAmount}}</td>
-        <td><button class="btn btn-dark" *ngIf="!statistic.broker.isEmploy" (click)="dismiss(broker)" >Dismiss</button></td>
-        <td><button class="btn btn-primary" *ngIf="statistic.broker.isEmploy" (click)="employ(broker)" >Employ</button></td>
+        <td>{{i+1}}</td>
+        <td>{{item.broker.name}}</td>
+        <td>{{item.broker.exchange}}</td>
+        <td>{{item.totalAmount}}</td>
+        <td><button class="btn btn-dark" *ngIf="!item.broker.isEmploy" (click)="dismiss(item.broker)" >Dismiss</button>
+            <button class="btn btn-primary" *ngIf="item.broker.isEmploy" (click)="employ(item.broker)" >Employ</button></td>
       </tr>
       </tbody>
     </table>

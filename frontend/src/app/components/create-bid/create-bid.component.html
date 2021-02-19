@@ -2,105 +2,134 @@
   <div class="card card-container">
 
   <form #f="ngForm">
-    <div class="row">
-      <div class="form-group col-md-6">
-        <label for="issuer">Issuer</label>
-        <input name="issuer" [(ngModel)]="createBid.issuer" id="issuer"
-               type="text" class="form-control" required>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="issuer">Issuer</label>
+          <input name="issuer" [(ngModel)]="createBid.issuer" id="issuer"
+                 type="text" class="form-control" required
+                  #issuer="ngModel">
+          <div *ngIf="issuer.invalid && f.submitted">
+          <div class="alert alert-danger message"
+               role="alert"
+               *ngIf=" issuer.errors.required">Issuer is required</div>
+        </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="type">Type</label>
+          <select name="Type" [(ngModel)]="createBid.type" id="type"
+                  class="form-control" required
+                  #type="ngModel">
+            <option value="Buy">Buy</option>
+            <option value="Sale">Sale</option>
+          </select>
+          <div *ngIf="type.invalid && f.submitted">
+          <div class="alert alert-danger message"
+                         role="alert"
+                         *ngIf="(type.dirty || type.touched || f.submitted) && type.errors.required">Type is required</div>
+          </div>
+          </div>
       </div>
-      <div class="form-group col-md-6">
-        <label for="type">Type</label>
-        <select name="Type" [(ngModel)]="createBid.type" id="type"  class="form-control" required>
-          <option value="Buy">Buy</option>
-          <option value="Sale">Sale</option>
-        </select>
+
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="amount">Amount</label>
+          <input name="amount" [(ngModel)]="createBid.amount" id="amount"
+                 type="number" class="form-control" placeholder="Amount"
+                 min="1"
+                 #amount="ngModel"
+                 required
+                 >
+          <div class="alert alert-danger message"
+               role="alert"
+               *ngIf="(amount.dirty || amount.touched) && isAmount()">Amount must be more than 0</div>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="minPrice">Min Price</label>
+          <input name="minPrice" [(ngModel)]="createBid.minPrice" id="minPrice"
+                 type="number" class="form-control" placeholder="Min price"
+                 min="1"
+                 #minPrice="ngModel"
+                 required
+                 >
+          <div class="alert alert-danger message"
+               role="alert"
+               *ngIf="(minPrice.dirty || minPrice.touched ) && isMinPrice()">Min Price must be more than 0</div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="maxPrice">Max Price</label>
+          <input name="max" [(ngModel)]="createBid.maxPrice" id="maxPrice"
+                 type="number" class="form-control" placeholder="Min price"
+                 min="{{createBid.minPrice+1}}"
+                 #maxPrice="ngModel"
+                 required
+                 >
+          <div class="alert alert-danger message"
+               role="alert"
+               *ngIf="(maxPrice.dirty || maxPrice.touched ) && isMaxPrice()">Max Price must be more than Min Price</div>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-    <div class="form-group col-md-4">
-      <label for="amount">Amount</label>
-      <input name="amount" [(ngModel)]="createBid.amount" id="amount"
-             type="number" class="form-control" placeholder="Amount"
-             min="1"
-             #amount="ngModel"
-             required>
-      <small class="form-text text-muted" *ngIf="(amount.dirty || amount.touched) && isAmount()">Amount must be more than 0</small>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="minPrice">Min Price</label>
-      <input name="minPrice" [(ngModel)]="createBid.minPrice" id="minPrice"
-             type="number" class="form-control" placeholder="Min price"
-             min="1"
-             #minPrice="ngModel"
-             required>
-      <small *ngIf="(minPrice.dirty || minPrice.touched) && isMinPrice()">Min Price must be more than 0</small>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="maxPrice">Max Price</label>
-      <input name="max" [(ngModel)]="createBid.maxPrice" id="maxPrice"
-             type="number" class="form-control" placeholder="Min price"
-             min="{{createBid.minPrice+1}}"
-             #maxPrice="ngModel"
-             required>
-      <small *ngIf="(maxPrice.dirty || maxPrice.touched) && isMaxPrice()">Max Price must be more than Min Price</small>
-    </div>
-  </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="priority">Priority</label>
+          <select name="priority" [(ngModel)]="createBid.priority" id="priority" class="form-control"
+                  #priority="ngModel"
+                  required>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+            <option value="Extra High">Extra High</option>
+          </select>
+          <div *ngIf="priority.invalid && f.submitted">
+          <div class="alert alert-danger message"
+                        role="alert"
+                        *ngIf="(priority.dirty || priority.touched || f.submitted) && priority.errors.required">Priority is required</div>
+        </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="status">Status</label>
+          <select  name="status" [(ngModel)]="createBid.status"
+                   id="status" class="form-control"
+                   #status="ngModel" required>
+            <option value="Draft">Draft</option>
+            <option value="Active">Active</option>
+          </select>
+          <div *ngIf="status.invalid && f.submitted">
+          <div class="alert alert-danger message"
+                         role="alert"
+                         *ngIf="(status.dirty || status.touched || f.submitted) && status.errors.required">Status is required</div>
+        </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="broker">Broker</label>
+          <select name="br" id="broker" [(ngModel)]="createBid.broker" class="form-control" required
+                  #broker="ngModel">
+            <option *ngFor="let broker of brokers" [value]="broker.name">{{broker.name}}</option>
+          </select>
+          <div *ngIf="broker.invalid && f.submitted">
+          <div class="alert alert-danger message"
+                         role="alert"
+                         *ngIf="(broker.dirty || broker.touched || f.submitted) && broker.errors.required">Broker is required</div>
+        </div>
+        </div>
 
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label for="priority">Priority</label>
-      <select name="priority" [(ngModel)]="createBid.priority" id="priority" class="form-control" required>
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
-        <option value="Extra High">Extra High</option>
-      </select>
-    </div>
-
-    <div class="form-group col-md-6">
-      <label for="status">Status</label>
-      <select name="status" [(ngModel)]="createBid.status" id="status" class="form-control" required>
-        <option value="Draft">Draft</option>
-        <option value="Active">Active</option>
-      </select>
-    </div>
-  </div>
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label for="broker">Broker</label>
-      <select name="br" id="broker" [(ngModel)]="createBid.broker" class="form-control" required>
-        <option *ngFor="let broker of brokers" [value]="broker.name">{{broker.name}}</option>
-      </select>
-    </div>
-
-    <div class="form-group col-md-6">
-      <label for="dueDate">Due date</label>
-      <input name="dueDate" [(ngModel)]="createBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date"
-             #dueDate="ngModel"
-             required>
-    </div>
-  </div>
+        <div class="form-group col-md-6">
+          <label for="dueDate">Due date</label>
+          <input name="dueDate" [(ngModel)]="createBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date"
+                 #dueDate="ngModel"
+                 required
+                 >
+          <div class="alert alert-danger message"
+               role="alert"
+               *ngIf="(dueDate.dirty || dueDate.touched  || f.submitted) && isDueDate()">Due Date must be more than Current Date</div>
+        </div>
+      </div>
   <button type="submit" class="btn btn-primary" (click)="onSubmit(f)"
           data-bs-toggle="modal" data-bs-target="#exampleModal" >Create</button>
+      <small>{{response.message}}</small>
 </form>
-  </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        {{response.message}}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
   </div>
 </div>

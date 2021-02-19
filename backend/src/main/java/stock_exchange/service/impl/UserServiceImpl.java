@@ -1,13 +1,24 @@
 package stock_exchange.service.impl;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import stock_exchange.config.StatusConst;
+import stock_exchange.dto.CreateBrokerDTO;
 import stock_exchange.dto.CreateUserDTO;
 import stock_exchange.exception.NotFoundException;
+import stock_exchange.model.Broker;
 import stock_exchange.model.User;
 import stock_exchange.repository.UserRepository;
 import stock_exchange.dto.UserDTO;
 import stock_exchange.response.MessageResponse;
+import stock_exchange.service.BrokerService;
 import stock_exchange.service.EmailSender;
 import stock_exchange.service.RoleService;
+import stock_exchange.service.StatusService;
+import stock_exchange.service.StockExchangeService;
 import stock_exchange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +32,18 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final EmailSender emailSender;
+    private final BrokerService brokerService;
+    private final StatusService statusService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleService roleService,
-                           EmailSender emailSender) {
+                           EmailSender emailSender, @Lazy BrokerService brokerService,
+                           StatusService statusService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.emailSender = emailSender;
+        this.brokerService = brokerService;
+        this.statusService = statusService;
     }
 
     @Override
@@ -38,14 +54,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAll() {
-        List<User> users = userRepository.findAll();
-        List<UserDTO> userDTOs = new ArrayList<>();
-        for (User user : users) {
-            UserDTO userDTO = transfer(user);
-            userDTOs.add(userDTO);
-        }
-        return userDTOs;
+    public Page<UserDTO> findAll(int page, int size, String[] sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortType(sort)));
+
+        return userRepository.findAll(pageable).map(this::transfer);
+
+
     }
 
     @Override
@@ -56,8 +70,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO findByEmail(String email) {
-        User user = userRepository.findUserByEmail(email);
-        return transfer(user);
+        return transfer(userRepository.findUserByEmail(email).orElseThrow(
+                () -> new NotFoundException("User hasn't been found")
+        ));
     }
 
     @Override
@@ -79,10 +94,45 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MessageResponse update(int userId, String roleName) {
-        User user=userRepository.findById(userId).get();
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User hasn't been found")
+        );
         user.setRole(roleService.findRole(roleName));
         userRepository.save(user);
-        return new MessageResponse("<3");
+        return new MessageResponse("Role was changed");
+    }
+
+    @Override
+    public void registerBroker(CreateBrokerDTO brokerDTO) {
+        User user = transfer(brokerDTO);
+        userRepository.save(user);
+        brokerService.save(findUser(user.getName()), brokerDTO.getExchange());
+    }
+
+    @Override
+    public void changeRole(User user, String role) {
+        user.setRole(roleService.findRole(role));
+        userRepository.save(user);
+    }
+
+    @Override
+    public MessageResponse block(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User hasn't been found")
+        );
+        user.setStatus(statusService.find(StatusConst.BLOCK.getName()));
+        userRepository.save(user);
+        return new MessageResponse("User is blocked");
+    }
+
+    @Override
+    public MessageResponse unblock(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User hasn't been found")
+        );
+        user.setStatus(statusService.find(StatusConst.UNBLOCK.getName()));
+        userRepository.save(user);
+        return new MessageResponse("User is unblocked");
     }
 
     public User findUser(int id) {
@@ -95,17 +145,29 @@ public class UserServiceImpl implements UserService {
 
     private User transfer(UserDTO userDTO) {
         return new User(userDTO.getEmail(), userDTO.getPassword(), userDTO.getName(),
-                roleService.findRole(userDTO.getRole()));
+                roleService.findRole(userDTO.getRole()), statusService.find(userDTO.getStatus()));
     }
 
     private User transfer(CreateUserDTO userDTO) {
         return new User(userDTO.getEmail(), userDTO.getPassword(), userDTO.getName(),
-                roleService.findRole(userDTO.getRole()));
+                roleService.findRole(userDTO.getRole()), statusService.find(StatusConst.UNBLOCK.getName()));
+    }
+
+    private User transfer(CreateBrokerDTO userDTO) {
+        return new User(userDTO.getEmail(), userDTO.getPassword(), userDTO.getName(),
+                roleService.findRole(userDTO.getRole()), statusService.find(StatusConst.UNBLOCK.getName()));
     }
 
     private UserDTO transfer(User user) {
         return new UserDTO(user.getId(), user.getEmail(), user.getPassword(),
-                user.getName(), user.getRole().getRoleName());
+                user.getName(), user.getRole().getRoleName(), user.getStatus().getStatusName());
     }
 
+    private List<Sort.Order> sortType(String[] sort) {
+        List<Sort.Order> list = new ArrayList<>();
+        for (int i = 0; i< sort.length;i++ ) {
+            list.add(new Sort.Order(Sort.Direction.fromString(sort[i]), sort[++i]));
+        }
+        return list;
+    }
 }

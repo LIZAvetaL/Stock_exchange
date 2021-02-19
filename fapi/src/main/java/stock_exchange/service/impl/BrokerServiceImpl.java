@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
 import stock_exchange.model.Broker;
 import stock_exchange.model.BrokerStatisticsDTO;
+import stock_exchange.model.StockExchange;
 import stock_exchange.model.UnemployedBroker;
 import stock_exchange.model.response.MessageResponse;
 import stock_exchange.model.response.PageResponse;
@@ -20,9 +21,9 @@ public class BrokerServiceImpl implements BrokerService {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public BrokerServiceImpl(RestTemplateBuilder restTemplate) {
+    public BrokerServiceImpl(RestTemplate restTemplate) {
 
-        this.restTemplate = restTemplate.build();
+        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -62,6 +63,12 @@ public class BrokerServiceImpl implements BrokerService {
     @Override
     public PageResponse<BrokerStatisticsDTO> getStatistics(int page, int size, int clientId) {
         return restTemplate.getForObject(UrlConstants.BrokerUrl + "find/statistics"
-                + "?page=" + page + "&size=" + size +"&clientId="+ clientId, PageResponse.class);
+                + "?page=" + page + "&size=" + size + "&clientId=" + clientId, PageResponse.class);
+    }
+
+    @Override
+    public MessageResponse update(int brokerId, String exchange) {
+        return restTemplate.postForEntity(UrlConstants.BrokerUrl + "update/" + brokerId + "/" + exchange,
+                null, MessageResponse.class).getBody();
     }
 }

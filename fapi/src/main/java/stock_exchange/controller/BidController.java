@@ -33,10 +33,11 @@ public class BidController {
     }
 
     @GetMapping("/find/all")
-    public ResponseEntity<PageResponse<Bid>> findAll(@RequestParam int page,
-                                                      @RequestParam int size,
-                                                      @RequestParam String[] sort) {
-        return new ResponseEntity(bidService.findAll(page, size, sort), HttpStatus.OK);
+    public ResponseEntity<PageResponse<Bid>> findAll(@RequestParam String issuer,
+                                                     @RequestParam int page,
+                                                     @RequestParam int size,
+                                                     @RequestParam String[] sort) {
+        return new ResponseEntity(bidService.findAll(issuer, page, size, sort), HttpStatus.OK);
     }
 
     @GetMapping("/find/brokers-bids")
@@ -65,9 +66,9 @@ public class BidController {
 
     @PostMapping("/create")
     public ResponseEntity createBid(@RequestParam int id,
-                                 @RequestBody CreateBid createBid) {
+                                    @RequestBody CreateBid createBid) {
 
-        return new ResponseEntity(bidService.create(id, createBid),HttpStatus.OK);
+        return new ResponseEntity(bidService.create(id, createBid), HttpStatus.OK);
     }
 
     @PostMapping("/update")

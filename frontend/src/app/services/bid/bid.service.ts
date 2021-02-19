@@ -49,7 +49,7 @@ export class BidService {
     return this.http.post(baseUrl + 'create-deal/' + bidId + '/' + sellerBidId + '/' + price, null);
   }
 
-  get(page: number, size: number, sort: string[]): Observable<any> {
-    return this.http.get(baseUrl + 'find/all' + `?page=${page}&size=${size}&sort=${sort}`);
+  get(issuer: string, page: number, size: number, sort: string[]): Observable<any> {
+    return this.http.get(baseUrl + 'find/all' + `?issuer=${issuer}&page=${page}&size=${size}&sort=${sort}`);
   }
 }

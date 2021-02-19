@@ -46,7 +46,7 @@ public class BidServiceImpl implements BidService {
 
     @Override
     public MessageResponse create(int id, CreateBid createBid) {
-       return restTemplate.postForEntity(UrlConstants.BidUrl + "create?id=" + id, createBid, MessageResponse.class).getBody();
+        return restTemplate.postForEntity(UrlConstants.BidUrl + "create?id=" + id, createBid, MessageResponse.class).getBody();
     }
 
     @Override
@@ -74,10 +74,10 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public PageResponse<Bid> findAll(int page, int size, String[] sort) {
+    public PageResponse<Bid> findAll(String issuer, int page, int size, String[] sort) {
         return restTemplate.getForObject(
                 UrlConstants.BidUrl + "find/all"
-                        + "?page=" + page + "&size=" + size + "&sort=" + String.join(",", sort)
-                        , PageResponse.class);
+                        + "?issuer=" + issuer + "&page=" + page + "&size=" + size + "&sort=" + String.join(",", sort)
+                , PageResponse.class);
     }
 }

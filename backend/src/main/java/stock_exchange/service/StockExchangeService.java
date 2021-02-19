@@ -8,6 +8,8 @@ import stock_exchange.response.MessageResponse;
 import java.util.List;
 
 public interface StockExchangeService {
+    List<StockExchangeDTO> findAll();
+
     MessageResponse update(StockExchangeDTO exchange);
 
     List<StockExchangeDTO> findByOwner(int owner);
@@ -17,4 +19,6 @@ public interface StockExchangeService {
     MessageResponse changeStatus(int exchangeId, String status);
 
     MessageResponse create(int ownerId, CreateStockExchangeDTO exchange);
+
+    StockExchange find(String name);
 }
