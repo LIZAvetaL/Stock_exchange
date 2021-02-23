@@ -3,18 +3,44 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">StockExchange</th>
-      <th scope="col">Status</th>
-      <th scope="col">Description</th>
+      <th (click)="sortTable('exchangeName')" scope="col">StockExchange</th>
+      <th (click)="sortTable('status')" scope="col">Status</th>
+      <th (click)="sortTable('description')" scope="col">Description</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let exchange of exchanges; let i = index">
-      <td>{{i+1}}</td>
+  <tr *ngFor="
+    let exchange of exchanges | paginate : {
+            itemsPerPage: pageSize,
+            currentPage: page,
+            totalItems: count
+          };
+    let i = index;
+  ">
+      <td>{{currentItem-pageSize+i+1}}</td>
       <td>{{exchange.exchangeName}}</td>
       <td>{{exchange.status}}</td>
       <td>{{exchange.description}}</td>
       <td><button class="btn btn-dark btn-sm" routerLink="/exchange-details/{{ exchange.id }}">Profile</button></td>
+    <td><button class="btn btn-dark btn-sm" routerLink="/exchange-statistics/{{ exchange.id }}">Statistics</button></td>
     </tr>
   </tbody>
 </table>
+
+<div class="col-md-12">
+  Items per Page:
+  <select (change)="handlePageSizeChange($event)">
+    <option *ngFor="let size of pageSizes" [ngValue]="size">
+      {{ size }}
+    </option>
+  </select>
+
+  <div class="d-inline-block">
+    <pagination-controls
+      previousLabel="Prev"
+      nextLabel="Next"
+      responsive="true"
+      (pageChange)="handlePageChange($event)">
+    </pagination-controls>
+  </div>
+</div>

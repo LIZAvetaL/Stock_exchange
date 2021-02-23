@@ -26,6 +26,9 @@ small{
   font-weight: bold;
   margin-left: 10px;
 }
+.fail{
+  color: red;
+}
 
 .message{
   font-size: 10px;

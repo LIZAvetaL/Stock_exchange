@@ -9,7 +9,7 @@ import stock_exchange.model.response.PageResponse;
 import java.util.List;
 
 public interface BrokerService {
-   PageResponse<UnemployedBroker> findAllUnemployed(String title, int page, int size, String sort);
+   PageResponse<UnemployedBroker> findAllUnemployed(String title, int page, int size, String[] sort);
 
     PageResponse<Broker> findBrokers(int page, int size, int clientId);
 

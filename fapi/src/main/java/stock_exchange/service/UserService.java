@@ -31,4 +31,6 @@ public interface UserService {
     MessageResponse block(int userId);
 
     MessageResponse unblock(int userId);
+
+    boolean existsByName(String name);
 }

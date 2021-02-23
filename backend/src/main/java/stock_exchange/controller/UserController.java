@@ -50,9 +50,14 @@ public class UserController {
         userService.save(user);
     }
 
-    @GetMapping("exist/{email}")
+    @GetMapping("exist-email/{email}")
     public ResponseEntity existsByEmail(@PathVariable(name = "email") String email) {
         return new ResponseEntity(userService.existsByEmail(email), HttpStatus.OK);
+    }
+
+    @GetMapping("exist-name/{name}")
+    public ResponseEntity existsByName(@PathVariable(name = "name") String name) {
+        return new ResponseEntity(userService.existsByName(name), HttpStatus.OK);
     }
 
     @PostMapping("/registration")

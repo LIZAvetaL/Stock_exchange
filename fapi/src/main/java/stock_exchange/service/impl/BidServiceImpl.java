@@ -68,9 +68,9 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public MessageResponse createDeal(int sellerBidId, int buyerBidId, double price) {
+    public Integer createDeal(int sellerBidId, int buyerBidId, double price) {
         return restTemplate.postForEntity(UrlConstants.BidUrl + "create-deal/" + sellerBidId + "/" + buyerBidId
-                + "/" + price, null, MessageResponse.class).getBody();
+                + "/" + price, null, Integer.class).getBody();
     }
 
     @Override

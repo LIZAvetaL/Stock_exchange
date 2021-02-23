@@ -20,7 +20,7 @@ public interface BidService {
 
     PageResponse<BrokerBid> findBids(int page, int size, String[] sort, int bidId);
 
-    MessageResponse createDeal(int sellerBidId, int buyerBidId, double price);
+    Integer createDeal(int sellerBidId, int buyerBidId, double price);
 
     PageResponse<Bid> findAll(String issuer, int page, int size, String[] sort);
 }

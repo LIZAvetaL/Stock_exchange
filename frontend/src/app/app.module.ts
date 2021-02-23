@@ -26,6 +26,7 @@ import {CreateDealComponent} from "./components/create-deal/create-deal.componen
 import {BrokerBidListComponent} from "./components/broker-bid-list/broker-bid-list.component";
 import {DealListComponent} from "./components/deal-list/deal-list.component";
 import {HomeComponent} from "./components/home/home.component";
+import {ExchangeStatisticsComponent} from "./components/exchange-statistics/exchange-statistics.component";
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import {HomeComponent} from "./components/home/home.component";
     CreateDealComponent,
     BrokerBidListComponent,
     DealListComponent,
-    HomeComponent
+    HomeComponent,
+    ExchangeStatisticsComponent
   ],
   imports: [
     BrowserModule,

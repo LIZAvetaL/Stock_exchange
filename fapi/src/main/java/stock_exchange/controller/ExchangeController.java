@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import stock_exchange.model.CreateStockExchange;
+import stock_exchange.model.OwnerStatistics;
 import stock_exchange.model.StockExchange;
 import stock_exchange.model.response.MessageResponse;
+import stock_exchange.model.response.PageResponse;
 import stock_exchange.service.ExchangeService;
 
 
@@ -25,9 +27,19 @@ public class ExchangeController {
         this.exchangeService = exchangeService;
     }
 
-    @GetMapping("{ownerId}")
-    public ResponseEntity findAllByOwner(@PathVariable(name = "ownerId") int ownerId) {
-        return new ResponseEntity(exchangeService.findAll(ownerId), HttpStatus.OK);
+    @GetMapping("find-by-owner")
+    public ResponseEntity<PageResponse<StockExchange>> findAllByOwner(@RequestParam int page,
+                                                       @RequestParam int size,
+                                                       @RequestParam String[] sort,
+                                                       @RequestParam int ownerId) {
+        return new ResponseEntity(exchangeService.findAll(page, size, sort, ownerId), HttpStatus.OK);
+    }
+
+    @GetMapping("find/statistics")
+    public ResponseEntity<PageResponse<OwnerStatistics>> findStatistic(@RequestParam int page,
+                                                                       @RequestParam int size,
+                                                                       @RequestParam int exchangeId) {
+        return new ResponseEntity(exchangeService.getStatistics(exchangeId, page, size), HttpStatus.OK);
     }
 
     @GetMapping("find/{exchangeId}")

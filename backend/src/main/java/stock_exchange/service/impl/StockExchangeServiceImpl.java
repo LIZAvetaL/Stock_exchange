@@ -1,7 +1,14 @@
 package stock_exchange.service.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import stock_exchange.config.StatusConst;
 import stock_exchange.dto.CreateStockExchangeDTO;
+import stock_exchange.exception.NotFoundException;
+import stock_exchange.model.OwnerStatistics;
 import stock_exchange.model.StockExchange;
 import stock_exchange.repository.StockExchangeRepository;
 import stock_exchange.dto.StockExchangeDTO;
@@ -45,19 +52,14 @@ public class StockExchangeServiceImpl implements StockExchangeService {
     public MessageResponse update(StockExchangeDTO exchangeDTO) {
         StockExchange exchange = transfer(exchangeDTO);
         stockExchangeRepository.save(exchange);
-        return new MessageResponse("Stock exchange");
+        return new MessageResponse("Stock exchange has been updated");
     }
 
     @Override
-    public List<StockExchangeDTO> findByOwner(int ownerId) {
-        List<StockExchange> exchanges = stockExchangeRepository.findStockExchangesByOwnerId(ownerId);
-        List<StockExchangeDTO> exchangeDTOs = new ArrayList<>();
-
-        for (StockExchange exchange : exchanges) {
-            StockExchangeDTO exchangeDTO = transfer(exchange);
-            exchangeDTOs.add(exchangeDTO);
-        }
-        return exchangeDTOs;
+    public Page<StockExchangeDTO> findByOwner(int page, int size, String[] sort, int ownerId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortType(sort)));
+        return stockExchangeRepository.findStockExchangesByOwnerId(ownerId, pageable)
+                .map(this::transfer);
     }
 
     @Override
@@ -70,18 +72,31 @@ public class StockExchangeServiceImpl implements StockExchangeService {
         StockExchange exchange = stockExchangeRepository.findById(exchangeId).get();
         exchange.setStatus(statusService.find(statusName));
         stockExchangeRepository.save(exchange);
-        return new MessageResponse("Status was changed");
+        return new MessageResponse("Status has been changed");
     }
 
     @Override
     public MessageResponse create(int ownerId, CreateStockExchangeDTO exchange) {
-        stockExchangeRepository.save(transfer(exchange, ownerId));
-        return new MessageResponse("ok");
+        if (!stockExchangeRepository.existsStockExchangeByExchangeName(exchange.getExchangeName())) {
+            stockExchangeRepository.save(transfer(exchange, ownerId));
+            return new MessageResponse("Stock exchange has been created");
+        } else {
+            throw new NotFoundException("Name is already taken");
+        }
     }
 
     @Override
     public StockExchange find(String name) {
         return stockExchangeRepository.findStockExchangeByExchangeName(name);
+    }
+
+    @Override
+    public Page<OwnerStatistics> getStatistics(int exchangeId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+       Page<OwnerStatistics> statistics= stockExchangeRepository.findStatistics(exchangeId, pageable)
+        .map(item -> new OwnerStatistics((LocalDate) item[0],(Long) item[1]));
+
+        return statistics;
     }
 
     private StockExchangeDTO transfer(StockExchange exchange) {
@@ -97,6 +112,7 @@ public class StockExchangeServiceImpl implements StockExchangeService {
                 exchangeDTO.getDescription(), statusService.find(exchangeDTO.getStatus()),
                 userService.findUser(exchangeDTO.getOwner()));
     }
+
     private StockExchange transfer(CreateStockExchangeDTO exchangeDTO, int id) {
         StockExchange exchange = new StockExchange();
         exchange.setExchangeName(exchangeDTO.getExchangeName());
@@ -107,5 +123,13 @@ public class StockExchangeServiceImpl implements StockExchangeService {
         exchange.setStatus(statusService.find(StatusConst.OPEN.getName()));
         exchange.setOwner(userService.findUser(id));
         return exchange;
+    }
+
+    private List<Sort.Order> sortType(String[] sort) {
+        List<Sort.Order> list = new ArrayList<>();
+        for (int i = 0; i < sort.length; i++) {
+            list.add(new Sort.Order(Sort.Direction.fromString(sort[i]), sort[++i]));
+        }
+        return list;
     }
 }

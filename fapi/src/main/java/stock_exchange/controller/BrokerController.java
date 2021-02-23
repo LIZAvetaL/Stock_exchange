@@ -31,10 +31,10 @@ public class BrokerController {
     }
 
     @GetMapping("/find/unemployed")
-    public ResponseEntity<UnemployedBroker> findAll(@RequestParam(required = false) String title,
-                                                    @RequestParam(defaultValue = "0") int page,
-                                                    @RequestParam(defaultValue = "10") int size,
-                                                    @RequestParam(defaultValue = "name") String sort) {
+    public ResponseEntity<UnemployedBroker> findAll(@RequestParam String title,
+                                                    @RequestParam int page,
+                                                    @RequestParam int size,
+                                                    @RequestParam String[] sort) {
         PageResponse<UnemployedBroker> brokers = brokerService.findAllUnemployed(title, page, size, sort);
 
         return new ResponseEntity(brokers, HttpStatus.OK);

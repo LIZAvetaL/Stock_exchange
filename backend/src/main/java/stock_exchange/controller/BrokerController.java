@@ -37,9 +37,9 @@ public class BrokerController {
 
     @GetMapping("find/unemployed")
     public ResponseEntity<List<UnemployedBrokerDTO>> findAll(@RequestParam(required = false) String title,
-                                                             @RequestParam(defaultValue = "0") int page,
-                                                             @RequestParam(defaultValue = "10") int size,
-                                                             @RequestParam(defaultValue = "name") String sort) {
+                                                             @RequestParam int page,
+                                                             @RequestParam int size,
+                                                             @RequestParam String[] sort) {
 
         return new ResponseEntity(brokerService.findAllUnemployed(title, page, size, sort), HttpStatus.OK);
     }

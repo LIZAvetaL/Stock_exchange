@@ -66,12 +66,12 @@ public class UserDetailsImpl implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		return "Unblock".equals(status);
+		return true;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return "Unblock".equals(status);
 	}
 
 	@Override

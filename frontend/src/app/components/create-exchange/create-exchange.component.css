@@ -22,7 +22,7 @@ label {
 }
 
 .btn{
-  margin-top: 10px;
+  margin-top: 7px;
 }
 small{
   font-weight: bold;
@@ -33,4 +33,8 @@ small{
 }
 .message{
   color: green;
+}
+
+.alert{
+  margin-bottom: 0;
 }

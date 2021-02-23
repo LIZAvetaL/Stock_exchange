@@ -65,8 +65,8 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
-    public Page<UnemployedBrokerDTO> findAllUnemployed(String title, int page, int size, String sort) {
-        Pageable pagingSort = PageRequest.of(page, size, Sort.by(sort));
+    public Page<UnemployedBrokerDTO> findAllUnemployed(String title, int page, int size, String[] sort) {
+        Pageable pagingSort = PageRequest.of(page, size,Sort.by(sortType(sort)));
 
         Status status = statusService.find(StatusConst.UNEMPLOYED.getName());
         Page<Broker> tempPage = brokerRepository.findAllByStatus(status, pagingSort);
@@ -167,6 +167,14 @@ public class BrokerServiceImpl implements BrokerService {
             totalAmount += bid.getAmount();
         }
         return totalAmount;
+    }
+
+    private List<Sort.Order> sortType(String[] sort) {
+        List<Sort.Order> list = new ArrayList<>();
+        for (int i = 0; i< sort.length;i++ ) {
+            list.add(new Sort.Order(Sort.Direction.fromString(sort[i]), sort[++i]));
+        }
+        return list;
     }
 
     private UnemployedBrokerDTO transfer(Broker broker) {

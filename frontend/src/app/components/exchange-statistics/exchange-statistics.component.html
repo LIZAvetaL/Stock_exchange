@@ -1,30 +1,27 @@
-<table class="table">
+<table class="table table-hover">
   <thead>
   <tr>
-    <th  scope="col">#</th>
-    <th (click)="sortTable('email')" scope="col">Email</th>
-    <th (click)="sortTable('role')" scope="col">Role</th>
-    <th (click)="sortTable('status')" scope="col">Status</th>
+    <th scope="col">#</th>
+    <th  scope="col">Date</th>
+    <th  scope="col">Count of deals</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="
-    let user of users | paginate : {
+    let item of statistics | paginate : {
             itemsPerPage: pageSize,
             currentPage: page,
             totalItems: count
-          }; let i=index
+          };
+    let i = index;
   ">
     <td>{{currentItem-pageSize+i+1}}</td>
-    <td>{{user.email}}</td>
-    <td>{{user.role}}</td>
-    <td>{{user.status}}</td>
-    <td>
-      <button class="btn btn-dark" routerLink="/user-details/{{ user.id }}">Edit</button>
-    </td>
+    <td>{{item.date}}</td>
+    <td>{{item.totalPrice}}</td>
   </tr>
   </tbody>
 </table>
+
 <div class="col-md-12">
   Items per Page:
   <select (change)="handlePageSizeChange($event)">

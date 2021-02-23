@@ -20,7 +20,7 @@
             itemsPerPage: pageSize,
             currentPage: page,
             totalItems: count
-          }">
+          }" [ngClass]="{current: deal.dealNumber==activeDael }">
       <td>{{deal.dealNumber}}</td>
       <td>{{deal.bargainDate}}</td>
       <td>{{deal.amount}}</td>

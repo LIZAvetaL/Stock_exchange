@@ -15,8 +15,8 @@ export class ExchangeService {
   constructor(private http: HttpClient) {
   }
 
-  getExchange(ownerId: number): Observable<any> {
-    return this.http.get(API_URL + `${ownerId}`);
+  getExchange(page: number, size: number, sort: string[], ownerId: number): Observable<any> {
+    return this.http.get(API_URL + 'find-by-owner' + `?page=${page}&size=${size}&sort=${sort}&ownerId=${ownerId}`);
   }
 
   get(id: number): Observable<any> {
@@ -39,5 +39,9 @@ export class ExchangeService {
 
   getAll(): Observable<any> {
     return this.http.get(API_URL + 'find/all');
+  }
+
+  getStatistics(page: number, size: number, exchangeId: number): Observable<any> {
+    return this.http.get(API_URL + 'find/statistics' + `?page=${page}&size=${size}&exchangeId=${exchangeId}`);
   }
 }

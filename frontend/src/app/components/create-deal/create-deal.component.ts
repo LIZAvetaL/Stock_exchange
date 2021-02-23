@@ -78,7 +78,7 @@ export class CreateDealComponent implements OnInit {
   createDeal(sellerBidId: number, price: number) {
     this.bidService.createDeal(this.bid.id, sellerBidId, this.bid, price).subscribe(
       data => {
-        this.route.navigate(['broker/deals']);
+        this.route.navigate(['broker/deals', data]);
       }
     );
   }

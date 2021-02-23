@@ -18,7 +18,7 @@
         <th (click)="sortTable('id')" scope="col">#</th>
         <th (click)="sortTable('name')" scope="col">Name</th>
         <th (click)="sortTable('exchange')" scope="col">StockExchange</th>
-        <th (click)="sortTable('status')" scope="col">Total Amount Of Completed Bid</th>
+        <th  scope="col">Count Of Completed Bids</th>
       </tr>
       </thead>
       <tbody>
@@ -30,7 +30,7 @@
           };
     let i = index;
   ">
-        <td>{{i+1}}</td>
+        <td>{{currentItem-pageSize+i+1}}</td>
         <td>{{item.broker.name}}</td>
         <td>{{item.broker.exchange}}</td>
         <td>{{item.totalAmount}}</td>

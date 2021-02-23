@@ -16,7 +16,7 @@ export class BrokerService {
   constructor(private http: HttpClient) {
   }
 
-  getAll(title: string, page: number, size: number, sort: string): Observable<any> {
+    getAll(title: string, page: number, size: number, sort: string[]): Observable<any> {
     return this.http.get(baseUrl + 'find/unemployed' + `?title=${title}&page=${page}&size=${size}&sort=${sort}`);
   }
 

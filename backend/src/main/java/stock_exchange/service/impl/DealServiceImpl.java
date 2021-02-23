@@ -28,7 +28,7 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public void create(Bid sellerBid, Bid buyerBid, double price) {
+    public int create(Bid sellerBid, Bid buyerBid, double price) {
         Deal deal = new Deal();
         deal.setDealNumber(new Random().ints(10000, 100000).findFirst().getAsInt());
         deal.setAmount(bidAmount(sellerBid.getAmount(), buyerBid.getAmount()));
@@ -43,6 +43,7 @@ public class DealServiceImpl implements DealService {
             deal.setBuyer(sellerBid.getBroker());
         }
         dealRepository.save(deal);
+        return deal.getDealNumber();
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface BidService {
     Bid getBid(int sellerBidId);
     Page<BidDTO> findClientsBids(int page, int size, String[] sort, int clientId);
 
-    void create(int id, CreateBidDTO createBid);
+    MessageResponse create(int id, CreateBidDTO createBid);
 
     MessageResponse update(BidDTO bid);
 
@@ -24,7 +24,7 @@ public interface BidService {
 
     Streamable<BrokerBidDTO> findBids(int page, int size, String[] sort, int bidId);
 
-    MessageResponse createDeal(int sellerBidId, int buyerBidId, double price);
+    Integer createDeal(int sellerBidId, int buyerBidId, double price);
 
     Page<BidDTO> findAll(String issuer, int page, int size, String[] sort);
 

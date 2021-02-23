@@ -17,11 +17,15 @@ export class UnemployedBrokerListComponent implements OnInit {
   count = 0;
   pageSize = 3;
   pageSizes = [3, 6, 9];
-  sort = 'id';
+  sort: string[];
+  sortMap: Map<string, string>;
+  currentItem: number;
 
   constructor(private brokerService: BrokerService,
               private tokenService: TokenStorageService) {
     this.clientId = tokenService.getUser().id;
+    this.sort = [];
+    this.sortMap = new Map();
   }
 
   ngOnInit() {
@@ -35,6 +39,7 @@ export class UnemployedBrokerListComponent implements OnInit {
           const {content, totalElements} = response;
           this.brokers = content;
           this.count = totalElements;
+          this.currentItem = this.page * this.pageSize;
           console.log(response);
         },
         error => {
@@ -62,6 +67,26 @@ export class UnemployedBrokerListComponent implements OnInit {
   dismiss(broker: UnemployedBroker) {
     this.brokerService.dismiss(broker.id).subscribe();
     broker.isEmploy = false;
+  }
+
+  sortTable(columnName: string) {
+    if (this.sortMap.has(columnName)) {
+      if (this.sortMap.get(columnName) === 'desc') {
+        this.sortMap.delete(columnName);
+      } else {
+        this.sortMap.set(columnName, 'desc');
+      }
+    } else {
+      this.sortMap.set(columnName, 'asc');
+    }
+
+    this.sort = [];
+    let index = 0;
+    for (const [key, value] of this.sortMap) {
+      this.sort[index++] = value;
+      this.sort[index++] = key;
+    }
+    this.retrieveBrokers();
   }
 
 }

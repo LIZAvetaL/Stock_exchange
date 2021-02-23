@@ -78,9 +78,9 @@ public class BidController {
     }
 
     @PostMapping("/create-deal/{seller-bid-id}/{buyer-bid-id}/{price}")
-    public ResponseEntity<MessageResponse> create(@PathVariable(name = "seller-bid-id") int sellerBidId,
+    public ResponseEntity<Integer> create(@PathVariable(name = "seller-bid-id") int sellerBidId,
                                                   @PathVariable(name = "buyer-bid-id") int buyerBidId,
                                                   @PathVariable double price) {
-        return new ResponseEntity<>(bidService.createDeal(sellerBidId, buyerBidId, price), HttpStatus.OK);
+        return new ResponseEntity(bidService.createDeal(sellerBidId, buyerBidId, price), HttpStatus.OK);
     }
 }

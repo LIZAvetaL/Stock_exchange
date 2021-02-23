@@ -35,9 +35,9 @@ public class BidController {
 
     @GetMapping("/find/all")
     public ResponseEntity<Page<BidDTO>> findAll(@RequestParam String issuer,
-                                                     @RequestParam int page,
-                                                     @RequestParam int size,
-                                                     @RequestParam String[] sort) {
+                                                @RequestParam int page,
+                                                @RequestParam int size,
+                                                @RequestParam String[] sort) {
         return new ResponseEntity(bidService.findAll(issuer, page, size, sort), HttpStatus.OK);
     }
 
@@ -68,8 +68,8 @@ public class BidController {
     @PostMapping("/create")
     public ResponseEntity createBid(@RequestParam int id,
                                     @RequestBody CreateBidDTO createBid) {
-        bidService.create(id, createBid);
-        return new ResponseEntity(new MessageResponse(""),HttpStatus.OK);
+
+        return new ResponseEntity(bidService.create(id, createBid), HttpStatus.OK);
     }
 
     @PostMapping("/update")
@@ -79,7 +79,7 @@ public class BidController {
     }
 
     @PostMapping("/create-deal/{seller-bid-id}/{buyer-bid-id}/{price}")
-    public ResponseEntity<MessageResponse> create(@PathVariable(name = "seller-bid-id") int sellerBidId,
+    public ResponseEntity<Integer> create(@PathVariable(name = "seller-bid-id") int sellerBidId,
                                                   @PathVariable(name = "buyer-bid-id") int buyerBidId,
                                                   @PathVariable double price) {
         return new ResponseEntity(bidService.createDeal(sellerBidId, buyerBidId, price), HttpStatus.OK);

@@ -20,6 +20,7 @@
           name="name"
           [(ngModel)]="form.name"
           required
+
           minlength="3"
           #name="ngModel"
         />
@@ -28,6 +29,7 @@
           <div *ngIf="name.errors.minlength">
             Name must be at least 3 characters
           </div>
+          <div *ngIf="name.errors.pattern"> Name must be without spaces</div>
         </div>
       </div>
       <div class="form-group">

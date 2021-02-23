@@ -26,8 +26,8 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<PageResponse<User>> findAll(@RequestParam int page,
-                                                @RequestParam int size,
-                                                @RequestParam String[] sort) {
+                                                      @RequestParam int size,
+                                                      @RequestParam String[] sort) {
         return new ResponseEntity(userService.findAll(page, size, sort), HttpStatus.OK);
     }
 

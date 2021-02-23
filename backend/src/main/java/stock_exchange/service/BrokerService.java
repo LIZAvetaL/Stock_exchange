@@ -18,7 +18,7 @@ import java.util.Map;
 public interface BrokerService {
     List<BrokerDTO> findAll();
 
-    Page<UnemployedBrokerDTO> findAllUnemployed(String title, int page, int size, String sort);
+    Page<UnemployedBrokerDTO> findAllUnemployed(String title, int page, int size, String[] sort);
 
     BrokerDTO findBroker(int id);
 

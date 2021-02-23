@@ -7,7 +7,7 @@ import stock_exchange.model.Deal;
 
 public interface DealService {
 
-    void create(Bid sellerBid, Bid buyerBid, double price);
+    int create(Bid sellerBid, Bid buyerBid, double price);
 
     Page<DealDTO> find(int page, int size, String[] sort, int brokerId);
 }

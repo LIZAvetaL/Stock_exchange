@@ -1,13 +1,14 @@
 package stock_exchange.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import stock_exchange.config.UrlConstants;
 import stock_exchange.model.CreateStockExchange;
+import stock_exchange.model.OwnerStatistics;
 import stock_exchange.model.StockExchange;
 import stock_exchange.model.response.MessageResponse;
+import stock_exchange.model.response.PageResponse;
 import stock_exchange.service.ExchangeService;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public List<StockExchange> findAll(int ownerId) {
-        return restTemplate.getForObject(UrlConstants.ExchangeUrl + ownerId, List.class);
+    public PageResponse<StockExchange> findAll(int page, int size, String[] sort, int ownerId) {
+         return restTemplate.getForObject(UrlConstants.ExchangeUrl+ "?page=" + page + "&size=" + size
+                + "&sort=" + String.join(",", sort)+"&ownerId=" + ownerId, PageResponse.class);
     }
 
     @Override
@@ -53,5 +55,11 @@ public class ExchangeServiceImpl implements ExchangeService {
     public MessageResponse create(int ownerId, CreateStockExchange exchange) {
         return restTemplate.postForEntity(UrlConstants.ExchangeUrl + "create?owner-id="+ownerId, exchange,
                 MessageResponse.class).getBody();
+    }
+
+    @Override
+    public PageResponse<OwnerStatistics> getStatistics(int exchangeId, int page, int size) {
+        return restTemplate.getForObject(UrlConstants.ExchangeUrl+ "find/statistics?page=" + page + "&size=" + size
+            + "&exchangeId=" + exchangeId, PageResponse.class);
     }
 }

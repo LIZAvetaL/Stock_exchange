@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
-  role: string = '';
+  role: string;
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService) { }
 

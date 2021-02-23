@@ -18,7 +18,8 @@ export class CreateExchangeComponent implements OnInit {
   ownerId: number;
 
   response: MessageResponse;
-  showMessage: boolean;
+  isSuccessful: boolean;
+  isFailed: boolean;
 
   constructor(private route: Router,
               private exchangeService: ExchangeService,
@@ -26,17 +27,21 @@ export class CreateExchangeComponent implements OnInit {
     this.exchange = new StockExchange();
     this.ownerId = tokenService.getUser().id;
     this.response = new MessageResponse();
-    this.showMessage = false;
+    this.isSuccessful = false;
+    this.isFailed = false;
   }
 
   Save(form: NgForm) {
     if (form.valid) {
-      this.showMessage = true;
       this.exchangeService.saveExchange(this.exchange, this.ownerId).subscribe(
         data => {
-          this.response = data;
+          this.isFailed = false;
+          this.isSuccessful = true;
+          this.response.message = data.message;
         }, error => {
           this.response = error.error;
+          this.isFailed = true;
+          this.isSuccessful = false;
         }
       );
     }

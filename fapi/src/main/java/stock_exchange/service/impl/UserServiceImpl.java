@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean existsByEmail(String email) {
-        return restTemplate.getForObject(UrlConstants.UserUrl + "exist/" + email, Boolean.class);
+        return restTemplate.getForObject(UrlConstants.UserUrl + "exist-email/" + email, Boolean.class);
     }
 
     @Override
@@ -84,6 +84,11 @@ public class UserServiceImpl implements UserService {
     public MessageResponse unblock(int userId) {
         return restTemplate.postForEntity(UrlConstants.UserUrl + "unblock" + "?id=" + userId,
                 null, MessageResponse.class).getBody();
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return restTemplate.getForObject(UrlConstants.UserUrl + "exist-name/" + name, Boolean.class);
     }
 
 

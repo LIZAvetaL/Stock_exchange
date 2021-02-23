@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Deal} from "../../model/deal";
 import {TokenStorageService} from "../../services/token-storage/token-storage.service";
 import {DealService} from "../../services/deal/deal.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-deal-list',
@@ -18,12 +19,19 @@ export class DealListComponent implements OnInit {
   pageSize = 3;
   pageSizes = [3, 6, 9];
   sort: string[];
+  sortMap: Map<string, string>;
+  activeDael = 0;
 
   constructor(private dealService: DealService,
-              private tokenStorage: TokenStorageService
+              private tokenStorage: TokenStorageService,
+              private router: ActivatedRoute
   ) {
     this.brokerId = tokenStorage.getUser().id;
-    this.sort = ['desc', 'dealNumber'];
+    this.sort = ['desc', 'bargainDate'];
+    this.sortMap = new Map();
+    if (this.router.snapshot.params.dealNumber !== undefined) {
+      this.activeDael = this.router.snapshot.params.dealNumber;
+    }
   }
 
   ngOnInit() {
@@ -31,7 +39,22 @@ export class DealListComponent implements OnInit {
   }
 
   sortTable(columnName: string) {
-    this.sort = ['asc', columnName];
+    if (this.sortMap.has(columnName)) {
+      if (this.sortMap.get(columnName) === 'desc') {
+        this.sortMap.delete(columnName);
+      } else {
+        this.sortMap.set(columnName, 'desc');
+      }
+    } else {
+      this.sortMap.set(columnName, 'asc');
+    }
+
+    this.sort = [];
+    let index = 0;
+    for (const [key, value] of this.sortMap) {
+      this.sort[index++] = value;
+      this.sort[index++] = key;
+    }
     this.retrieveDeals();
   }
 

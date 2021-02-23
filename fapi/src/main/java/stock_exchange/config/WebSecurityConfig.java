@@ -61,7 +61,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/**").permitAll()
+                .authorizeRequests()
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/exchange/find/all/**").permitAll()
+                .antMatchers("/bid/find/all/**").permitAll()
+                .antMatchers("/user/**").hasRole("ADMIN")
+                .antMatchers("/broker/update/**").hasRole("ADMIN")
+                .antMatchers("/client/**").hasRole("CLIENT")
+                .antMatchers("/bid/**").hasAnyRole("CLIENT","BROKER")
+                .antMatchers("/broker/find/statistics/**").hasRole("CLIENT")
+                .antMatchers("/broker/employ/**").hasRole("CLIENT")
+                .antMatchers("/broker/dismiss/**").hasRole("CLIENT")
+                .antMatchers("/broker/find/**").hasRole("CLIENT")
+                .antMatchers("/broker/**").hasRole("BROKER")
+                .antMatchers("/deal/**").hasRole("BROKER")
+                .antMatchers("/exchange/**").hasRole("OWNER")
                 .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -18,12 +18,14 @@ export class ClientBidListComponent implements OnInit {
   pageSize = 3;
   pageSizes = [3, 6, 9];
   sort: string[];
+  sortMap: Map<string, string>;
 
   constructor(private bidService: BidService,
               private tokenStorage: TokenStorageService
   ) {
     this.clientId = tokenStorage.getUser().id;
-    this.sort = ['desc', 'bidNumber'];
+    this.sort = [];
+    this.sortMap = new Map();
   }
 
   ngOnInit() {
@@ -57,7 +59,22 @@ export class ClientBidListComponent implements OnInit {
   }
 
   sortTable(columnName: string) {
-    this.sort = ['asc', columnName];
+    if (this.sortMap.has(columnName)) {
+      if (this.sortMap.get(columnName) === 'desc') {
+        this.sortMap.delete(columnName);
+      } else {
+        this.sortMap.set(columnName, 'desc');
+      }
+    } else {
+      this.sortMap.set(columnName, 'asc');
+    }
+
+    this.sort = [];
+    let index = 0;
+    for (const [key, value] of this.sortMap) {
+      this.sort[index++] = value;
+      this.sort[index++] = key;
+    }
     this.retrieveBrokers();
   }
 }

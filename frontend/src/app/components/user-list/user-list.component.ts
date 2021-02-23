@@ -17,9 +17,10 @@ export class UserListComponent implements OnInit {
   pageSizes = [3, 6, 9];
   sort: string[];
   sortMap: Map<string, string>;
+  currentItem: number;
 
   constructor(private userService: UserService) {
-    this.sort = ['asc', 'id'];
+    this.sort = [];
     this.sortMap = new Map();
   }
 
@@ -35,6 +36,7 @@ export class UserListComponent implements OnInit {
           const {content, totalElements} = response;
           this.users = content;
           this.count = totalElements;
+          this.currentItem = this.page * this.pageSize;
         },
         error => {
           console.log(error);
@@ -65,10 +67,10 @@ export class UserListComponent implements OnInit {
     }
 
     this.sort = [];
-    let index = 0;
+    let currentItem = 0;
     for (const [key, value] of this.sortMap) {
-      this.sort[index++] = value;
-      this.sort[index++] = key;
+      this.sort[currentItem++] = value;
+      this.sort[currentItem++] = key;
     }
     this.retrieveUsers();
   }

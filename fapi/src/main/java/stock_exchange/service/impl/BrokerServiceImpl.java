@@ -27,10 +27,10 @@ public class BrokerServiceImpl implements BrokerService {
     }
 
     @Override
-    public PageResponse<UnemployedBroker> findAllUnemployed(String title, int page, int size, String sort) {
+    public PageResponse<UnemployedBroker> findAllUnemployed(String title, int page, int size, String[] sort) {
         return restTemplate.getForObject(
                 UrlConstants.BrokerUrl + "find/unemployed" + "?title=" + title
-                        + "&page=" + page + "&size=" + size + "&sort=" + sort,
+                        + "&page=" + page + "&size=" + size + "&sort=" + String.join(",", sort),
                 PageResponse.class);
     }
 

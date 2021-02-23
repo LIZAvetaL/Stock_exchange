@@ -1,18 +1,19 @@
 <div class="col-md-12">
   <div class="card card-container">
 
-  <form #f="ngForm">
+    <form #f="ngForm">
       <div class="row">
         <div class="form-group col-md-6">
           <label for="issuer">Issuer</label>
           <input name="issuer" [(ngModel)]="createBid.issuer" id="issuer"
                  type="text" class="form-control" required
-                  #issuer="ngModel">
+                 #issuer="ngModel">
           <div *ngIf="issuer.invalid && f.submitted">
-          <div class="alert alert-danger message"
-               role="alert"
-               *ngIf=" issuer.errors.required">Issuer is required</div>
-        </div>
+            <div class="alert alert-danger message"
+                 role="alert"
+                 *ngIf=" issuer.errors.required">Issuer is required
+            </div>
+          </div>
         </div>
         <div class="form-group col-md-6">
           <label for="type">Type</label>
@@ -23,11 +24,12 @@
             <option value="Sale">Sale</option>
           </select>
           <div *ngIf="type.invalid && f.submitted">
-          <div class="alert alert-danger message"
-                         role="alert"
-                         *ngIf="(type.dirty || type.touched || f.submitted) && type.errors.required">Type is required</div>
+            <div class="alert alert-danger message"
+                 role="alert"
+                 *ngIf="(type.dirty || type.touched || f.submitted) && type.errors.required">Type is required
+            </div>
           </div>
-          </div>
+        </div>
       </div>
 
       <div class="row">
@@ -38,10 +40,12 @@
                  min="1"
                  #amount="ngModel"
                  required
-                 >
+          >
           <div class="alert alert-danger message"
                role="alert"
-               *ngIf="(amount.dirty || amount.touched) && isAmount()">Amount must be more than 0</div>
+               *ngIf="(amount.dirty || amount.touched) && isAmount()">{{messageAmount}}
+          </div>
+
         </div>
         <div class="form-group col-md-4">
           <label for="minPrice">Min Price</label>
@@ -50,10 +54,11 @@
                  min="1"
                  #minPrice="ngModel"
                  required
-                 >
+          >
           <div class="alert alert-danger message"
                role="alert"
-               *ngIf="(minPrice.dirty || minPrice.touched ) && isMinPrice()">Min Price must be more than 0</div>
+               *ngIf="(minPrice.dirty || minPrice.touched ) && isMinPrice()">{{messageMinPrice}}
+          </div>
         </div>
 
         <div class="form-group col-md-4">
@@ -63,10 +68,11 @@
                  min="{{createBid.minPrice+1}}"
                  #maxPrice="ngModel"
                  required
-                 >
+          >
           <div class="alert alert-danger message"
                role="alert"
-               *ngIf="(maxPrice.dirty || maxPrice.touched ) && isMaxPrice()">Max Price must be more than Min Price</div>
+               *ngIf="(maxPrice.dirty || maxPrice.touched ) && isMaxPrice()">{{messageMaxPrice}}
+          </div>
         </div>
       </div>
 
@@ -82,24 +88,27 @@
             <option value="Extra High">Extra High</option>
           </select>
           <div *ngIf="priority.invalid && f.submitted">
-          <div class="alert alert-danger message"
-                        role="alert"
-                        *ngIf="(priority.dirty || priority.touched || f.submitted) && priority.errors.required">Priority is required</div>
-        </div>
+            <div class="alert alert-danger message"
+                 role="alert"
+                 *ngIf="(priority.dirty || priority.touched || f.submitted) && priority.errors.required">Priority is
+              required
+            </div>
+          </div>
         </div>
         <div class="form-group col-md-6">
           <label for="status">Status</label>
-          <select  name="status" [(ngModel)]="createBid.status"
-                   id="status" class="form-control"
-                   #status="ngModel" required>
+          <select name="status" [(ngModel)]="createBid.status"
+                  id="status" class="form-control"
+                  #status="ngModel" required>
             <option value="Draft">Draft</option>
             <option value="Active">Active</option>
           </select>
           <div *ngIf="status.invalid && f.submitted">
-          <div class="alert alert-danger message"
-                         role="alert"
-                         *ngIf="(status.dirty || status.touched || f.submitted) && status.errors.required">Status is required</div>
-        </div>
+            <div class="alert alert-danger message"
+                 role="alert"
+                 *ngIf="(status.dirty || status.touched || f.submitted) && status.errors.required">Status is required
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -110,26 +119,31 @@
             <option *ngFor="let broker of brokers" [value]="broker.name">{{broker.name}}</option>
           </select>
           <div *ngIf="broker.invalid && f.submitted">
-          <div class="alert alert-danger message"
-                         role="alert"
-                         *ngIf="(broker.dirty || broker.touched || f.submitted) && broker.errors.required">Broker is required</div>
-        </div>
+            <div class="alert alert-danger message"
+                 role="alert"
+                 *ngIf="(broker.dirty || broker.touched || f.submitted) && broker.errors.required">Broker is required
+            </div>
+          </div>
         </div>
 
         <div class="form-group col-md-6">
           <label for="dueDate">Due date</label>
-          <input name="dueDate" [(ngModel)]="createBid.dueDate" id="dueDate" type="date" class="form-control"  placeholder="Due date"
+          <input name="dueDate" [(ngModel)]="createBid.dueDate" id="dueDate" type="date" class="form-control"
+                 placeholder="Due date"
                  #dueDate="ngModel"
                  required
-                 >
+          >
           <div class="alert alert-danger message"
                role="alert"
-               *ngIf="(dueDate.dirty || dueDate.touched  || f.submitted) && isDueDate()">Due Date must be more than Current Date</div>
+               *ngIf="(dueDate.dirty || dueDate.touched  || f.submitted) && isDueDate()">{{messageDate}}
+          </div>
         </div>
       </div>
-  <button type="submit" class="btn btn-primary" (click)="onSubmit(f)"
-          data-bs-toggle="modal" data-bs-target="#exampleModal" >Create</button>
-      <small>{{response.message}}</small>
-</form>
+      <button type="submit" class="btn btn-primary" (click)="onSubmit(f)"
+              data-bs-toggle="modal" data-bs-target="#exampleModal">Create
+      </button>
+      <small *ngIf="isFail">{{response.message}}</small>
+      <small *ngIf="isOk">{{response.message}}</small>
+    </form>
   </div>
 </div>

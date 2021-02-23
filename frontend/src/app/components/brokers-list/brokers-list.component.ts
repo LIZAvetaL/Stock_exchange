@@ -24,6 +24,7 @@ export class BrokersListComponent implements OnInit {
   pageSize = 3;
   pageSizes = [3, 6, 9];
   isOperationFailed: boolean;
+  currentItem: number;
 
 
   constructor(private brokerService: BrokerService,
@@ -43,6 +44,7 @@ export class BrokersListComponent implements OnInit {
         const {content, totalElements} = response;
         this.statistics = content;
         this.count = totalElements;
+        this.currentItem = this.page * this.pageSize;
         console.log(response);
       },
       error => {

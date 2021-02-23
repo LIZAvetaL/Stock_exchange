@@ -24,12 +24,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity( messageResponse, HttpStatus.SERVICE_UNAVAILABLE);
     }
 
-    @ExceptionHandler(Exception.class)
-    protected ResponseEntity<MessageResponse> handleModelException(Exception ex) {
-
-        MessageResponse messageResponse=new MessageResponse("Please try again or contact administrator.");
-        return new ResponseEntity( messageResponse, HttpStatus.SERVICE_UNAVAILABLE);
-    }
 
 
 }

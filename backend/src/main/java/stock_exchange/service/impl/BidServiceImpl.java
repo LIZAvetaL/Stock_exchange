@@ -77,19 +77,20 @@ public class BidServiceImpl implements BidService {
 
     private List<Sort.Order> sortType(String[] sort) {
         List<Sort.Order> list = new ArrayList<>();
-        for (int i = 0; i< sort.length;i++ ) {
+        for (int i = 0; i < sort.length; i++) {
             list.add(new Sort.Order(Sort.Direction.fromString(sort[i]), sort[++i]));
         }
         return list;
     }
 
     @Override
-    public void create(int clientId, CreateBidDTO createBid) {
+    public MessageResponse create(int clientId, CreateBidDTO createBid) {
         Bid bid = transfer(createBid);
         bid.setBidNumber(generateRandom());
         bid.setCreationDate(LocalDate.now());
         bid.setClient(userService.findUser(clientId));
         bidRepository.save(bid);
+        return new MessageResponse("Bid has been created");
     }
 
     @Override
@@ -122,7 +123,7 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public MessageResponse createDeal(int sellerBidId, int buyerBidId, double price) {
+    public Integer createDeal(int sellerBidId, int buyerBidId, double price) {
 
         Bid sellerBid = bidRepository.findById(sellerBidId)
                 .orElseThrow(
@@ -133,31 +134,31 @@ public class BidServiceImpl implements BidService {
                         () -> new NotFoundException("Bid error")
                 );
 
-        dealService.create(sellerBid, buyerBid, price);
+        int dealNumber = dealService.create(sellerBid, buyerBid, price);
 
         if (sellerBid.getAmount() > buyerBid.getAmount()) {
-            changeAmount(sellerBid,  buyerBid.getAmount());
+            changeAmount(sellerBid, buyerBid.getAmount());
             changeStatus(buyerBid);
         }
         if (sellerBid.getAmount() < buyerBid.getAmount()) {
-            changeAmount(buyerBid,  sellerBid.getAmount());
+            changeAmount(buyerBid, sellerBid.getAmount());
             changeStatus(sellerBid);
         } else {
             changeStatus(sellerBid);
             changeStatus(buyerBid);
         }
-        return new MessageResponse("");
+        return dealNumber;
     }
 
     @Override
     public Page<BidDTO> findAll(String issuer, int page, int size, String[] sort) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortType(sort)));
 
-        if ("".equals(issuer)){
+        if ("".equals(issuer)) {
             return bidRepository.findBidsByStatusStatusName(StatusConst.ACTIVE.getName(), pageable)
                     .map(this::transfer);
-        }else{
-            return bidRepository.findBidsByStatusStatusNameAndIssuer(StatusConst.ACTIVE.getName(), issuer, pageable)
+        } else {
+            return bidRepository.findBidsByStatusStatusNameAndIssuerContaining(StatusConst.ACTIVE.getName(), issuer, pageable)
                     .map(this::transfer);
         }
     }
@@ -185,13 +186,15 @@ public class BidServiceImpl implements BidService {
         bidRepository.save(bid);
     }
 
-    private void create(Bid bid, int amount){
-        Bid newBid =new Bid();
-        newBid.setAmount(bid.getAmount()-amount);
+    private void create(Bid bid, int amount) {
+        Bid newBid = new Bid();
+        newBid.setAmount(bid.getAmount() - amount);
         newBid.setStatus(bid.getStatus());
         newBid.setType(bid.getType());
         newBid.setMinPrice(bid.getMinPrice());
         newBid.setMaxPrice(bid.getMaxPrice());
+        newBid.setCreationDate(bid.getCreationDate());
+        newBid.setDueDate(bid.getDueDate());
         newBid.setClient(bid.getClient());
         newBid.setBroker(bid.getBroker());
         newBid.setPriority(bid.getPriority());

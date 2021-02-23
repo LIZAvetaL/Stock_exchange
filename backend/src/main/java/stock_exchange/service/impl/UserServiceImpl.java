@@ -9,16 +9,13 @@ import stock_exchange.config.StatusConst;
 import stock_exchange.dto.CreateBrokerDTO;
 import stock_exchange.dto.CreateUserDTO;
 import stock_exchange.exception.NotFoundException;
-import stock_exchange.model.Broker;
 import stock_exchange.model.User;
 import stock_exchange.repository.UserRepository;
 import stock_exchange.dto.UserDTO;
 import stock_exchange.response.MessageResponse;
 import stock_exchange.service.BrokerService;
-import stock_exchange.service.EmailSender;
 import stock_exchange.service.RoleService;
 import stock_exchange.service.StatusService;
-import stock_exchange.service.StockExchangeService;
 import stock_exchange.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,17 +28,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleService roleService;
-    private final EmailSender emailSender;
     private final BrokerService brokerService;
     private final StatusService statusService;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleService roleService,
-                           EmailSender emailSender, @Lazy BrokerService brokerService,
+                           @Lazy BrokerService brokerService,
                            StatusService statusService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
-        this.emailSender = emailSender;
         this.brokerService = brokerService;
         this.statusService = statusService;
     }
@@ -49,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO findById(int id) {
         User user = userRepository.findById(id).orElseThrow(() ->
-                new NotFoundException("user error"));
+                new NotFoundException("User hasn't been found"));
         return transfer(user);
     }
 
@@ -84,7 +79,6 @@ public class UserServiceImpl implements UserService {
     public void register(CreateUserDTO userDTO) {
         User user = transfer(userDTO);
         userRepository.save(user);
-        emailSender.sendMessage(userDTO.getEmail());
     }
 
     @Override
@@ -99,7 +93,7 @@ public class UserServiceImpl implements UserService {
         );
         user.setRole(roleService.findRole(roleName));
         userRepository.save(user);
-        return new MessageResponse("Role was changed");
+        return new MessageResponse("Role has been changed");
     }
 
     @Override
@@ -133,6 +127,11 @@ public class UserServiceImpl implements UserService {
         user.setStatus(statusService.find(StatusConst.UNBLOCK.getName()));
         userRepository.save(user);
         return new MessageResponse("User is unblocked");
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return userRepository.existsUserByName(name);
     }
 
     public User findUser(int id) {

@@ -22,6 +22,7 @@ import stock_exchange.model.response.MessageResponse;
 import stock_exchange.security.jwt.JwtUtils;
 import stock_exchange.security.services.UserDetailsImpl;
 import stock_exchange.service.AuthService;
+import stock_exchange.service.EmailSender;
 import stock_exchange.service.UserService;
 
 @Service
@@ -31,14 +32,16 @@ public class AuthServiceImpl implements AuthService {
     private UserService userService;
     private PasswordEncoder encoder;
     private JwtUtils jwtUtils;
+    private EmailSender emailSender;
 
     @Autowired
     public AuthServiceImpl(AuthenticationManager authenticationManager, UserService userService,
-                           PasswordEncoder encoder, JwtUtils jwtUtils) {
+                           PasswordEncoder encoder, JwtUtils jwtUtils, EmailSender emailSender) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.encoder = encoder;
         this.jwtUtils = jwtUtils;
+        this.emailSender = emailSender;
     }
 
     @Override
@@ -64,6 +67,10 @@ public class AuthServiceImpl implements AuthService {
             throw new NotFoundException("Error: Email is already taken!");
         }
 
+        if (userService.existsByName(signUpRequest.getName())) {
+            throw new NotFoundException("Error: Name is already taken!");
+        }
+
         if (signUpRequest.getExchange() == null) {
             CreateUser user = new CreateUser(signUpRequest.getEmail(),
                     signUpRequest.getName(),
@@ -78,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
                     signUpRequest.getExchange());
             userService.registerBroker(broker);
         }
-
+        emailSender.sendMessage(signUpRequest);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }

@@ -1,11 +1,11 @@
 package stock_exchange.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import stock_exchange.model.request.SignupRequest;
 import stock_exchange.service.EmailSender;
 
 @Service
@@ -17,18 +17,20 @@ public class EmailSenderImpl implements EmailSender {
     private final JavaMailSender emailSender;
 
     @Autowired
-    public EmailSenderImpl(@Qualifier("getJavaMailSender") JavaMailSender emailSender) {
+    public EmailSenderImpl(JavaMailSender emailSender) {
         this.emailSender = emailSender;
     }
 
     @Override
-    public void sendMessage(String newUserEmail) {
+    public void sendMessage(SignupRequest newUser) {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(username);
-        message.setTo(newUserEmail);
-        message.setSubject("Stock Exchange");
-        message.setText(" Registration was a success");
+        message.setTo(newUser.getEmail());
+        message.setSubject("Registration");
+        message.setText("You've been registered!\n"
+                + "Your email: " + newUser.getName() + "\n"
+                + "Your password:" + newUser.getPassword() );
         emailSender.send(message);
     }
 }

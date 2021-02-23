@@ -19,6 +19,7 @@ import {CreateDealComponent} from "./components/create-deal/create-deal.componen
 import {BrokerBidListComponent} from "./components/broker-bid-list/broker-bid-list.component";
 import {DealListComponent} from "./components/deal-list/deal-list.component";
 import {HomeComponent} from "./components/home/home.component";
+import {ExchangeStatisticsComponent} from "./components/exchange-statistics/exchange-statistics.component";
 
 
 const routes: Routes = [
@@ -29,11 +30,13 @@ const routes: Routes = [
   {path: 'owner/exchanges', component: ExchangeListComponent},
   {path: 'owner/create-exchange', component: CreateExchangeComponent},
   {path: 'exchange-details/:id', component: ExchangeDetailsComponent},
+  {path: 'exchange-statistics/:id', component: ExchangeStatisticsComponent},
   {path: 'admin/users', component: UserListComponent},
   {path: 'admin/user/create', component: CreateUserComponent},
   {path: 'user-details/:id', component: UserDetailsComponent},
   {path: 'broker/bids', component: BrokerBidListComponent},
   {path: 'broker/deals', component: DealListComponent},
+  {path: 'broker/deals/:dealNumber', component: DealListComponent},
   {path: 'broker/create-deal/:id', component: CreateDealComponent},
   {path: 'client/bids', component: ClientBidListComponent},
   {path: 'client/create-bid', component: CreateBidComponent},
